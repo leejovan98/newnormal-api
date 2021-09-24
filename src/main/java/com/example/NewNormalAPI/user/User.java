@@ -2,7 +2,7 @@ package com.example.NewNormalAPI.user;
 
 import java.util.Collection;
 
-import javax.annotation.Generated;
+// import javax.annotation.Generated;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -62,5 +62,9 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         // TODO Auto-generated method stub
         return false;
+    }
+
+    public String getEmail() {
+        return null;
     }
 }
