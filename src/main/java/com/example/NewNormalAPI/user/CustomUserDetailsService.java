@@ -2,6 +2,7 @@ package com.example.NewNormalAPI.user;
 
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -9,8 +10,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
+	
     private UserRepository users;
     
+    @Autowired
     public CustomUserDetailsService(UserRepository users) {
         this.users = users;
     }
@@ -26,7 +29,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         Optional<User> search2 = users.findByEmail(user.getEmail());
   
         if (search.isPresent() || search2.isPresent()) {
-         throw new UserExistsException(user.getUsername());
+        	throw new UserExistsException();
         }
         
         return users.save(user);
