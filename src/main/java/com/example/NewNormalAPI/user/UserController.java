@@ -1,37 +1,39 @@
-/**
- * Controller for user.
- * 
- * @version 1.0 , 24 Sept 2021
- * @author Chew Chong Jun
- */
-
 package com.example.NewNormalAPI.user;
 
-import java.util.List;
-
-import javax.validation.Valid;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class UserController {
-    private UserRepository users;
+	
+	private CustomUserDetailsService userSvc;
     private BCryptPasswordEncoder encoder;
 
-    public UserController(UserRepository users, BCryptPasswordEncoder encoder) {
-        this.users = users;
+    // Constructor
+    @Autowired
+    public UserController(CustomUserDetailsService userSvc, BCryptPasswordEncoder encoder) {
+        this.userSvc = userSvc;
         this.encoder = encoder;
     }
 
+    // @GetMapping("/users")
+    // public List<User> getUsers() {
+    //     return users.findAll();
+    // }
+
     /**
-    * Using BCrypt encoder to encrypt the password for storage 
+    * Checks if User already exists in the database
+    * 
     * @param user
-    * @return 
+    * @throws UserExistsException
+    * @return user
     */
     @PostMapping("/users")
-    public User addUser(@Valid @RequestBody User user){
-
+    public User addUser(@RequestBody User user) throws UserExistsException{
         user.setPassword(encoder.encode(user.getPassword()));
-        return users.save(user);
+        return userSvc.createUser(user);
     }
+}
