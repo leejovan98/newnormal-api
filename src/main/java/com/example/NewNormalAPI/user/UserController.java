@@ -1,10 +1,3 @@
-/**
- * Controller for user.
- * 
- * @version 1.0 , 24 Sept 2021
- * @author Chew Chong Jun
- */
-
 package com.example.NewNormalAPI.user;
 
 import java.util.List;
@@ -37,14 +30,14 @@ public class UserController {
     /**
     * Checks if User already exists in the database
     * @param user
-    * @throws userAlreadyExistsException TODO: Create exception
+    * @throws UserExistsException
     * @return user
     */
     @PostMapping("/users")
-    public User addUser(@Valid @RequestBody User user) throws UserAlreadyExistsException{
+    public User addUser(@Valid @RequestBody User user) throws UserExistsException{
         //TODO: use service to check if user is already in database
         if (/* user already in database*/) {
-            // throw exception
+            throw new UserExistsException(user.getUsername())
         }
         user.setPassword(encoder.encode(user.getPassword()));
         return users.save(user);
