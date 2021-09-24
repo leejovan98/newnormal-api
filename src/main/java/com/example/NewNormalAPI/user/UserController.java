@@ -71,7 +71,13 @@ public class UserController {
 		
 		userSvc.update(user);
 	}
-
+    
+    /**
+     * Generates verification code using current date and time
+     *
+     * @param id   user id
+     * @return verification code
+     */
     public String generateVerificationCode(Long id) {
         SimpleDateFormat format = new SimpleDateFormat("ddMMyyHHmmss");
         Date currDt = new Date();
@@ -79,6 +85,12 @@ public class UserController {
         return id.toString() + format.format(currDt);
     }
 
+    /**
+     * Creates a Verification object containing the verification code
+     *
+     * @param user
+     * @return v   (verification code)
+     */
     public Verification constructVerification(User user) {
         Verification v = new Verification();
         v.setUser(user);
