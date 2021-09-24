@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,17 +30,20 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new AccNotFoundException());
     }
 
-    // TODO: finalise the return type
+    // TODO: finalise the return type JWT?
     public User authenticate(User user){
         User actualUser = loadUserByEmail(user.getEmail());
-        if(actualUser.getVerified() != "Y"){
+        System.out.println(actualUser.toString());
+        if(!actualUser.getVerified().equals("Y")){
             throw new LoginFailedException("Account not verified");
         }
-        if(!(actualUser.getPassword().equals(user.getPassword()))){
+        
+        if(!(BCrypt.checkpw(user.getPassword(), actualUser.getPassword()))){
+            System.out.println("WRONG PASSWORD");
             throw new LoginFailedException("Wrong password");
         }
 
-        return user;
+        return actualUser;
         // at this point user is authenticated
         // what to return?
     }

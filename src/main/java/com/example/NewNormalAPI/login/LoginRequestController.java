@@ -27,6 +27,8 @@ public class LoginRequestController {
      */
     @GetMapping("/login")
     public User userLogin(@RequestBody User user) {
+        System.out.println("hello");
+        System.out.println(user.toString());
         return userService.authenticate(user);
     }
 }
