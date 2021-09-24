@@ -63,4 +63,28 @@ public class User implements UserDetails {
         // TODO Auto-generated method stub
         return false;
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public String getPassword() {
+        // TODO Auto-generated method stub
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        // TODO Auto-generated method stub
+        return username;
+    }
+
+    public void setPassword(String encode) {
+        password = encode;
+    }
 }
