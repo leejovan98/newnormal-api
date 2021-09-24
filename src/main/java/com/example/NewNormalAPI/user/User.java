@@ -1,5 +1,6 @@
 package com.example.NewNormalAPI.user;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 import javax.persistence.CascadeType;
@@ -9,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.example.NewNormalAPI.verification.Verification;
@@ -19,24 +21,23 @@ import lombok.Data;
 @Data
 public class User implements UserDetails {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	private @Id @GeneratedValue Long id;
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    // TODO validation for username,password,email,authorities,verified
+    private @Id @GeneratedValue Long id;
     private String username;
     private String password;
     private String email;
     private String authorities; // admin, faculty, student
     private Boolean verified; // yes, no
-    
-    @OneToOne(mappedBy="user", orphanRemoval=true, cascade=CascadeType.ALL)
-	private Verification verification;
+
+    @OneToOne(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
+    private Verification verification;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // TODO Auto-generated method stub
-        return null;
+        return Arrays.asList(new SimpleGrantedAuthority(authorities));
     }
 
     @Override
