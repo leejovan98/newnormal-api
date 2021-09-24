@@ -23,6 +23,10 @@ public class CustomUserDetailsService implements UserDetailsService {
         return users.findByUsername(username)
             .orElseThrow(() -> new UsernameNotFoundException("User '" + username + "' not found"));
     }
+    
+    public User update(User user) {
+    	return users.save(user);
+    }
 
     public User createUser(User user) {
         Optional<User> search = users.findByUsername(user.getUsername());

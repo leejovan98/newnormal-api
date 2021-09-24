@@ -1,22 +1,28 @@
 package com.example.NewNormalAPI.user;
 
-import org.springframework.http.HttpStatus;
-import com.example.NewNormalAPI.mailer.MailerSvcImpl;
-import com.example.NewNormalAPI.verification.Verification;
-import com.example.NewNormalAPI.verification.VerificationService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.NewNormalAPI.mailer.MailerSvcImpl;
+import com.example.NewNormalAPI.verification.Verification;
+import com.example.NewNormalAPI.verification.VerificationNotFoundException;
+import com.example.NewNormalAPI.verification.VerificationService;
 
 @RestController
 public class UserController {
-	
-	private CustomUserDetailsService userSvc;
+
+    private CustomUserDetailsService userSvc;
     private BCryptPasswordEncoder encoder;
     private VerificationService verifSvc;
     private MailerSvcImpl mailer;
@@ -31,11 +37,6 @@ public class UserController {
         this.mailer = mailer;
     }
 
-    // @GetMapping("/users")
-    // public List<User> getUsers() {
-    //     return users.findAll();
-    // }
-
     /**
     * Checks if User already exists in the database
     * Adds user if does not exist 
@@ -46,14 +47,30 @@ public class UserController {
     */
     @PostMapping("/accounts/user")
     @ResponseStatus(HttpStatus.OK)
-    public User addUser(@RequestBody User user) throws UserExistsException{
+    public void addUser(@RequestBody User user) throws UserExistsException{
 
         user.setPassword(encoder.encode(user.getPassword()));
-        Verification v = constructVerification(user);
+        User newUser = userSvc.createUser(user);
+        Verification v = constructVerification(newUser);
         verifSvc.save(v);
-        mailer.sendVerificationCode(user.getEmail(), v.getVerificationCode());
-        return userSvc.createUser(user);
+        mailer.sendVerificationCode(newUser.getEmail(), v.getVerificationCode());
     }
+    
+	@GetMapping("/accounts/verify/{code}")
+	@ResponseStatus(HttpStatus.OK)
+	public void verifyUser(@PathVariable String code) {
+
+		Optional<Verification> search = verifSvc.findById(code);
+		if(search.isEmpty()) throw new VerificationNotFoundException();
+		
+		Verification verification = search.get();
+		User user = verification.getUser();
+		
+		user.setVerified("Y");
+		user.setVerification(null); // delete corresponding verification record
+		
+		userSvc.update(user);
+	}
 
     public String generateVerificationCode(Long id) {
         SimpleDateFormat format = new SimpleDateFormat("ddMMyyHHmmss");
