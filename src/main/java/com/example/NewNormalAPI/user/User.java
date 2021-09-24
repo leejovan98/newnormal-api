@@ -2,13 +2,17 @@ package com.example.NewNormalAPI.user;
 
 import java.util.Collection;
 
-// import javax.annotation.Generated;
+import javax.annotation.Generated;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.example.NewNormalAPI.verification.Verification;
 
 import lombok.Data;
 
@@ -21,6 +25,9 @@ public class User implements UserDetails {
     private String email;
     private String role; // admin, faculty, student
     private Boolean verified; // yes, no
+    
+    @OneToOne(mappedBy="user", orphanRemoval=true, cascade=CascadeType.ALL)
+	private Verification verification;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

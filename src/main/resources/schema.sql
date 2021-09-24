@@ -1,6 +1,6 @@
 CREATE SCHEMA IF NOT EXISTS new_normal;
 
-CREATE TABLE IF NOT EXISTS USER(
+CREATE TABLE IF NOT EXISTS NEW_NORMAL.USER(
 	id int primary key auto_increment,
     username varchar(50), 
     password varchar(50),
@@ -9,8 +9,7 @@ CREATE TABLE IF NOT EXISTS USER(
     verified char(1)
 );
 
-
-CREATE TABLE IF NOT EXISTS VERIFICATION(
+CREATE TABLE IF NOT EXISTS NEW_NORMAL.VERIFICATION(
 	verification_code varchar(50) primary key,
     user_id int,
     foreign key (user_id) references user(id) on delete cascade
