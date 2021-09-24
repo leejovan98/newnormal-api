@@ -1,22 +1,33 @@
 package com.example.NewNormalAPI.user;
 
+import com.example.NewNormalAPI.mailer.MailerSvcImpl;
+import com.example.NewNormalAPI.verification.Verification;
+import com.example.NewNormalAPI.verification.VerificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @RestController
 public class UserController {
 	
 	private CustomUserDetailsService userSvc;
     private BCryptPasswordEncoder encoder;
+    private VerificationService verifSvc;
+    private MailerSvcImpl mailer;
 
     // Constructor
     @Autowired
-    public UserController(CustomUserDetailsService userSvc, BCryptPasswordEncoder encoder) {
+    public UserController(CustomUserDetailsService userSvc, BCryptPasswordEncoder encoder,
+                          VerificationService verifSvc, MailerSvcImpl mailer) {
         this.userSvc = userSvc;
         this.encoder = encoder;
+        this.verifSvc = verifSvc;
+        this.mailer = mailer;
     }
 
     // @GetMapping("/users")
@@ -26,14 +37,28 @@ public class UserController {
 
     /**
     * Checks if User already exists in the database
-    * 
+    * Adds user if does not exist 
+    *
     * @param user
     * @throws UserExistsException
     * @return user
     */
-    @PostMapping("/users")
+    @PostMapping("/accounts/user")
     public User addUser(@RequestBody User user) throws UserExistsException{
+
         user.setPassword(encoder.encode(user.getPassword()));
+        Verification vCode = verifSvc.findById(user.getId());
+        verifSvc.save(vCode);
+        mailer.sendVerificationCode(user.getEmail(), vCode);
         return userSvc.createUser(user);
     }
+
+    public String generateVerificationCode(Long id) {
+        SimpleDateFormat format = new SimpleDateFormat("ddMMyyHHmmss");
+        Date currDt = new Date();
+
+        return id.toString() + format.format(currDt);
+    }
+
+
 }
