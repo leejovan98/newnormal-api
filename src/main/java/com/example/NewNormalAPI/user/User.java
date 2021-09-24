@@ -20,7 +20,7 @@ public class User implements UserDetails {
     private String password;
     private String email;
     private String role; // admin, faculty, student
-    private Boolean verified; // yes, no
+    private Boolean verified;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
