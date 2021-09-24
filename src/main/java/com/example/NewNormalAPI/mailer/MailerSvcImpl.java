@@ -27,5 +27,9 @@ public class MailerSvcImpl implements MailerSvc {
 		sender.send(message);
 	}
 
+	public void setBaseUrl(String baseUrl){
+		this.baseUrl = baseUrl;
+	}
+
 	
 }
