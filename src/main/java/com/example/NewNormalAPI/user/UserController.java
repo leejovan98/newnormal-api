@@ -24,6 +24,11 @@ public class UserController {
         this.encoder = encoder;
     }
 
+    // @GetMapping("/users")
+    // public List<User> getUsers() {
+    //     return users.findAll();
+    // }
+
     /**
     * Using BCrypt encoder to encrypt the password for storage 
     * @param user
@@ -31,7 +36,7 @@ public class UserController {
     */
     @PostMapping("/users")
     public User addUser(@Valid @RequestBody User user){
-
+        // use service to check if user is already in database
         user.setPassword(encoder.encode(user.getPassword()));
         return users.save(user);
     }
