@@ -27,6 +27,8 @@ public class UserController {
 
     /**
     * Checks if User already exists in the database
+    * Creates user if does not exists
+    * Throws exception otherwise
     * @param user
     * @throws UserExistsException
     * @return user
@@ -34,7 +36,7 @@ public class UserController {
     @PostMapping("/users")
     public User addUser(@Valid @RequestBody User user) throws UserExistsException{
         userService = new CustomUserDetailsService(users);
-        
+
         userService.createUser(user);
         user.setPassword(encoder.encode(user.getPassword()));
         return users.save(user);
