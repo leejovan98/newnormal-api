@@ -1,23 +1,33 @@
 package com.example.NewNormalAPI.user;
 
-import java.util.List;
-
-import javax.validation.Valid;
-
+import com.example.NewNormalAPI.mailer.MailerSvcImpl;
+import com.example.NewNormalAPI.verification.Verification;
+import com.example.NewNormalAPI.verification.VerificationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @RestController
 public class UserController {
-    @Autowired
-    private UserRepository users;
-    @Autowired
+	
+	private CustomUserDetailsService userSvc;
     private BCryptPasswordEncoder encoder;
+    private VerificationService verifSvc;
+    private MailerSvcImpl mailer;
 
     // Constructor
-    public UserController(UserRepository users, BCryptPasswordEncoder encoder) {
-        this.users = users;
+    @Autowired
+    public UserController(CustomUserDetailsService userSvc, BCryptPasswordEncoder encoder,
+                          VerificationService verifSvc, MailerSvcImpl mailer) {
+        this.userSvc = userSvc;
         this.encoder = encoder;
+        this.verifSvc = verifSvc;
+        this.mailer = mailer;
     }
 
     // @GetMapping("/users")
@@ -27,17 +37,28 @@ public class UserController {
 
     /**
     * Checks if User already exists in the database
-    * Creates user if does not exists
-    * Throws exception otherwise
+    * Adds user if does not exist 
+    *
     * @param user
     * @throws UserExistsException
     * @return user
     */
-    @PostMapping("/users")
-    public User addUser(@Valid @RequestBody User user) throws UserExistsException{
-        userService = new CustomUserDetailsService(users);
+    @PostMapping("/accounts/user")
+    public User addUser(@RequestBody User user) throws UserExistsException{
 
-        userService.createUser(user);
         user.setPassword(encoder.encode(user.getPassword()));
-        return users.save(user);
+        Verification vCode = verifSvc.findById(user.getId());
+        verifSvc.save(vCode);
+        mailer.sendVerificationCode(user.getEmail(), vCode);
+        return userSvc.createUser(user);
     }
+
+    public String generateVerificationCode(Long id) {
+        SimpleDateFormat format = new SimpleDateFormat("ddMMyyHHmmss");
+        Date currDt = new Date();
+
+        return id.toString() + format.format(currDt);
+    }
+
+
+}
