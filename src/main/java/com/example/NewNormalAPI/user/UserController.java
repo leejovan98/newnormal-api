@@ -1,5 +1,6 @@
 package com.example.NewNormalAPI.user;
 
+import org.springframework.http.HttpStatus;
 import com.example.NewNormalAPI.mailer.MailerSvcImpl;
 import com.example.NewNormalAPI.verification.Verification;
 import com.example.NewNormalAPI.verification.VerificationService;
@@ -8,14 +9,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @RestController
 public class UserController {
-	
-	private CustomUserDetailsService userSvc;
+
+    private CustomUserDetailsService userSvc;
     private BCryptPasswordEncoder encoder;
     private VerificationService verifSvc;
     private MailerSvcImpl mailer;
@@ -32,7 +34,7 @@ public class UserController {
 
     // @GetMapping("/users")
     // public List<User> getUsers() {
-    //     return users.findAll();
+    // return users.findAll();
     // }
 
     /**
@@ -44,6 +46,7 @@ public class UserController {
     * @return user
     */
     @PostMapping("/accounts/user")
+    @ResponseStatus(HttpStatus.OK)
     public User addUser(@RequestBody User user) throws UserExistsException{
 
         user.setPassword(encoder.encode(user.getPassword()));
