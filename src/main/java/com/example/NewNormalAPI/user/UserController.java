@@ -47,9 +47,9 @@ public class UserController {
     public User addUser(@RequestBody User user) throws UserExistsException{
 
         user.setPassword(encoder.encode(user.getPassword()));
-        Verification vCode = verifSvc.findById(user.getId());
-        verifSvc.save(vCode);
-        mailer.sendVerificationCode(user.getEmail(), vCode);
+        Verification v = constructVerification(user);
+        verifSvc.save(v);
+        mailer.sendVerificationCode(user.getEmail(), v.getVerificationCode());
         return userSvc.createUser(user);
     }
 
@@ -58,6 +58,13 @@ public class UserController {
         Date currDt = new Date();
 
         return id.toString() + format.format(currDt);
+    }
+
+    public Verification constructVerification(User user) {
+        Verification v = new Verification();
+        v.setUser(user);
+        v.setVerificationCode(generateVerificationCode(user.getId()));
+        return v;
     }
 
 
