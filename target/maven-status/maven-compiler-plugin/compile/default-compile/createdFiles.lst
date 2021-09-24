@@ -1,0 +1,6 @@
+com\example\NewNormalAPI\mailer\MailerSvc.class
+com\example\NewNormalAPI\verification\Verification.class
+com\example\NewNormalAPI\verification\VerificationNotFoundException.class
+com\example\NewNormalAPI\mailer\MailerSvcImpl.class
+com\example\NewNormalAPI\verification\VerificationService.class
+com\example\NewNormalAPI\verification\VerificationRepository.class

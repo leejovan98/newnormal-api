@@ -39,8 +39,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.httpBasic().and() // "and()"" method allows us to continue configuring the parent
-                .authorizeRequests().antMatchers(HttpMethod.GET, "/createaccount").permitAll()
-                .antMatchers(HttpMethod.POST, "/createaccount").permitAll()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/**")
+                .permitAll()
                 // TODO Continue adding permissions here
 
                 .and().csrf().disable() // CSRF protection is needed only for browser based attacks

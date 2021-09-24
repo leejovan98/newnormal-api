@@ -1,15 +1,16 @@
 package com.example.NewNormalAPI.user;
-
+import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RestController
 public class UserController {
-	
-	private CustomUserDetailsService userSvc;
+
+    private CustomUserDetailsService userSvc;
     private BCryptPasswordEncoder encoder;
 
     // Constructor
@@ -21,19 +22,23 @@ public class UserController {
 
     // @GetMapping("/users")
     // public List<User> getUsers() {
-    //     return users.findAll();
+    // return users.findAll();
     // }
 
     /**
-    * Checks if User already exists in the database
-    * 
-    * @param user
-    * @throws UserExistsException
-    * @return user
-    */
+     * Checks if User already exists in the database
+     * 
+     * @param user
+     * @throws UserExistsException
+     * @return user
+     */
     @PostMapping("/users")
-    public User addUser(@RequestBody User user) throws UserExistsException{
+    @ResponseStatus(HttpStatus.OK)
+    public User addUser(@RequestBody User user) throws UserExistsException {
         user.setPassword(encoder.encode(user.getPassword()));
-        return userSvc.createUser(user);
+        // return userSvc.createUser(user);
+        User user0 = userSvc.createUser(user);
+        System.out.println(user0);
+        return user0;
     }
 }
