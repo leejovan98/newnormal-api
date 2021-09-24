@@ -19,9 +19,29 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
     
     @Override
-    public UserDetails loadUserByUsername(String username)  throws UsernameNotFoundException {
+    public User loadUserByUsername(String username)  throws UsernameNotFoundException {
         return users.findByUsername(username)
             .orElseThrow(() -> new UsernameNotFoundException("User '" + username + "' not found"));
+    }
+    
+    public User loadUserByEmail(String email) throws AccNotFoundException {
+        return users.findByEmail(email)
+                .orElseThrow(() -> new AccNotFoundException());
+    }
+
+    // TODO: finalise the return type
+    public User authenticate(User user){
+        User actualUser = loadUserByEmail(user.getEmail());
+        if(actualUser.getVerified() != "Y"){
+            throw new LoginFailedException("Account not verified");
+        }
+        if(!(actualUser.getPassword().equals(user.getPassword()))){
+            throw new LoginFailedException("Wrong password");
+        }
+
+        return user;
+        // at this point user is authenticated
+        // what to return?
     }
     
     public User update(User user) {
