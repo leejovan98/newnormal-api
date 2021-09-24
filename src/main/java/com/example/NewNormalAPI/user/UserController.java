@@ -1,22 +1,21 @@
 package com.example.NewNormalAPI.user;
 
-import java.util.List;
-
-import javax.validation.Valid;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class UserController {
-    @Autowired
-    private UserRepository users;
-    @Autowired
+	
+	private CustomUserDetailsService userSvc;
     private BCryptPasswordEncoder encoder;
 
     // Constructor
-    public UserController(UserRepository users, BCryptPasswordEncoder encoder) {
-        this.users = users;
+    @Autowired
+    public UserController(CustomUserDetailsService userSvc, BCryptPasswordEncoder encoder) {
+        this.userSvc = userSvc;
         this.encoder = encoder;
     }
 
@@ -27,15 +26,14 @@ public class UserController {
 
     /**
     * Checks if User already exists in the database
+    * 
     * @param user
     * @throws UserExistsException
     * @return user
     */
     @PostMapping("/users")
-    public User addUser(@Valid @RequestBody User user) throws UserExistsException{
-        userService = new CustomUserDetailsService(users);
-        
-        userService.createUser(user);
+    public User addUser(@RequestBody User user) throws UserExistsException{
         user.setPassword(encoder.encode(user.getPassword()));
-        return users.save(user);
+        return userSvc.createUser(user);
     }
+}

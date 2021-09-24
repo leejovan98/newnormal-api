@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS NEW_NORMAL.USER(
     username varchar(50), 
     password varchar(50),
     email varchar(50),
-    role varchar(10),
+    authorities varchar(50),
     verified char(1)
 );
 
