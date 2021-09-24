@@ -1,0 +1,4 @@
+
+*.class
+target/classes/META-INF/maven/com.example/NewNormalAPI/pom.properties
+.classpath
