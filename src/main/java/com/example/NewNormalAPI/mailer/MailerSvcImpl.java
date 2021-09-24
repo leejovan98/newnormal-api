@@ -6,8 +6,11 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import lombok.Data;
+
 @Service
 @ConfigurationProperties(prefix="serivce.mailer")
+@Data
 public class MailerSvcImpl implements MailerSvc {
 
 	@Autowired
