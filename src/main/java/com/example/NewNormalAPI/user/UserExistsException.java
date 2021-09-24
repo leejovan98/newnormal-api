@@ -8,8 +8,8 @@ public class UserExistsException extends RuntimeException{
 
     private static final long serialVersionUID = 1L;
 
-    public UserExistsException(String username) {
-        super("User: " + username + " already exisits");
+    public UserExistsException() {
+        super("Username or email already in use");
     }
     
 }
