@@ -7,8 +7,6 @@ import javax.validation.Valid;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import jdk.jfr.Description;
-
 @RestController
 public class UserController {
     @Autowired
@@ -35,10 +33,9 @@ public class UserController {
     */
     @PostMapping("/users")
     public User addUser(@Valid @RequestBody User user) throws UserExistsException{
-        //TODO: use service to check if user is already in database
-        if (/* user already in database*/) {
-            throw new UserExistsException(user.getUsername())
-        }
+        userService = new CustomUserDetailsService(users);
+        
+        userService.createUser(user);
         user.setPassword(encoder.encode(user.getPassword()));
         return users.save(user);
     }
