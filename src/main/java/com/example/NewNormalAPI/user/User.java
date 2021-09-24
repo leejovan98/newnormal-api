@@ -66,4 +66,14 @@ public class User implements UserDetails {
         // TODO Auto-generated method stub
         return false;
     }
+
+	@Override
+	public String getPassword() {
+		return password;
+	}
+
+	@Override
+	public String getUsername() {
+		return username;
+	}
 }
