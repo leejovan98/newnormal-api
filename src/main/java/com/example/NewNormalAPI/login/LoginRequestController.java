@@ -1,22 +1,19 @@
 package com.example.NewNormalAPI.login;
 
-import com.example.NewNormalAPI.user.CustomUserDetailsService;
-// import com.example.NewNormalAPI.user.UserExistsException;
-import com.example.NewNormalAPI.user.User;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-// import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.NewNormalAPI.user.User;
+import com.example.NewNormalAPI.user.UserDetailsServiceImpl;
+
 @RestController
 public class LoginRequestController {
-    private CustomUserDetailsService userService;
+    private UserDetailsServiceImpl userService;
 
     @Autowired
-    public LoginRequestController(CustomUserDetailsService userService) {
+    public LoginRequestController(UserDetailsServiceImpl userService) {
         this.userService = userService;
     }
 
@@ -27,8 +24,6 @@ public class LoginRequestController {
      */
     @GetMapping("/login")
     public User userLogin(@RequestBody User user) {
-        System.out.println("hello");
-        System.out.println(user.toString());
         return userService.authenticate(user);
     }
 }
