@@ -24,15 +24,5 @@ public class Verification {
 	public String toString() {
 		return "Verification [verificationCode=" + verificationCode + ", userId=" + user.getId() + "]";
 	}
-
-    public void setVerificationCode(String generateVerificationCode) {
-    }
-
-    public void setUser(User user2) {
-    }
-
-    public String getVerificationCode() {
-        return verificationCode;
-    }
 	
 }
