@@ -25,8 +25,7 @@ public class GlobalControllerExceptionHandler {
 	
 	@ResponseStatus(code=HttpStatus.BAD_REQUEST, reason="username / email already in use")
 	@ExceptionHandler(UserAlreadyExistsException.class)
-	public String handleUserAlreadyExistsException() {
-		return "username / email already in use";
+	public void handleUserAlreadyExistsException() {
 	}
 	
 	@ResponseStatus(code=HttpStatus.NOT_FOUND, reason="verification code is invalid or has already been activated")

@@ -9,11 +9,11 @@ import com.example.NewNormalAPI.user.User;
 import com.example.NewNormalAPI.user.UserDetailsServiceImpl;
 
 @RestController
-public class LoginRequestController {
+public class LoginController {
     private UserDetailsServiceImpl userService;
 
     @Autowired
-    public LoginRequestController(UserDetailsServiceImpl userService) {
+    public LoginController(UserDetailsServiceImpl userService) {
         this.userService = userService;
     }
 
