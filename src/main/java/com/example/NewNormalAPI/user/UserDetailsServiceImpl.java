@@ -1,5 +1,7 @@
 package com.example.NewNormalAPI.user;
 
+import com.example.NewNormalAPI.login.LoginFailedException;
+
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,58 +11,63 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
-import com.example.NewNormalAPI.login.LoginFailedException;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-	
+
     private UserRepository users;
-    
+
     @Autowired
     public UserDetailsServiceImpl(UserRepository users) {
         this.users = users;
     }
-    
 
     // TODO: finalise the return type JWT?
-    public User authenticate(User user){
+    public User authenticate(User user) {
         Optional<User> search = users.findByEmail(user.getEmail());
-        if(search.isEmpty()) throw new LoginFailedException(user.getEmail());
-        
+        if (search.isEmpty())
+            throw new LoginFailedException(user.getEmail());
+
         User actualUser = search.get();
-        if(!actualUser.isEnabled()){
+        if (!actualUser.isEnabled()) {
             throw new UserNotVerifiedException(user.getEmail());
         }
-        
-        if(!(BCrypt.checkpw(user.getPassword(), actualUser.getPassword()))){
+
+        if (!(BCrypt.checkpw(user.getPassword(), actualUser.getPassword()))) {
             throw new LoginFailedException(user.getEmail());
         }
 
         return actualUser;
         // at this point user is authenticated
         // what to return?
+        // might just remove this entire method
     }
-    
+
     public User update(User user) {
-    	return users.save(user);
+        return users.save(user);
     }
 
     public User createUser(User user) {
         Optional<User> search = users.findByUsername(user.getUsername());
         Optional<User> search2 = users.findByEmail(user.getEmail());
-  
+
         if (search.isPresent() || search2.isPresent()) {
-        	throw new UserAlreadyExistsException();
+            throw new UserAlreadyExistsException();
         }
-        
+
         return users.save(user);
-       }
+    }
 
+    // TODO -- FIX ERROR MESSAGE
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<User> search = users.findByUsername(username);
+        User user = search.get();
 
-    // TODO -- check up on this -> required method
-	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+        if (user == null) {
+            throw new UsernameNotFoundException(username);
+        }
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.getAuthorities());
+    }
+
 }
