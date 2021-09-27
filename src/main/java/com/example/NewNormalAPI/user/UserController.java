@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.NewNormalAPI.mailer.MailerSvcImpl;
+import com.example.NewNormalAPI.mailer.MailerSvc;
 import com.example.NewNormalAPI.verification.Verification;
 import com.example.NewNormalAPI.verification.VerificationNotFoundException;
 import com.example.NewNormalAPI.verification.VerificationService;
@@ -22,15 +22,15 @@ import com.example.NewNormalAPI.verification.VerificationService;
 @RestController
 public class UserController {
 
-    private CustomUserDetailsService userSvc;
+    private UserDetailsServiceImpl userSvc;
     private BCryptPasswordEncoder encoder;
     private VerificationService verifSvc;
-    private MailerSvcImpl mailer;
+    private MailerSvc mailer;
 
     // Constructor
     @Autowired
-    public UserController(CustomUserDetailsService userSvc, BCryptPasswordEncoder encoder,
-                          VerificationService verifSvc, MailerSvcImpl mailer) {
+    public UserController(UserDetailsServiceImpl userSvc, BCryptPasswordEncoder encoder,
+                          VerificationService verifSvc, MailerSvc mailer) {
         this.userSvc = userSvc;
         this.encoder = encoder;
         this.verifSvc = verifSvc;
@@ -47,7 +47,7 @@ public class UserController {
     */
     @PostMapping("/accounts/user")
     @ResponseStatus(HttpStatus.OK)
-    public void addUser(@RequestBody User user) throws UserExistsException{
+    public void addUser(@RequestBody User user) {
 
         user.setPassword(encoder.encode(user.getPassword()));
         User newUser = userSvc.createUser(user);
@@ -61,7 +61,7 @@ public class UserController {
 	public void verifyUser(@PathVariable String code) {
 
 		Optional<Verification> search = verifSvc.findById(code);
-		if(search.isEmpty()) throw new VerificationNotFoundException();
+		if(search.isEmpty()) throw new VerificationNotFoundException(code);
 		
 		Verification verification = search.get();
 		User user = verification.getUser();
@@ -71,7 +71,13 @@ public class UserController {
 		
 		userSvc.update(user);
 	}
-
+    
+    /**
+     * Generates verification code using current date and time
+     *
+     * @param id   user id
+     * @return verification code
+     */
     public String generateVerificationCode(Long id) {
         SimpleDateFormat format = new SimpleDateFormat("ddMMyyHHmmss");
         Date currDt = new Date();
@@ -79,6 +85,12 @@ public class UserController {
         return id.toString() + format.format(currDt);
     }
 
+    /**
+     * Creates a Verification object containing the verification code
+     *
+     * @param user
+     * @return v   (verification code)
+     */
     public Verification constructVerification(User user) {
         Verification v = new Verification();
         v.setUser(user);

@@ -25,6 +25,4 @@ public class Verification {
 		return "Verification [verificationCode=" + verificationCode + ", userId=" + user.getId() + "]";
 	}
 	
-	
-	
 }
