@@ -52,17 +52,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // .antMatchers(HttpMethod.GET, "/**").permitAll()
                 // .antMatchers(HttpMethod.POST, "/**").permitAll()
                 // .antMatchers(HttpMethod.PUT, "/**").permitAll()
-                .antMatchers(HttpMethod.POST,"/login").permitAll()
+                .antMatchers(HttpMethod.GET, "/accounts/verify/*").permitAll() // allows users to verify their accounts
+                .antMatchers(HttpMethod.POST, "/accounts/user").permitAll() // allows users to create an account
+                .antMatchers(HttpMethod.POST, "/login").permitAll()
                 // .antMatchers(HttpMethod.GET,"/hello").authenticated()
                 .anyRequest().authenticated() // any remaining requests will need authentication
                 // TODO Continue adding permissions here
 
                 .and().csrf().disable() // CSRF protection is needed only for browser based attacks
                 .formLogin().disable().headers().disable() // Disable the security headers, as we do not return HTML in
-                                                            // our service
-                
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // Spring security dont create sessions
-                http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+                                                           // our service
+
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // Spring security dont
+                                                                                             // create sessions
+        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     /**
