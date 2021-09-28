@@ -1,19 +1,21 @@
 package com.example.NewNormalAPI.login;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import com.example.NewNormalAPI.user.UserDetailsServiceImpl;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
-import com.example.NewNormalAPI.jwt.util.JwtUtil;
-import com.example.NewNormalAPI.jwt.models.AuthenticationResponse;
+
 import com.example.NewNormalAPI.jwt.models.AuthenticationRequest;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import com.example.NewNormalAPI.jwt.models.AuthenticationResponse;
+import com.example.NewNormalAPI.jwt.util.JwtUtil;
+import com.example.NewNormalAPI.user.UserDetailsServiceImpl;
+import com.example.NewNormalAPI.user.UserNotVerifiedException;
 
 @RestController
 public class LoginController {
@@ -45,18 +47,20 @@ public class LoginController {
 
     // TODO POTENTIAL ISSUE: Unverified people can log in
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest)
-            throws Exception {
-
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest){
         try {
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                     authenticationRequest.getUsername(), authenticationRequest.getPassword());
             authenticationManager.authenticate(authenticationToken);
         } catch (BadCredentialsException e) {
-            throw new Exception("Incorrect username or password", e);
+//            throw new Exception("Incorrect username or password", e);
+        	throw new LoginFailedException();
         }
 
         final UserDetails userDetails = userService.loadUserByUsername(authenticationRequest.getUsername());
+        if(!userDetails.isEnabled()) {
+        	throw new UserNotVerifiedException();
+        }
         final String jwt = jwtTokenUtil.generateToken(userDetails);
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }
