@@ -46,9 +46,9 @@ public class LoginController {
     // }
 
     // TODO POTENTIAL ISSUE: Unverified people can log in
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/accounts/login", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest){
-        try {
+    	try {
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                     authenticationRequest.getUsername(), authenticationRequest.getPassword());
             authenticationManager.authenticate(authenticationToken);
