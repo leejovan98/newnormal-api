@@ -1,10 +1,10 @@
-package com.example.NewNormalAPI;
+package com.example.acountsservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class NewNormalApiApplicationTests {
+class AccountsServiceApplicationTests {
 
 	@Test
 	void contextLoads() {
