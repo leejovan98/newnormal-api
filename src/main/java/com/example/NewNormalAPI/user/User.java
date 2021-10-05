@@ -2,6 +2,7 @@ package com.example.NewNormalAPI.user;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -66,7 +67,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        // TODO Auto-generated method stub
+        if(Objects.nonNull(verified) && verified.equals("Y")) return true;
         return false;
     }
 
@@ -79,4 +80,6 @@ public class User implements UserDetails {
 	public String getUsername() {
 		return username;
 	}
+	
+	
 }
