@@ -1,4 +1,4 @@
-package com.example.EventsService.service;
+package com.example.NewNormalAPI.event;
 
 import com.example.EventsService.repository.EventRepository;
 
