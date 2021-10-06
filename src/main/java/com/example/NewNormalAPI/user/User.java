@@ -2,6 +2,7 @@ package com.example.NewNormalAPI.user;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -38,6 +39,9 @@ public class User implements UserDetails {
     @OneToOne(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
     private Verification verification;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<Event> events;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Arrays.asList(new SimpleGrantedAuthority(authorities));
@@ -63,7 +67,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        // TODO Auto-generated method stub
+        if(Objects.nonNull(verified) && verified.equals("Y")) return true;
         return false;
     }
 
@@ -76,4 +80,6 @@ public class User implements UserDetails {
 	public String getUsername() {
 		return username;
 	}
+	
+	
 }
