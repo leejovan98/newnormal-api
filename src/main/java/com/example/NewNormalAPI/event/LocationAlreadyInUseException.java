@@ -1,11 +1,12 @@
-package com.example.EventsService.exceptions;
+package com.example.NewNormalAPI.event;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
+public class LocationAlreadyInUseException extends RuntimeException {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-@ResponseStatus(HttpStatus.BAD_REQUEST)
-public class LocationAlreadyInUseException extends Exception {
-    public LocationAlreadyInUseException(String message) {
+	public LocationAlreadyInUseException(String message) {
         super(message);
     }
 }
