@@ -2,6 +2,8 @@ package com.example.NewNormalAPI.user;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.NewNormalAPI.mailer.Mail;
 import com.example.NewNormalAPI.mailer.MailerSvc;
 import com.example.NewNormalAPI.verification.Verification;
 import com.example.NewNormalAPI.verification.VerificationNotFoundException;
@@ -53,7 +56,16 @@ public class UserController {
         User newUser = userSvc.createUser(user);
         Verification v = constructVerification(newUser);
         verifSvc.save(v);
-        mailer.sendVerificationCode(newUser.getEmail(), v.getVerificationCode());
+        
+        // prepare mail details
+        Mail mail = new Mail();
+        mail.setTo(newUser.getEmail());
+        mail.setSubject("Account Verification");
+        Map<String, Object> props = new HashMap<>();
+        props.put("verificationCode", v.getVerificationCode());
+        mail.setProperties(props);
+        
+        mailer.sendVerificationCode(mail);
     }
     
 	@GetMapping("/accounts/verify/{code}")

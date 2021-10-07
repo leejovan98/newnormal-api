@@ -54,6 +54,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         return users.save(user);
     }
+    
+    public User loadUserEntityByUsername(String username) throws UsernameNotFoundException{
+    	Optional<User> search = users.findByUsername(username);
+        User user = search.get();
+        if (user == null) {
+            throw new UsernameNotFoundException(username);
+        }
+        if(!user.getVerified().equals("Y")) throw new UserNotVerifiedException();
+        return user;
+    }
+    
 
     // TODO -- FIX ERROR MESSAGE
     @Override

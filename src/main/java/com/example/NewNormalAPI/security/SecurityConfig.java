@@ -55,6 +55,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/accounts/verify/*").permitAll() // allows users to verify their accounts
                 .antMatchers(HttpMethod.POST, "/accounts/user").permitAll() // allows users to create an account
                 .antMatchers(HttpMethod.POST, "/accounts/login").permitAll()
+                .antMatchers(HttpMethod.POST, "/events/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/events/**").permitAll()
                 // .antMatchers(HttpMethod.GET,"/hello").authenticated()
                 .anyRequest().authenticated() // any remaining requests will need authentication
                 // TODO Continue adding permissions here
