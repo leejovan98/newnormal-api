@@ -1,0 +1,72 @@
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+  	<style type="text/css">
+  		table, td {
+			border: 1px solid black;
+			border-collapse: collapse;
+		}
+
+		.prop{
+			font-weight: bold;
+			width: 20%;
+			min-width: 200px;
+			padding-left: 2%;
+			padding-right: 2%;
+			text-align: left;
+			
+		}
+
+		.prop_val{
+			width: 30%;
+			min-width: 200px;
+			padding-left: 2%;
+			padding-right: 2%;
+			text-align: left;
+		}
+		
+
+  	</style>
+  </head>
+  <body style="width:100%; display:flex; justify-content:left; font-family: Verdana ">
+    <div style="width:85%; margin: 2% 0 0 2%;">
+      <h1>Hello!</h1>
+      <p>you have successfully created an event:</p>
+
+      <h2 th:text="${event.title}">event_title</h2>
+      <table>
+      	<tr>
+      		<td class="prop">Date</td>
+      		<td class="prop_val" th:text="${#dates.format(event.getDatetime(), 'dd MMM yyyy')}"></td>
+      	</tr>
+      	<tr>
+      		<td class="prop">Time</td>
+      		<td class="prop_val" th:text="${#dates.format(event.getDatetime(), 'hh:mm aa')}"></td>
+      	</tr>
+      	<tr>
+      		<td class="prop">Location</td>
+      		<td class="prop_val" th:text="${event.getLocation()}"></td>
+      	</tr>
+      	<tr>
+      		<td class="prop">Event Visbility</td>
+      		<td class="prop_val" th:text="${event.getVisibility()}"></td>
+      	</tr>
+      	<tr>
+      		<td class="prop">Vaccination Requirement</td>
+      		<td class="prop_val" th:text="${event.getVaccinationRequired()} == 'Y' ? 'Yes' : 'No'"></td>
+      	</tr>
+      	<tr>
+      		<td class="prop">Maximum Participants</td>
+      		<td class="prop_val" th:text="${event.getMaxSubscribers()}"></td>
+      	</tr>
+		<tr>
+      		<td class="prop">Invite Link</td>
+      		<td class="prop_val" th:text="${inviteLink}"></td>
+      	</tr>
+      </table>
+
+      <p>- NewNormal Team</p>
+
+    </div>
+    
+  </body>
+</html>

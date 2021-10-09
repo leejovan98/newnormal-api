@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.example.NewNormalAPI.event.UserNotAuthorisedException;
 import com.example.NewNormalAPI.login.LoginFailedException;
 import com.example.NewNormalAPI.user.UserAlreadyExistsException;
 import com.example.NewNormalAPI.user.UserNotVerifiedException;
@@ -31,5 +32,11 @@ public class GlobalControllerExceptionHandler {
 	@ResponseStatus(code=HttpStatus.NOT_FOUND, reason="verification code is invalid or has already been activated")
 	@ExceptionHandler(VerificationNotFoundException.class)
 	public void handleVerificationNotFoundException() {
+	}
+	
+	
+	@ResponseStatus(code=HttpStatus.FORBIDDEN, reason="You are not authorised to create this event")
+	@ExceptionHandler(UserNotAuthorisedException.class)
+	public void handleUserNotAuthorisedException() {
 	}
 }
