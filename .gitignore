@@ -3,3 +3,8 @@
 target/classes/META-INF/maven/com.example/NewNormalAPI/pom.properties
 .classpath
 *.MF
+
+*.class
+target/classes/META-INF/maven/com.example/NewNormalAPI/src/main/resources/application.properties
+.classpath
+*.MF
