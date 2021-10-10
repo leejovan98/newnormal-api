@@ -2,12 +2,11 @@ package com.example.NewNormalAPI.user;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,16 +20,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.example.NewNormalAPI.event.Event;
 import com.example.NewNormalAPI.verification.Verification;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import lombok.Data;
 
 @Entity
 @Data
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class User implements UserDetails {
 	/**
 	 * 
@@ -59,13 +56,13 @@ public class User implements UserDetails {
 	@JsonIgnore
 	private Verification verification;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "organizer", orphanRemoval = true, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "organizer", orphanRemoval = true, cascade = CascadeType.ALL)
 	@JsonIgnore
-	private Set<Event> events;
+	private List<Event> events;
 
 	@ManyToMany(mappedBy = "subscribers")
 	@JsonIgnore
-	private Set<Event> subscriptions;
+	private List<Event> subscriptions;
 
 	@Override
 	@JsonIgnore
