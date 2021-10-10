@@ -1,6 +1,7 @@
 package com.example.NewNormalAPI.exceptionHandler;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MissingRequestCookieException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -13,6 +14,11 @@ import com.example.NewNormalAPI.verification.VerificationNotFoundException;
 
 @ControllerAdvice
 public class GlobalControllerExceptionHandler {
+	
+	@ResponseStatus(code=HttpStatus.UNAUTHORIZED, reason="No token passed")
+	@ExceptionHandler(MissingRequestCookieException.class)
+	public void handleMissingRequestCookieException() {
+	}
 	
 	@ResponseStatus(code=HttpStatus.UNAUTHORIZED, reason="login failed")
 	@ExceptionHandler(LoginFailedException.class)

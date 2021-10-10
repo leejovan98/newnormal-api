@@ -89,8 +89,8 @@ public class LoginController {
         
         Cookie cookie = new Cookie("jwt", jwt);
 		// expires in 7 days
-	    cookie.setMaxAge(7 * 24 * 60 * 60);
-	    cookie.setPath("/");
+//	    cookie.setMaxAge(7 * 24 * 60 * 60);
+//	    cookie.setPath("/");
 	    response.addCookie(cookie);
 
 		return new ResponseEntity<>(HttpStatus.OK);
