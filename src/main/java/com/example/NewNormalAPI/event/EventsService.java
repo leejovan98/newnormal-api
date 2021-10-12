@@ -39,4 +39,8 @@ public class EventsService {
     	if(opt.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid invitation code");
     	return opt.get();
     }
+    
+    public List<Event> getFeaturedPublicEvents(){
+    	return eRepo.findTop10ByVisibilityOrderByDatetimeAsc("public");
+    }
 }

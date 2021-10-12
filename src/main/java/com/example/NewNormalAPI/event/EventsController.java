@@ -6,6 +6,7 @@ import java.util.Base64;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.mail.MessagingException;
@@ -164,5 +165,15 @@ public class EventsController {
                 .withoutPadding()
                 .encodeToString(code.getBytes(StandardCharsets.UTF_8));
     	
+    }
+    
+    
+    /**
+     * returns up to 10 upcoming public events
+     */
+    @GetMapping("/events/featured")
+    public List<Event> getFeatured() {
+    	List<Event> events = eventsSvc.getFeaturedPublicEvents();
+    	return events;
     }
 }
