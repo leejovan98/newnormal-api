@@ -1,11 +1,12 @@
 package com.example.NewNormalAPI.event;
 
-import com.example.EventsService.repository.EventRepository;
-
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class EventsService {
@@ -17,13 +18,29 @@ public class EventsService {
         this.eRepo = eRepo;
     }
 
-    public boolean LocationAlreadyInUse(String location, String datetime) {
-        List<Event> myList = eRepo.findByLocationAndDatetime(location, datetime);
-        
+    public boolean locationAlreadyInUse(Event event) {
+        List<Event> myList = eRepo.findByLocationAndDatetime(event.getLocation(), event.getDatetime());
         return !myList.isEmpty();
     }
 
-    public Event save(Event event) {
+    public Event save(Event event) throws LocationAlreadyInUseException {
+    	if(locationAlreadyInUse(event)) {
+    		throw new LocationAlreadyInUseException("Location has already been booked for this timeslot.");
+    	}
         return eRepo.save(event);
+    }
+    
+    public Event update(Event event) {
+        return eRepo.save(event);
+    }
+    
+    public Event getEventByInviteCode(String inviteCode) {
+    	Optional<Event> opt = eRepo.findByInviteCode(inviteCode);
+    	if(opt.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid invitation code");
+    	return opt.get();
+    }
+    
+    public List<Event> getFeaturedPublicEvents(){
+    	return eRepo.findTop10ByVisibilityOrderByDatetimeAsc("public");
     }
 }

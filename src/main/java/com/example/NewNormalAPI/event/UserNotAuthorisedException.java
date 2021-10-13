@@ -1,11 +1,12 @@
-package com.example.EventsService.exceptions;
+package com.example.NewNormalAPI.event;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
-@ResponseStatus(HttpStatus.NETWORK_AUTHENTICATION_REQUIRED)
 public class UserNotAuthorisedException extends Exception {
-    public UserNotAuthorisedException(String message) {
-        super(message);
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public UserNotAuthorisedException() {
+        super();
     }
 }
