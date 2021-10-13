@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.NewNormalAPI.event.EventRepository;
+import com.example.NewNormalAPI.event.EventsService;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,64 +24,24 @@ import org.mockito.junit.jupiter.MockitoExtension;
 public class EventsServiceTest {
     
     @Mock
-    private BookRepository books;
+    private EventRepository events;
 
     @InjectMocks
-    private BookServiceImpl bookService;
+    private EventsService eventsService;
     
     
     @Test
-    void addBook_NewTitle_ReturnSavedBook(){
+    void LocationAlreadyInUse_NotInUse_ReturnFalse(){
         // arrange ***
-        Book book = new Book("This is a New Title");
-        // mock the "findbytitle" operation
-        when(books.findByTitle(any(String.class))).thenReturn(new ArrayList<Book>());
-        // mock the "save" operation 
-        when(books.save(any(Book.class))).thenReturn(book);
+        List<Event> emptyList = new List<>();
+        when(events.findByLocationAndDatetime((any(String.class), any(String.class)).thenReturn(emptyList));
 
         // act ***
-        Book savedBook = bookService.addBook(book);
+        eventsService.LocationAlreadyInUse("SomeLocation", "SomeDateTime");
         
         // assert ***
-        assertNotNull(savedBook);
-        verify(books).findByTitle(book.getTitle());
         
-    }
-    /**
-     * TODO: Activity 1 (Week 6)
-     * Write a test case: when adding a new book but the title already exists
-     * The test case should pass if BookServiceImpl.addBook(book)
-     * returns null (can't add book), otherwise it will fail.
-     * Remember to include suitable "verify" operations
-     * 
-     */
-    @Test
-    void addBook_SameTitle_ReturnNull(){
-        // your code here
-        // arrange ***
-        Book book = new Book("The same title exists");
-        List<Book> sameTitles = new ArrayList<>();
-        sameTitles.add(new Book("The same title exists"));
-
-        // act ***
-        when(books.findByTitle(book.getTitle())).thenReturn(sameTitles);
-
-        // assert ***
-        Book savedBook = bookService.addBook(book);
-        assertNull(savedBook);
-        verify(books).findByTitle(book.getTitle());
-    }
-
-    @Test
-    void updateBook_NotFound_ReturnNull(){
-        Book book = new Book("Updated Title of Book");
-        Long bookId = 10L;
-        when(books.findById(bookId)).thenReturn(Optional.empty());
         
-        Book updatedBook = bookService.updateBook(bookId, book);
-        
-        assertNull(updatedBook);
-        verify(books).findById(bookId);
     }
 
 }
