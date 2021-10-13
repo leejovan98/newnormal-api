@@ -33,15 +33,17 @@ public class EventsServiceTest {
     @Test
     void LocationAlreadyInUse_NotInUse_ReturnFalse(){
         // arrange ***
+        String location = "SomeLocation";
+        String dateTime = "SomeDateTime";
         List<Event> emptyList = new List<>();
         when(events.findByLocationAndDatetime((any(String.class), any(String.class)).thenReturn(emptyList));
 
         // act ***
-        eventsService.LocationAlreadyInUse("SomeLocation", "SomeDateTime");
+        Boolean testResult = eventsService.LocationAlreadyInUse(location, dateTime);
         
         // assert ***
-        
-        
+        verify(events).findByLocationAndDatetime(location, dateTime);
+        assertFalse(testResult);
     }
 
 }
