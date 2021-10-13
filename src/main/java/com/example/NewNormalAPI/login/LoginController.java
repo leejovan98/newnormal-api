@@ -1,11 +1,9 @@
 package com.example.NewNormalAPI.login;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.NewNormalAPI.jwt.models.AuthenticationRequest;
@@ -70,8 +69,9 @@ public class LoginController {
     
     
     // TODO: remove lated -- for cookie testing only
+    @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = "/accounts/login", method = RequestMethod.POST)
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest,  HttpServletResponse response){
+    public String createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest,  HttpServletResponse response){
     	try {
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                     authenticationRequest.getUsername(), authenticationRequest.getPassword());
@@ -85,15 +85,15 @@ public class LoginController {
         if(!userDetails.isEnabled()) {
         	throw new UserNotVerifiedException();
         }
-        final String jwt = jwtTokenUtil.generateToken(userDetails);
+        return jwtTokenUtil.generateToken(userDetails);
         
-        Cookie cookie = new Cookie("jwt", jwt);
+//        Cookie cookie = new Cookie("jwt", jwt);
 		// expires in 7 days
 //	    cookie.setMaxAge(7 * 24 * 60 * 60);
 //	    cookie.setPath("/");
-	    response.addCookie(cookie);
+//	    response.addCookie(cookie);
 
-		return new ResponseEntity<>(HttpStatus.OK);
+//		return new ResponseEntity<>(HttpStatus.OK);
     }
 
     // TODO Remove this method: testing jwt token receiving
