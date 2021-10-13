@@ -31,7 +31,6 @@ import com.example.NewNormalAPI.mailer.MailerSvc;
 import com.example.NewNormalAPI.user.User;
 import com.example.NewNormalAPI.user.UserDetailsServiceImpl;
 
-
 @RestController
 public class EventsController {
     private EventsService eventsSvc;
@@ -41,8 +40,8 @@ public class EventsController {
 
     // Constructor
     @Autowired
-    public EventsController(EventsService eventsSvc, MailerSvc mailer, 
-    		UserDetailsServiceImpl userDetailsSvc, JwtUtil jwtUtil) {
+    public EventsController(EventsService eventsSvc, MailerSvc mailer, UserDetailsServiceImpl userDetailsSvc,
+            JwtUtil jwtUtil) {
         this.eventsSvc = eventsSvc;
         this.mailer = mailer;
         this.userDetailsSvc = userDetailsSvc;
@@ -56,24 +55,24 @@ public class EventsController {
      * @param user, event
      * @throws LocationAlreadyInUseException, UserNotAuthorisedException
      * @return event
-     * @throws MessagingException 
+     * @throws MessagingException
      */
     @PostMapping("/events/create")
     @ResponseStatus(HttpStatus.CREATED)
     // TODO: update cookie value when JWT portion is completed
-    public Event createEvent(@CookieValue("jwt") String jwtCookie, @Valid @RequestBody Event event) 
-            throws UserNotAuthorisedException, LocationAlreadyInUseException, MessagingException {
-    	
-    	User user = userDetailsSvc.loadUserEntityByUsername(jwtUtil.extractUsername(jwtCookie));
-    	if(jwtUtil.validateToken(jwtCookie, user)) {
+    public Event createEvent(@CookieValue("jwt") String jwtCookie, @Valid @RequestBody Event event)
+            throws UserNotAuthorisedException, MessagingException {
 
-    		Collection<? extends GrantedAuthority> userAuthorities = user.getAuthorities();
+        User user = userDetailsSvc.loadUserEntityByUsername(jwtUtil.extractUsername(jwtCookie));
+        if (jwtUtil.validateToken(jwtCookie, user)) {
+
+            Collection<? extends GrantedAuthority> userAuthorities = user.getAuthorities();
 
             if (!(userAuthorities.contains(new SimpleGrantedAuthority("faculty")))) {
                 throw new UserNotAuthorisedException();
             }
-            
-        	event.setOrganizer(user);
+
+            event.setOrganizer(user);
             event = eventsSvc.save(event);
             String inviteCode = generateInvitationCode(event);
             event.setInviteCode(inviteCode);
@@ -84,96 +83,90 @@ public class EventsController {
             mail.setTo(user.getEmail());
             mail.setSubject("Event Creation");
             Map<String, Object> props = new HashMap<>();
-    		props.put("event", event);
-    		mail.setProperties(props);
-    		mailer.sendEventCreation(mail);
-            
+            props.put("event", event);
+            mail.setProperties(props);
+            mailer.sendEventCreation(mail);
+
             return event;
-    	} else {
-    		// TODO: exception to throw when invalid token received; throw 401 for now
-    		throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token is invalid or has expired");
-    	}
+        } else {
+            // TODO: exception to throw when invalid token received; throw 401 for now
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token is invalid or has expired");
+        }
     }
-    
-    
+
     /**
      * returns event details based on the invite code passed
      */
     @GetMapping("/events/{inviteCode}")
     public Event getEventDetails(@PathVariable String inviteCode) {
-    	return eventsSvc.getEventByInviteCode(inviteCode);
+        return eventsSvc.getEventByInviteCode(inviteCode);
     }
-    
-    
 
-	/**
+    /**
      * Allows Student member to subscribe to event Sends a confirmation email if
      * event successfully subscribed to
      * 
      * @param user, event
      * @throws EventFullySubscribedException
      * @return event
-	 * @throws MessagingException 
+     * @throws MessagingException
      */
     @PostMapping("/events/{inviteCode}/subscribe")
     @ResponseStatus(HttpStatus.OK)
-    public void subscribeEvent(@CookieValue("jwt") String jwtCookie, @PathVariable String inviteCode) throws MessagingException {
+    public void subscribeEvent(@CookieValue("jwt") String jwtCookie, @PathVariable String inviteCode)
+            throws MessagingException {
 
-    	User user = userDetailsSvc.loadUserEntityByUsername(jwtUtil.extractUsername(jwtCookie));
-    	if(jwtUtil.validateToken(jwtCookie, user)) {
-    		Event event = eventsSvc.getEventByInviteCode(inviteCode);
-    		if(event.getNumSubscribers() >= event.getMaxSubscribers()) {
-    			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Event has been fully subscribed");
-    		}
-    		
-    		if(event.getSubscribers().contains(user)) {
-    			throw new ResponseStatusException(HttpStatus.CONFLICT, "Already subscribed");
-    		}
+        User user = userDetailsSvc.loadUserEntityByUsername(jwtUtil.extractUsername(jwtCookie));
+        if (jwtUtil.validateToken(jwtCookie, user)) {
+            Event event = eventsSvc.getEventByInviteCode(inviteCode);
+            if (event.getNumSubscribers() >= event.getMaxSubscribers()) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Event has been fully subscribed");
+            }
 
-    		event.getSubscribers().add(user);
-    		event.setNumSubscribers(event.getNumSubscribers() + 1); 
+            if (event.getSubscribers().contains(user)) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Already subscribed");
+            }
 
-    		user.getEvents().add(event);
-    		userDetailsSvc.update(user);
-    		
-    		Mail mail = new Mail();
-    		mail.setTo(user.getEmail());
-    		mail.setSubject("Subscription Confirmed");
-    		Map<String, Object> props = new HashMap<>();
-    		props.put("event", event);
-    		mail.setProperties(props);
-    		
-    		mailer.sendSubscriptionConfirmation(mail);
-    	} else {
-    		// TODO: exception to throw when invalid token received; throw 401 for now
-    		throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token is invalid or has expired");
-    	}
+            event.getSubscribers().add(user);
+            event.setNumSubscribers(event.getNumSubscribers() + 1);
+
+            user.getEvents().add(event);
+            userDetailsSvc.update(user);
+
+            Mail mail = new Mail();
+            mail.setTo(user.getEmail());
+            mail.setSubject("Subscription Confirmed");
+            Map<String, Object> props = new HashMap<>();
+            props.put("event", event);
+            mail.setProperties(props);
+
+            mailer.sendSubscriptionConfirmation(mail);
+        } else {
+            // TODO: exception to throw when invalid token received; throw 401 for now
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token is invalid or has expired");
+        }
     }
-    
-    
+
     /**
      * Creates a Verification object containing the verification code
      *
      * @param user
-     * @return v   (verification code)
+     * @return v (verification code)
      */
     public String generateInvitationCode(Event event) {
-    	SimpleDateFormat format = new SimpleDateFormat("ddMMyyHHmmss");
+        SimpleDateFormat format = new SimpleDateFormat("ddMMyyHHmmss");
         Date currDt = new Date();
-    	String code = event.getId() + format.format(currDt);
-    	return Base64.getUrlEncoder()
-                .withoutPadding()
-                .encodeToString(code.getBytes(StandardCharsets.UTF_8));
-    	
+        String code = event.getId() + format.format(currDt);
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(code.getBytes(StandardCharsets.UTF_8));
+
     }
-    
-    
+
     /**
      * returns up to 10 upcoming public events
      */
     @GetMapping("/events/featured")
     public List<Event> getFeatured() {
-    	List<Event> events = eventsSvc.getFeaturedPublicEvents();
-    	return events;
+        List<Event> events = eventsSvc.getFeaturedPublicEvents();
+        return events;
     }
 }
