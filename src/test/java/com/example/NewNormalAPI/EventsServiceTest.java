@@ -45,5 +45,4 @@ public class EventsServiceTest {
         verify(events).findByLocationAndDatetime(location, dateTime);
         assertFalse(testResult);
     }
-
 }
