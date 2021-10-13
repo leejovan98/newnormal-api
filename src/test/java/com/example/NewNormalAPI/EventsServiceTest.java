@@ -36,7 +36,7 @@ public class EventsServiceTest {
         String location = "SomeLocation";
         String dateTime = "SomeDateTime";
         List<Event> emptyList = new List<>();
-        when(events.findByLocationAndDatetime((any(String.class), any(String.class)).thenReturn(emptyList));
+        when(events.findByLocationAndDatetime((any(String.class), any(String.class))).thenReturn(emptyList));
 
         // act ***
         Boolean testResult = eventsService.LocationAlreadyInUse(location, dateTime);
