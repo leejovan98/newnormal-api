@@ -3,20 +3,17 @@ package com.example.NewNormalAPI.event;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,8 +28,11 @@ import com.example.NewNormalAPI.mailer.MailerSvc;
 import com.example.NewNormalAPI.user.User;
 import com.example.NewNormalAPI.user.UserDetailsServiceImpl;
 
+import lombok.extern.slf4j.Slf4j;
+
 
 @RestController
+@Slf4j
 public class EventsController {
     private EventsService eventsSvc;
     private UserDetailsServiceImpl userDetailsSvc;
@@ -61,38 +61,27 @@ public class EventsController {
     @PostMapping("/events/create")
     @ResponseStatus(HttpStatus.CREATED)
     // TODO: update cookie value when JWT portion is completed
-    public Event createEvent(@CookieValue("jwt") String jwtCookie, @Valid @RequestBody Event event) 
+    public Event createEvent(HttpServletRequest rqst, @Valid @RequestBody Event event) 
             throws UserNotAuthorisedException, LocationAlreadyInUseException, MessagingException {
     	
-    	User user = userDetailsSvc.loadUserEntityByUsername(jwtUtil.extractUsername(jwtCookie));
-    	if(jwtUtil.validateToken(jwtCookie, user)) {
+    	String jwt = jwtUtil.extractJWTString(rqst);
+    	User user = userDetailsSvc.loadUserEntityByUsername(jwtUtil.extractUsername(jwt));         
+    	event.setOrganizer(user);
+        event = eventsSvc.save(event);
+        String inviteCode = generateInvitationCode(event);
+        event.setInviteCode(inviteCode);
+        user.getEvents().add(event);
+        userDetailsSvc.update(user);
 
-    		Collection<? extends GrantedAuthority> userAuthorities = user.getAuthorities();
-
-            if (!(userAuthorities.contains(new SimpleGrantedAuthority("faculty")))) {
-                throw new UserNotAuthorisedException();
-            }
-            
-        	event.setOrganizer(user);
-            event = eventsSvc.save(event);
-            String inviteCode = generateInvitationCode(event);
-            event.setInviteCode(inviteCode);
-            user.getEvents().add(event);
-            userDetailsSvc.update(user);
-
-            Mail mail = new Mail();
-            mail.setTo(user.getEmail());
-            mail.setSubject("Event Creation");
-            Map<String, Object> props = new HashMap<>();
-    		props.put("event", event);
-    		mail.setProperties(props);
-    		mailer.sendEventCreation(mail);
-            
-            return event;
-    	} else {
-    		// TODO: exception to throw when invalid token received; throw 401 for now
-    		throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token is invalid or has expired");
-    	}
+        Mail mail = new Mail();
+        mail.setTo(user.getEmail());
+        mail.setSubject("Event Creation");
+        Map<String, Object> props = new HashMap<>();
+		props.put("event", event);
+		mail.setProperties(props);
+		mailer.sendEventCreation(mail);
+        
+        return event;
     }
     
     
@@ -117,37 +106,33 @@ public class EventsController {
      */
     @PostMapping("/events/{inviteCode}/subscribe")
     @ResponseStatus(HttpStatus.OK)
-    public void subscribeEvent(@CookieValue("jwt") String jwtCookie, @PathVariable String inviteCode) throws MessagingException {
+    public void subscribeEvent(HttpServletRequest rqst, @PathVariable String inviteCode) throws MessagingException {
 
-    	User user = userDetailsSvc.loadUserEntityByUsername(jwtUtil.extractUsername(jwtCookie));
-    	if(jwtUtil.validateToken(jwtCookie, user)) {
-    		Event event = eventsSvc.getEventByInviteCode(inviteCode);
-    		if(event.getNumSubscribers() >= event.getMaxSubscribers()) {
-    			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Event has been fully subscribed");
-    		}
-    		
-    		if(event.getSubscribers().contains(user)) {
-    			throw new ResponseStatusException(HttpStatus.CONFLICT, "Already subscribed");
-    		}
+    	String jwt = jwtUtil.extractJWTString(rqst);
+    	User user = userDetailsSvc.loadUserEntityByUsername(jwtUtil.extractUsername(jwt)); 
+		Event event = eventsSvc.getEventByInviteCode(inviteCode);
+		if(event.getNumSubscribers() >= event.getMaxSubscribers()) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Event has been fully subscribed");
+		}
+		
+		if(event.getSubscribers().contains(user)) {
+			throw new ResponseStatusException(HttpStatus.CONFLICT, "Already subscribed");
+		}
 
-    		event.getSubscribers().add(user);
-    		event.setNumSubscribers(event.getNumSubscribers() + 1); 
+		event.getSubscribers().add(user);
+		event.setNumSubscribers(event.getNumSubscribers() + 1); 
 
-    		user.getEvents().add(event);
-    		userDetailsSvc.update(user);
-    		
-    		Mail mail = new Mail();
-    		mail.setTo(user.getEmail());
-    		mail.setSubject("Subscription Confirmed");
-    		Map<String, Object> props = new HashMap<>();
-    		props.put("event", event);
-    		mail.setProperties(props);
-    		
-    		mailer.sendSubscriptionConfirmation(mail);
-    	} else {
-    		// TODO: exception to throw when invalid token received; throw 401 for now
-    		throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token is invalid or has expired");
-    	}
+		user.getEvents().add(event);
+		userDetailsSvc.update(user);
+		
+		Mail mail = new Mail();
+		mail.setTo(user.getEmail());
+		mail.setSubject("Subscription Confirmed");
+		Map<String, Object> props = new HashMap<>();
+		props.put("event", event);
+		mail.setProperties(props);
+		
+		mailer.sendSubscriptionConfirmation(mail);
     }
     
     

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 
 @Service
@@ -66,8 +67,11 @@ public class JwtUtil {
         final String authorizationHeader = request.getHeader("Authorization");
 
         String jwt = null;
-        jwt = authorizationHeader.substring(7);
         
+        if(Objects.nonNull(authorizationHeader)) {
+        	jwt = authorizationHeader.substring(7);
+        }
+
         return jwt;
     }
 }
