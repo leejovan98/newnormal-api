@@ -68,7 +68,7 @@ public class JwtUtil {
 
         String jwt = null;
         
-        if(Objects.nonNull(jwt)) {
+        if(Objects.nonNull(authorizationHeader)) {
         	jwt = authorizationHeader.substring(7);
         }
 
