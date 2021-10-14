@@ -96,10 +96,4 @@ public class LoginController {
 //		return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    // TODO Remove this method: testing jwt token receiving
-    @RequestMapping({ "/hello" })
-    public String firstPage() {
-        return "Hello World";
-    }
-
 }
