@@ -44,6 +44,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return users.save(user);
     }
 
+    // TODO: should throw exception?
     public User createUser(User user) {
         Optional<User> search = users.findByUsername(user.getUsername());
         Optional<User> search2 = users.findByEmail(user.getEmail());
