@@ -2,6 +2,8 @@ package com.example.NewNormalAPI;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -10,6 +12,7 @@ import static org.mockito.Mockito.when;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +20,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.example.NewNormalAPI.event.Event;
 import com.example.NewNormalAPI.event.EventRepository;
@@ -38,7 +44,7 @@ public class EventsServiceTest {
     }
     
     @Test
-    void LocationAlreadyInUse_NotInUse_ReturnFalse(){
+    void locationAlreadyInUse_NotInUse_ReturnFalse(){
         // arrange ***
     	Event e = new Event();
     	Date date = new Date();
@@ -59,7 +65,7 @@ public class EventsServiceTest {
     }
 
     @Test
-    void LocationAlreadyInUse_InUse_ReturnTrue(){
+    void locationAlreadyInUse_InUse_ReturnTrue(){
         // arrange ***
     	Event e1 = new Event();
     	Date date = new Date();
@@ -82,5 +88,20 @@ public class EventsServiceTest {
         // assert ***
         verify(events).findByLocationAndDatetime(location, date);
         assertTrue(testResult);
+    }
+
+    @Test
+    void getEventByInviteCode_NotFound_ThrowHTTP404() {
+        // arrange
+        Optional<Event> emptyOptional = Optional.empty();
+
+        // stubbing
+        when(events.findByInviteCode(any(String.class))).thenReturn(emptyOptional);
+
+        // act
+        ResponseStatusException thrown = assertThrows(ResponseStatusException.class, 
+                                                        () -> eventsService.getEventByInviteCode("12345"));
+        // assert
+        assertEquals(HttpStatus.NOT_FOUND, thrown.getStatus());
     }
 }
