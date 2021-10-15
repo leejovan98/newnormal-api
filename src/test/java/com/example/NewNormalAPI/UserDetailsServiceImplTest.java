@@ -37,7 +37,7 @@ public class UserDetailsServiceImplTest {
     }
 
     @Test
-    void createUser_UserAlreadyExists_ThrowUsernameNotFoundException() {
+    void createUser_UserAlreadyExists_ThrowUserAlreadyExistsException() {
         // arrange
         String username = "dummyUser";
         String email = "dummyEmail@gmail.com";
