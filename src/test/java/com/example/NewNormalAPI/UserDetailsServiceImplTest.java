@@ -20,6 +20,7 @@ import com.example.NewNormalAPI.user.UserRepository;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 public class UserDetailsServiceImplTest {
@@ -56,13 +57,11 @@ public class UserDetailsServiceImplTest {
         when(users.findByUsername(any(String.class))).thenReturn(duplicateUser1);
         when(users.findByEmail(any(String.class))).thenReturn(duplicateUser1);
 
-        // act
-        UserAlreadyExistsException thrown = assertThrows(UserAlreadyExistsException.class, 
-                                                            () -> userSvc.createUser(u2));
+        // act + assert
+        assertThrows(UserAlreadyExistsException.class, () -> userSvc.createUser(u2));
 
         // assert
         verify(users).findByUsername(username);
         verify(users).findByEmail(email);
-        assertTrue(thrown.getMessage().contains("Username or email already in use"));
     }
 }
