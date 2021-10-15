@@ -67,9 +67,10 @@ public class EventsServiceTest {
     @Test
     void locationAlreadyInUse_InUse_ReturnTrue(){
         // arrange ***
-    	Event e1 = new Event();
     	Date date = new Date();
     	String location = "SCIS B1-1";
+
+        Event e1 = new Event();
         e1.setDatetime(date);
         e1.setLocation(location);
 
@@ -94,14 +95,16 @@ public class EventsServiceTest {
     void getEventByInviteCode_NotFound_ThrowHTTP404() {
         // arrange
         Optional<Event> emptyOptional = Optional.empty();
+        String inviteCode = "12345";
 
         // stubbing
         when(events.findByInviteCode(any(String.class))).thenReturn(emptyOptional);
 
         // act
         ResponseStatusException thrown = assertThrows(ResponseStatusException.class, 
-                                                        () -> eventsService.getEventByInviteCode("12345"));
+                                                        () -> eventsService.getEventByInviteCode(inviteCode));
         // assert
+        verify(events).findByInviteCode(inviteCode);
         assertEquals(HttpStatus.NOT_FOUND, thrown.getStatus());
     }
 }
