@@ -3,12 +3,14 @@ package com.example.NewNormalAPI.jwt.filter;
 import com.example.NewNormalAPI.user.UserDetailsServiceImpl;
 import com.example.NewNormalAPI.jwt.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -28,17 +30,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
-        final String authorizationHeader = request.getHeader("Authorization");
-
         String username = null;
         String jwt = null;
 
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            jwt = authorizationHeader.substring(7);
-            username = jwtUtil.extractUsername(jwt);
-        }
+        jwt = jwtUtil.extractJWTString(request);
+       
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (jwt != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        	username = jwtUtil.extractUsername(jwt);
             UserDetails userDetails = this.userService.loadUserByUsername(username);
 
             if (jwtUtil.validateToken(jwt, userDetails)) {
@@ -47,6 +46,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 usernamePasswordAuthenticationToken
                         .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+            } // TODO: check validity
+            else {
+            	// TODO: exception to throw when invalid token received; throw 401 for now
+        		throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token is invalid or has expired");
             }
         }
         chain.doFilter(request, response);
