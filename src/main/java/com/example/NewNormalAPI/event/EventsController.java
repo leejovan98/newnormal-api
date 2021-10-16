@@ -28,11 +28,8 @@ import com.example.NewNormalAPI.mailer.MailerSvc;
 import com.example.NewNormalAPI.user.User;
 import com.example.NewNormalAPI.user.UserDetailsServiceImpl;
 
-import lombok.extern.slf4j.Slf4j;
-
 
 @RestController
-@Slf4j
 public class EventsController {
     private EventsService eventsSvc;
     private UserDetailsServiceImpl userDetailsSvc;
