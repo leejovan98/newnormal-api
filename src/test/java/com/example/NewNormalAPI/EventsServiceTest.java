@@ -107,4 +107,22 @@ public class EventsServiceTest {
         verify(events).findByInviteCode(inviteCode);
         assertEquals(HttpStatus.NOT_FOUND, thrown.getStatus());
     }
+
+    @Test
+    void getEventByInviteCode_Found_ReturnEvent() {
+        // arrange
+        Event event = new Event();
+        event.setTitle("The test works");
+        Optional<Event> optional = Optional.of(event);
+        String inviteCode = "12345";
+
+        // stubbing
+        when(events.findByInviteCode(any(String.class))).thenReturn(optional);
+
+        // act
+        Event testResult = eventsService.getEventByInviteCode(inviteCode);
+        // assert
+        verify(events).findByInviteCode(inviteCode);
+        assertEquals("The test works", testResult.getTitle());
+    }
 }
