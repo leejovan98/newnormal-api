@@ -1,5 +1,3 @@
-CREATE SCHEMA IF NOT EXISTS NEW_NORMAL;
-
 CREATE TABLE IF NOT EXISTS NEW_NORMAL.USER(
 	id int primary key auto_increment,
     username varchar(50), 
