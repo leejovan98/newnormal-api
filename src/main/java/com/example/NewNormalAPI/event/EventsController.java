@@ -55,7 +55,7 @@ public class EventsController {
      * @return event
      * @throws MessagingException 
      */
-    @PostMapping("/events/create")
+    @PostMapping("/events")
     @ResponseStatus(HttpStatus.CREATED)
     // TODO: update cookie value when JWT portion is completed
     public Event createEvent(HttpServletRequest rqst, @Valid @RequestBody Event event) 
