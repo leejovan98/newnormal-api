@@ -1,11 +1,11 @@
 package com.example.NewNormalAPI.security;
 
-import com.example.NewNormalAPI.jwt.filter.JwtRequestFilter;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,10 +14,12 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.authentication.AuthenticationManager;
+
+import com.example.NewNormalAPI.jwt.filter.JwtRequestFilter;
 
 @EnableWebSecurity
 @Configuration
+@ConfigurationProperties(prefix="server.servlet")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private UserDetailsService userDetailsService;
@@ -47,23 +49,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.httpBasic().and() // "and()"" method allows us to continue configuring the parent
+        http.httpBasic().and() 
                 .authorizeRequests()
-                // .antMatchers(HttpMethod.GET, "/**").permitAll()
-                // .antMatchers(HttpMethod.POST, "/**").permitAll()
-                // .antMatchers(HttpMethod.PUT, "/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/accounts/verify/*").permitAll() // allows users to verify their accounts
-                .antMatchers(HttpMethod.POST, "/accounts/user").permitAll() // allows users to create an account
-                .antMatchers(HttpMethod.POST, "/accounts/login").permitAll()
-                .antMatchers(HttpMethod.POST, "/events/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/events/**").permitAll()
-                // .antMatchers(HttpMethod.GET,"/hello").authenticated()
+                .antMatchers(HttpMethod.POST,"/accounts/user").permitAll() // allows users to create an account
+                .antMatchers(HttpMethod.POST,"/accounts/login").permitAll() // allows users to log in 
+                .antMatchers(HttpMethod.POST,"/events/create").hasAuthority("faculty") // Only allow faculty to create events
                 .anyRequest().authenticated() // any remaining requests will need authentication
-                // TODO Continue adding permissions here
-
                 .and().csrf().disable() // CSRF protection is needed only for browser based attacks
-                .formLogin().disable().headers().disable() // Disable the security headers, as we do not return HTML in
-                                                           // our service
+                .formLogin().disable() // Disables default login page
+                .headers().disable() // Disable the security headers, as we do not return HTML in our service
 
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // Spring security dont
                                                                                              // create sessions

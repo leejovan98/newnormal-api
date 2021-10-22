@@ -1,5 +1,6 @@
 package com.example.NewNormalAPI.user;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return users.save(user);
     }
 
+    // TODO: should throw exception?
     public User createUser(User user) {
         Optional<User> search = users.findByUsername(user.getUsername());
         Optional<User> search2 = users.findByEmail(user.getEmail());
@@ -55,12 +57,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return users.save(user);
     }
     
-    public User loadUserEntityByUsername(String username) throws UsernameNotFoundException{
+    public User loadUserEntityByUsername(String username) throws UsernameNotFoundException, UserNotVerifiedException{
     	Optional<User> search = users.findByUsername(username);
-        User user = search.get();
-        if (user == null) {
+        User user;
+        try {
+            user = search.get();
+        } catch (NoSuchElementException e) {
             throw new UsernameNotFoundException(username);
         }
+        
         if(!user.getVerified().equals("Y")) throw new UserNotVerifiedException();
         return user;
     }
