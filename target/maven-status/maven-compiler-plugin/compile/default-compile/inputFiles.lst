@@ -1,4 +1,5 @@
 C:\Users\wesle\Desktop\NewNormal\NewNormalApi\src\main\java\com\example\NewNormalAPI\verification\Verification.java
+C:\Users\wesle\Desktop\NewNormal\NewNormalApi\src\main\java\com\example\NewNormalAPI\adminconfig\AdminConfigRepo.java
 C:\Users\wesle\Desktop\NewNormal\NewNormalApi\src\main\java\com\example\NewNormalAPI\jwt\filter\JwtRequestFilter.java
 C:\Users\wesle\Desktop\NewNormal\NewNormalApi\src\main\java\com\example\NewNormalAPI\mailer\Mail.java
 C:\Users\wesle\Desktop\NewNormal\NewNormalApi\src\main\java\com\example\NewNormalAPI\event\Event.java
@@ -24,6 +25,8 @@ C:\Users\wesle\Desktop\NewNormal\NewNormalApi\src\main\java\com\example\NewNorma
 C:\Users\wesle\Desktop\NewNormal\NewNormalApi\src\main\java\com\example\NewNormalAPI\login\LoginFailedException.java
 C:\Users\wesle\Desktop\NewNormal\NewNormalApi\src\main\java\com\example\NewNormalAPI\user\UserController.java
 C:\Users\wesle\Desktop\NewNormal\NewNormalApi\src\main\java\com\example\NewNormalAPI\verification\VerificationService.java
+C:\Users\wesle\Desktop\NewNormal\NewNormalApi\src\main\java\com\example\NewNormalAPI\adminconfig\AdminConfigService.java
 C:\Users\wesle\Desktop\NewNormal\NewNormalApi\src\main\java\com\example\NewNormalAPI\mailer\MailerSvcImpl.java
 C:\Users\wesle\Desktop\NewNormal\NewNormalApi\src\main\java\com\example\NewNormalAPI\user\UserNotVerifiedException.java
+C:\Users\wesle\Desktop\NewNormal\NewNormalApi\src\main\java\com\example\NewNormalAPI\adminconfig\AdminConfig.java
 C:\Users\wesle\Desktop\NewNormal\NewNormalApi\src\main\java\com\example\NewNormalAPI\exceptionHandler\GlobalControllerExceptionHandler.java

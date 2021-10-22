@@ -24,6 +24,6 @@ public class AdminConfig {
     private int capactiy; // percentage of venue capacity available for booking
 
     @OneToOne
-	@JoinColumn(name = "user_id", nullable = false)
-	private User user;
+	@JoinColumn(name = "admin_id", nullable = false)
+	private User admin;
 }

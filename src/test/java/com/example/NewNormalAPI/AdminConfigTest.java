@@ -17,8 +17,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 public class AdminConfigTest {
+    
     @Mock
-    private AdminConfigRepo adminConfigRepo;
+    private AdminConfigRepo adminConfigs;
 
     @InjectMocks
     private AdminConfigService adminConfigService;
@@ -26,7 +27,7 @@ public class AdminConfigTest {
     @AfterEach
     void tearDown() {
         // clear the database after each test
-        adminConfigRepo.deleteAll();
+        adminConfigs.deleteAll();
     }
 
     @Test
@@ -35,9 +36,9 @@ public class AdminConfigTest {
         adminConfig.setCapactiy(100);
 
         // mock the "save" operation
-        when(adminConfigRepo.save(any(AdminConfig.class))).thenReturn(adminConfig);
+        when(adminConfigs.save(any(AdminConfig.class))).thenReturn(adminConfig);
 
         // verify
-        verify(adminConfigRepo).save(adminConfig);
+        verify(adminConfigs).save(adminConfig);
     }
 }

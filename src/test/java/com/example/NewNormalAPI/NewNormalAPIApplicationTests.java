@@ -2,6 +2,7 @@ package com.example.NewNormalAPI;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.example.NewNormalAPI.adminconfig.AdminConfigRepo;
 import com.example.NewNormalAPI.event.EventRepository;
 import com.example.NewNormalAPI.user.UserRepository;
 
@@ -19,11 +20,15 @@ class NewNormalAPIApplicationTests {
 	@Autowired
 	private UserRepository users;
 
+	@Autowired
+	private AdminConfigRepo adminConfigs;
+
 	@AfterEach
 	void tearDown() {
 		// clear the database after each test
 		events.deleteAll();
 		users.deleteAll();
+		adminConfigs.deleteAll();
 	}
 	
 	@Test
