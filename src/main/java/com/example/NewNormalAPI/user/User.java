@@ -56,6 +56,10 @@ public class User implements UserDetails {
 	@JsonIgnore
 	private Verification verification;
 
+	@OneToOne(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
+	@JsonIgnore
+	private AdminConfig adminConfig;
+
 	@OneToMany(mappedBy = "organizer", orphanRemoval = true, cascade = CascadeType.ALL)
 	@JsonIgnore
 	private List<Event> events;
