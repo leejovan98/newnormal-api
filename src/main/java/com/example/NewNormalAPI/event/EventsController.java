@@ -28,7 +28,6 @@ import com.example.NewNormalAPI.mailer.MailerSvc;
 import com.example.NewNormalAPI.user.User;
 import com.example.NewNormalAPI.user.UserDetailsServiceImpl;
 
-
 @RestController
 public class EventsController {
     private EventsService eventsSvc;
@@ -38,8 +37,8 @@ public class EventsController {
 
     // Constructor
     @Autowired
-    public EventsController(EventsService eventsSvc, MailerSvc mailer, 
-    		UserDetailsServiceImpl userDetailsSvc, JwtUtil jwtUtil) {
+    public EventsController(EventsService eventsSvc, MailerSvc mailer, UserDetailsServiceImpl userDetailsSvc,
+            JwtUtil jwtUtil) {
         this.eventsSvc = eventsSvc;
         this.mailer = mailer;
         this.userDetailsSvc = userDetailsSvc;
@@ -53,7 +52,7 @@ public class EventsController {
      * @param user, event
      * @throws LocationAlreadyInUseException, UserNotAuthorisedException
      * @return event
-     * @throws MessagingException 
+     * @throws MessagingException
      */
     @PostMapping("/events")
     @ResponseStatus(HttpStatus.CREATED)
@@ -80,26 +79,23 @@ public class EventsController {
         
         return event;
     }
-    
-    
+
     /**
      * returns event details based on the invite code passed
      */
     @GetMapping("/events/{inviteCode}")
     public Event getEventDetails(@PathVariable String inviteCode) {
-    	return eventsSvc.getEventByInviteCode(inviteCode);
+        return eventsSvc.getEventByInviteCode(inviteCode);
     }
-    
-    
 
-	/**
+    /**
      * Allows Student member to subscribe to event Sends a confirmation email if
      * event successfully subscribed to
      * 
      * @param user, event
      * @throws EventFullySubscribedException
      * @return event
-	 * @throws MessagingException 
+     * @throws MessagingException
      */
     @PostMapping("/events/{inviteCode}/subscribe")
     @ResponseStatus(HttpStatus.OK)
@@ -131,31 +127,27 @@ public class EventsController {
 		
 		mailer.sendSubscriptionConfirmation(mail);
     }
-    
-    
+
     /**
      * Creates a Verification object containing the verification code
      *
      * @param user
-     * @return v   (verification code)
+     * @return v (verification code)
      */
     public String generateInvitationCode(Event event) {
-    	SimpleDateFormat format = new SimpleDateFormat("ddMMyyHHmmss");
+        SimpleDateFormat format = new SimpleDateFormat("ddMMyyHHmmss");
         Date currDt = new Date();
-    	String code = event.getId() + format.format(currDt);
-    	return Base64.getUrlEncoder()
-                .withoutPadding()
-                .encodeToString(code.getBytes(StandardCharsets.UTF_8));
-    	
+        String code = event.getId() + format.format(currDt);
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(code.getBytes(StandardCharsets.UTF_8));
+
     }
-    
-    
+
     /**
      * returns up to 10 upcoming public events
      */
     @GetMapping("/events/featured")
     public List<Event> getFeatured() {
-    	List<Event> events = eventsSvc.getFeaturedPublicEvents();
-    	return events;
+        List<Event> events = eventsSvc.getFeaturedPublicEvents();
+        return events;
     }
 }

@@ -1,0 +1,12 @@
+-------------------------------------------------------------------------------
+Test set: com.example.NewNormalAPI.NewNormalAPIApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 5.882 s <<< FAILURE! - in com.example.NewNormalAPI.NewNormalAPIApplicationTests
+contextLoads  Time elapsed: 0.209 s  <<< ERROR!
+org.springframework.dao.InvalidDataAccessResourceUsageException: could not extract ResultSet; SQL [n/a]; nested exception is org.hibernate.exception.SQLGrammarException: could not extract ResultSet
+	at com.example.NewNormalAPI.NewNormalAPIApplicationTests.tearDown(NewNormalAPIApplicationTests.java:30)
+Caused by: org.hibernate.exception.SQLGrammarException: could not extract ResultSet
+	at com.example.NewNormalAPI.NewNormalAPIApplicationTests.tearDown(NewNormalAPIApplicationTests.java:30)
+Caused by: java.sql.SQLSyntaxErrorException: Table 'new_normal.admin_config' doesn't exist
+	at com.example.NewNormalAPI.NewNormalAPIApplicationTests.tearDown(NewNormalAPIApplicationTests.java:30)
+
