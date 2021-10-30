@@ -43,4 +43,8 @@ public class EventsService {
     public List<Event> getFeaturedPublicEvents(){
     	return eRepo.findTop10ByVisibilityOrderByDatetimeAsc("public");
     }
+
+    public List<Event> getAllEvents() {
+        return eRepo.findAll();
+    }
 }

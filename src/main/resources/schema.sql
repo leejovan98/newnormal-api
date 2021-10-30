@@ -36,3 +36,11 @@ CREATE TABLE IF NOT EXISTS NEW_NORMAL.SUBSCRIPTION(
 	foreign key (event_id) references event(id),
 	foreign key (user_id) references user(id)
 );
+
+CREATE TABLE IF NOT EXISTS NEW_NORMAL.ADMINCONFIG(
+	adminConfig_id int,
+	property varchar(50),
+	value varchar(50),
+	update_ts timestamp,
+	primary key (adminConfig_id)
+);

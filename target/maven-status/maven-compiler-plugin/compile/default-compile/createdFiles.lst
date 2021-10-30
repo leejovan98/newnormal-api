@@ -1,5 +1,6 @@
 com\example\NewNormalAPI\login\LoginController.class
 com\example\NewNormalAPI\user\UserDetailsServiceImpl.class
+com\example\NewNormalAPI\adminconfig\AdminConfigController.class
 com\example\NewNormalAPI\event\EventRepository.class
 com\example\NewNormalAPI\jwt\filter\JwtRequestFilter.class
 com\example\NewNormalAPI\security\SecurityConfig.class
