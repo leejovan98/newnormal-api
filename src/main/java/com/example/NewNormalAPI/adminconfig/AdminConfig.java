@@ -11,13 +11,12 @@ import lombok.Data;
 @Entity
 @Data
 public class AdminConfig {
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     private Long id;
 
     private String property;
     private String value;
-S
+
     private Timestamp insertTs;
 
 }
