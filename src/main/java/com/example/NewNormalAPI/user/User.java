@@ -20,7 +20,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.example.NewNormalAPI.event.Event;
 import com.example.NewNormalAPI.verification.Verification;
-import com.example.NewNormalAPI.adminconfig.AdminConfig;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -57,9 +56,9 @@ public class User implements UserDetails {
 	@JsonIgnore
 	private Verification verification;
 
-	@OneToOne(mappedBy = "admin", orphanRemoval = true, cascade = CascadeType.ALL)
-	@JsonIgnore
-	private AdminConfig adminConfig;
+//	@OneToOne(mappedBy = "admin", orphanRemoval = true, cascade = CascadeType.ALL)
+//	@JsonIgnore
+//	private AdminConfig adminConfig;
 
 	@OneToMany(mappedBy = "organizer", orphanRemoval = true, cascade = CascadeType.ALL)
 	@JsonIgnore
