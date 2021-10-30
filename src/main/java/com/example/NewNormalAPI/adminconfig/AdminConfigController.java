@@ -7,6 +7,7 @@ import com.example.NewNormalAPI.event.EventsService;
 import com.example.NewNormalAPI.user.User;
 import com.example.NewNormalAPI.user.UserDetailsServiceImpl;
 
+import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,7 +43,8 @@ public class AdminConfigController {
     // Update capacity
     @PostMapping("/accounts/admin")
     @ResponseStatus(HttpStatus.OK)
-    public void updateCapacity(int capacity) {
+    public void updateCapacity(AdminConfig adminConfig) {
+        int capacity = Integer.parseInt(adminConfig.getValue());
         List<Event> allEvents = eventSvc.getAllEvents();
         for (Event event : allEvents) {
             event.setMaxSubscribers(capacity);
@@ -51,5 +53,5 @@ public class AdminConfigController {
     }
 
     // Allow adajacent bookings
-
+    
 }

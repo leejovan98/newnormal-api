@@ -17,4 +17,11 @@ public class AdminConfigService {
     public AdminConfig update(AdminConfig adminConfig) {
         return adminConfigRepo.save(adminConfig);
     }
+
+    public AdminConfig delete(AdminConfig adminConfig) {
+        AdminConfig deletedAdminConfiq = adminConfig;
+        adminConfigRepo.delete(adminConfig);
+        return deletedAdminConfiq;
+    }
+
 }
