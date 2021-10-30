@@ -33,7 +33,8 @@ public class AdminConfigTest {
     @Test
     void saveAdminConfig_newAdminConfig_ReturnSavedAdminConfig() {
         AdminConfig adminConfig = new AdminConfig();
-        adminConfig.setCapactiy(100);
+        adminConfig.setProperty("Capacity");
+        adminConfig.setValue("100");
 
         // mock the "save" operation
         when(adminConfigs.save(any(AdminConfig.class))).thenReturn(adminConfig);
