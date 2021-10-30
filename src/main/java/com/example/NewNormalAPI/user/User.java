@@ -64,6 +64,8 @@ public class User implements UserDetails {
 	@JsonIgnore
 	private List<Event> subscriptions;
 
+	private boolean vaccinated;
+
 	@Override
 	@JsonIgnore
 	public Collection<? extends GrantedAuthority> getAuthorities() {
