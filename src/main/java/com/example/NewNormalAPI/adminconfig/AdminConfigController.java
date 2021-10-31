@@ -52,6 +52,18 @@ public class AdminConfigController {
         }
     }
 
-    // Allow adajacent bookings
-    
+        // Allow adajacent bookings
+        @PutMapping("/accounts/admin")
+        @ResponseStatus(HttpStatus.OK)
+        public void allowAdajacentBookings(AdminConfig adminConfig) {
+            Boolean isAllow = Boolean.parseBoolean(adminConfig.getValue());
+            if (!(isAllow)) {
+                List<String> allLocations = Event.getAllLocations();
+                for (String location : allLocations) {
+                    if (location.getRoomNo() % 2 == 0) {
+                        location.setAvailableForBooking() = false;
+                    }
+                }
+            }
+        }
 }
