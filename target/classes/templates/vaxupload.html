@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>N2</title>
+<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+<style>
+body {
+    font-family: 'Montserrat';
+    display:flex;
+}
+
+html,body {
+  height:100%;
+  width:100%;
+  margin:0;
+}
+form {
+  margin:auto;
+}
+
+</style>
+</head>
+<body>
+
+	<form action="http://localhost:9001/api/v1/vaccination/verify" method="post" enctype="multipart/form-data">
+	  <label for="img">Upload Screenshot: (.png or .jpg only)</label>
+	  <input type="file" id="img" name="img" accept="image/*">
+	  <input type="submit">
+	</form>
+
+</body>
+</html>

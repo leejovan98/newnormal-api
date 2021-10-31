@@ -1,7 +1,9 @@
 package com.example.NewNormalAPI.adminconfig;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class AdminConfigService {
     private AdminConfigRepo adminConfigRepo;
 

@@ -25,18 +25,23 @@ import net.sourceforge.tess4j.util.LoadLibs;
 @Data
 public class VaccinationCertificateProcessor {
 	
-	private static String root;
+	private String root;
 	
 	private static final String TMP_SUBFOLDER = "tmp";
 	private static final String ERR_SUBFOLDER = "err";
 	
-	public Date process(MultipartFile img) {
+	public Date process(MultipartFile img, String username) {
 		
 		File tmpDir = new File(root + "/" + TMP_SUBFOLDER);
 		if(!tmpDir.exists()) tmpDir.mkdir();
 		
 		String imageFileName = img.getOriginalFilename();
 		File file = new File(tmpDir, imageFileName);
+		String[] toks = imageFileName.split("\\.");
+		if(toks.length < 2) throw new IllegalArgumentException();
+		String fileExt = toks[toks.length - 1];
+		if(!fileExt.equalsIgnoreCase("jpeg") && !fileExt.equalsIgnoreCase("jpg") && !fileExt.equalsIgnoreCase("png"))
+			throw new IllegalArgumentException();
 		
 		String data;
 		
@@ -85,7 +90,12 @@ public class VaccinationCertificateProcessor {
 		File errDir = new File(root + "/" + ERR_SUBFOLDER);
 		if(!errDir.exists()) errDir.mkdir();
 		
-		File newFileName = new File(errDir, imageFileName);
+		
+		Date date = new Date();
+		DateFormat format = new SimpleDateFormat("ddMMyy'T'HH-mm-ss-SS");
+		
+		String errFileName = username + "_" + format.format(date) + "." + fileExt;
+		File newFileName = new File(errDir, errFileName);
 		file.renameTo(newFileName);
 		return null;
 		
