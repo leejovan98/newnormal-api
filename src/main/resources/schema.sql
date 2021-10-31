@@ -4,7 +4,9 @@ CREATE TABLE IF NOT EXISTS NEW_NORMAL.USER(
     password varchar(200),
     email varchar(50),
     authorities varchar(50),
-    verified char(1)
+    verified char(1),
+    vaccinated char(1),
+    vaccination_date date
 );
 
 CREATE TABLE IF NOT EXISTS NEW_NORMAL.VERIFICATION(

@@ -1,5 +1,6 @@
 package com.example.NewNormalAPI.user;
 
+import java.util.Date;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -83,6 +84,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.getAuthorities());
+    }
+    
+    public void updateVaccinationStatus(String username, Date date) {
+    	User user = loadUserEntityByUsername(username);
+    	user.setVaccinated("Y");
+    	user.setVaccinationDate(date);
+    	users.save(user);
     }
 
 }
