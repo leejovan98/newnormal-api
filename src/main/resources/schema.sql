@@ -21,7 +21,8 @@ CREATE TABLE IF NOT EXISTS NEW_NORMAL.EVENT(
 	title varchar(50),
 	description varchar(200),
 	visibility varchar(10),
-	datetime datetime,
+	startDatetime datetime,
+	stopDatetime datetime,
 	max_subscribers int,
 	num_subscribers int,
 	invite_code varchar(50),
@@ -46,3 +47,19 @@ CREATE TABLE IF NOT EXISTS NEW_NORMAL.ADMINCONFIG(
 	update_ts timestamp,
 	primary key (adminConfig_id)
 );
+
+CREATE TABLE IF NOT EXISTS NEW_NORMAL.VENUETYPE(
+	venue_name varchar(50),
+	capacity int,
+	primary key (venue_name)
+);
+
+CREATE TABLE IF NOT EXISTS NEW_NORMAL.VENUE(
+	id int primary key auto_increment,
+	building varchar(50),
+	venue_type varchar(50),
+	venue_level int,
+	room_number int,
+	foreign key (venue_type) references venuetype(venue_name)
+);
+

@@ -19,7 +19,7 @@ public class EventsService {
     }
 
     public boolean locationAlreadyInUse(Event event) {
-        List<Event> myList = eRepo.findByLocationAndDatetime(event.getLocation(), event.getDatetime());
+        List<Event> myList = eRepo.findByLocationAndStartDatetime(event.getLocation(), event.getStartDatetime());
         return !myList.isEmpty();
     }
 
@@ -41,7 +41,7 @@ public class EventsService {
     }
     
     public List<Event> getFeaturedPublicEvents(){
-    	return eRepo.findTop10ByVisibilityOrderByDatetimeAsc("public");
+    	return eRepo.findTop10ByVisibilityOrderByStartDatetimeAsc("public");
     }
 
     public List<Event> getAllEvents() {
