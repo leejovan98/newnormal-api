@@ -49,18 +49,18 @@ public class EventsServiceTest {
         Event e = new Event();
         Date date = new Date();
         String location = "SCIS B1-1";
-        e.setDatetime(date);
+        e.setStartDatetime(date);
         e.setLocation(location);
 
         List<Event> emptyList = new ArrayList<>();
         // Stubbing
-        when(events.findByLocationAndDatetime(any(String.class), any(Date.class))).thenReturn(emptyList);
+        when(events.findByLocationAndStartDatetime(any(String.class), any(Date.class))).thenReturn(emptyList);
 
         // act ***
         Boolean testResult = eventsService.locationAlreadyInUse(e);
 
         // assert ***
-        verify(events).findByLocationAndDatetime(location, date);
+        verify(events).findByLocationAndStartDatetime(location, date);
         assertFalse(testResult);
     }
 
@@ -71,23 +71,23 @@ public class EventsServiceTest {
         String location = "SCIS B1-1";
 
         Event e1 = new Event();
-        e1.setDatetime(date);
+        e1.setStartDatetime(date);
         e1.setLocation(location);
 
         Event e2 = new Event();
-        e2.setDatetime(date);
+        e2.setStartDatetime(date);
         e2.setLocation(location);
 
         List<Event> myList = new ArrayList<>();
         myList.add(e1);
         // Stubbing
-        when(events.findByLocationAndDatetime(any(String.class), any(Date.class))).thenReturn(myList);
+        when(events.findByLocationAndStartDatetime(any(String.class), any(Date.class))).thenReturn(myList);
 
         // act ***
         Boolean testResult = eventsService.locationAlreadyInUse(e2);
 
         // assert ***
-        verify(events).findByLocationAndDatetime(location, date);
+        verify(events).findByLocationAndStartDatetime(location, date);
         assertTrue(testResult);
     }
 
