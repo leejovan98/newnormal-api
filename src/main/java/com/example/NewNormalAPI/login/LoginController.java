@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.NewNormalAPI.jwt.models.AuthenticationRequest;
 import com.example.NewNormalAPI.jwt.util.JwtUtil;
+import com.example.NewNormalAPI.user.User;
 import com.example.NewNormalAPI.user.UserDetailsServiceImpl;
 import com.example.NewNormalAPI.user.UserNotVerifiedException;
 
@@ -71,7 +72,7 @@ public class LoginController {
     // TODO: remove lated -- for cookie testing only
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = "/accounts/login", method = RequestMethod.POST)
-    public String createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest,  HttpServletResponse response){
+    public LoginDto createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest,  HttpServletResponse response){
     	try {
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                     authenticationRequest.getUsername(), authenticationRequest.getPassword());
@@ -85,15 +86,13 @@ public class LoginController {
         if(!userDetails.isEnabled()) {
         	throw new UserNotVerifiedException();
         }
-        return jwtTokenUtil.generateToken(userDetails);
+//        return jwtTokenUtil.generateToken(userDetails);
+        String jwt = jwtTokenUtil.generateToken(userDetails);
+        User user = userService.loadUserEntityByUsername(authenticationRequest.getUsername());
         
-//        Cookie cookie = new Cookie("jwt", jwt);
-		// expires in 7 days
-//	    cookie.setMaxAge(7 * 24 * 60 * 60);
-//	    cookie.setPath("/");
-//	    response.addCookie(cookie);
-
-//		return new ResponseEntity<>(HttpStatus.OK);
+        return new LoginDto(jwt, user);
+        
+       
     }
 
 }
