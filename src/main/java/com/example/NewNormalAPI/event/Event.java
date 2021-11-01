@@ -84,6 +84,8 @@ public class Event {
 
 	private Timestamp insertTs;
 
+	private double capacity;
+
 	@Override
 	public String toString() {
 		return "Event [id=" + id + ", organizer=" + "[" + organizer.getEmail() + "," + organizer.getUsername() + "]"
