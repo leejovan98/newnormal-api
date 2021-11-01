@@ -51,7 +51,7 @@ public class User implements UserDetails {
 	
 	private String email;
 	
-	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+//	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String authorities = "student"; // admin, faculty, student
 	
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -61,9 +61,6 @@ public class User implements UserDetails {
 	@JsonIgnore
 	private Verification verification;
 
-//	@OneToOne(mappedBy = "admin", orphanRemoval = true, cascade = CascadeType.ALL)
-//	@JsonIgnore
-//	private AdminConfig adminConfig;
 
 	@OneToMany(mappedBy = "organizer", orphanRemoval = true, cascade = CascadeType.ALL)
 	@JsonIgnore
@@ -82,7 +79,6 @@ public class User implements UserDetails {
 
 
 	@Override
-	@JsonIgnore
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return Arrays.asList(new SimpleGrantedAuthority(authorities));
 	}
