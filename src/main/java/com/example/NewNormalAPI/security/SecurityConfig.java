@@ -55,6 +55,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST,"/accounts/user").permitAll() // allows users to create an account
                 .antMatchers(HttpMethod.POST,"/accounts/login").permitAll() // allows users to log in 
                 .antMatchers(HttpMethod.POST,"/events/create").hasAuthority("faculty") // Only allow faculty to create events
+                .antMatchers(HttpMethod.GET,"/vaccination/**").permitAll()
+                .antMatchers(HttpMethod.POST,"/vaccination/**").permitAll()
                 .anyRequest().authenticated() // any remaining requests will need authentication
                 .and().csrf().disable() // CSRF protection is needed only for browser based attacks
                 .formLogin().disable() // Disables default login page

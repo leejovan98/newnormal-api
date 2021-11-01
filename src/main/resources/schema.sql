@@ -4,7 +4,9 @@ CREATE TABLE IF NOT EXISTS NEW_NORMAL.USER(
     password varchar(200),
     email varchar(50),
     authorities varchar(50),
-    verified char(1)
+    verified char(1),
+    vaccinated char(1),
+    vaccination_date date
 );
 
 CREATE TABLE IF NOT EXISTS NEW_NORMAL.VERIFICATION(
@@ -35,4 +37,12 @@ CREATE TABLE IF NOT EXISTS NEW_NORMAL.SUBSCRIPTION(
 	primary key(event_id, user_id),
 	foreign key (event_id) references event(id),
 	foreign key (user_id) references user(id)
+);
+
+CREATE TABLE IF NOT EXISTS NEW_NORMAL.ADMINCONFIG(
+	adminConfig_id int,
+	property varchar(50),
+	value varchar(50),
+	update_ts timestamp,
+	primary key (adminConfig_id)
 );
