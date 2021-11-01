@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS NEW_NORMAL.ADMINCONFIG(
 	primary key (adminConfig_id)
 );
 
-CREATE TABLE IF NOT EXISTS NEW_NORMAL.VENUETYPE(
+CREATE TABLE IF NOT EXISTS NEW_NORMAL.VENUETYPEINFO(
 	venue_name varchar(50),
 	capacity int,
 	primary key (venue_name)
@@ -60,6 +60,6 @@ CREATE TABLE IF NOT EXISTS NEW_NORMAL.VENUE(
 	venue_type varchar(50),
 	venue_level int,
 	room_number int,
-	foreign key (venue_type) references venuetype(venue_name)
+	foreign key (venue_type) references venuetypeinfo(venue_name)
 );
 
