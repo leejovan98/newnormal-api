@@ -121,7 +121,6 @@ public class EventsController {
 
 		user.getEvents().add(event);
 		userDetailsSvc.update(user);
-		
 		Mail mail = new Mail();
 		mail.setTo(user.getEmail());
 		mail.setSubject("Subscription Confirmed");
