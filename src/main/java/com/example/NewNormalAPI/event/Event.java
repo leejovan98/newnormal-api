@@ -88,8 +88,6 @@ public class Event {
 	@Size(min=1, max=1) // Y / N value only
 	private String vaccinationRequired;
 
-	private Timestamp insertTs;
-
 	@Override
 	public String toString() {
 		return "Event [id=" + id + ", organizer=" + "[" + organizer.getEmail() + "," + organizer.getUsername() + "]"
