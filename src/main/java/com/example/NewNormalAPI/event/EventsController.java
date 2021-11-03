@@ -104,7 +104,7 @@ public class EventsController {
     	String jwt = jwtUtil.extractJWTString(rqst);
     	User user = userDetailsSvc.loadUserEntityByUsername(jwtUtil.extractUsername(jwt)); 
 		Event event = eventsSvc.getEventByInviteCode(inviteCode);
-		if(event.getNumSubscribers() >= event.getMaxSubscribers()) {
+		if(event.getNumSubscribers() >= (event.getMaxSubscribers() * event.getCapacity())) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Event has been fully subscribed");
 		}
 		
