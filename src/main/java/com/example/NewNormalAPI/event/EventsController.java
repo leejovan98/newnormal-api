@@ -59,7 +59,7 @@ public class EventsController {
     // TODO: update cookie value when JWT portion is completed
     public Event createEvent(HttpServletRequest rqst, @Valid @RequestBody Event event) 
             throws UserNotAuthorisedException, LocationAlreadyInUseException, MessagingException {
-    	
+    
     	String jwt = jwtUtil.extractJWTString(rqst);
     	User user = userDetailsSvc.loadUserEntityByUsername(jwtUtil.extractUsername(jwt));         
     	event.setOrganizer(user);

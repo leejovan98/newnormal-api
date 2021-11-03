@@ -3,6 +3,9 @@ package com.example.NewNormalAPI.vaccinationVerification;
 import java.util.Date;
 import java.util.Objects;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,7 +47,8 @@ public class VaccinationVerificationController {
 	
 	
 	@PostMapping("/vaccination/verify")
-	public String uploadVaccination(Model model, @CookieValue("jwt") String jwt, @RequestParam MultipartFile img) {
+	public String uploadVaccination(Model model, @CookieValue("jwt") String jwt, @RequestParam MultipartFile img, 
+			HttpServletResponse response) {
 		if(Objects.isNull(img) || img.isEmpty()) return "error";
 		if(Objects.isNull(jwt)) return "unauth";
 		String username = jwtUtil.extractUsername(jwt);
@@ -59,8 +63,7 @@ public class VaccinationVerificationController {
 		} catch(IllegalArgumentException e) {
 			return "error";
 		}
-		
-		
+	
 		
 		return "complete";
 	}

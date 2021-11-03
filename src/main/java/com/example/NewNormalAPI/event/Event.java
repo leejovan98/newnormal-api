@@ -71,7 +71,13 @@ public class Event {
 	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Singapore")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
 	@NotNull
-	private Date datetime;
+	private Date startDatetime;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Singapore")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+	@NotNull
+	private Date stopDatetime;
 
 	// invite link will be <host>:<port>/events/join/<invite_code>
 	private String inviteCode;
@@ -90,7 +96,7 @@ public class Event {
 	public String toString() {
 		return "Event [id=" + id + ", organizer=" + "[" + organizer.getEmail() + "," + organizer.getUsername() + "]"
 				+ ", title=" + title + ", description=" + description + ", visibility=" + visibility
-				+ ", maxSubscribers=" + maxSubscribers + ", datetime=" + datetime + ", inviteCode=" + inviteCode
+				+ ", maxSubscribers=" + maxSubscribers + ", startDatetime=" + startDatetime + ", stopDatetime=" + stopDatetime + ", inviteCode=" + inviteCode
 				+ ", location=" + location + ", numSubscribers=" + numSubscribers + ", isVaccinationRequired="
 				+ vaccinationRequired + "]";
 	}
