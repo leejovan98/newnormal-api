@@ -88,14 +88,12 @@ public class Event {
 	@Size(min=1, max=1) // Y / N value only
 	private String vaccinationRequired;
 
-	private double capacity;
-
 	@Override
 	public String toString() {
 		return "Event [id=" + id + ", organizer=" + "[" + organizer.getEmail() + "," + organizer.getUsername() + "]"
 				+ ", title=" + title + ", description=" + description + ", visibility=" + visibility
 				+ ", maxSubscribers=" + maxSubscribers + ", startDatetime=" + startDatetime + ", stopDatetime=" + stopDatetime + ", inviteCode=" + inviteCode
 				+ ", location=" + location + ", numSubscribers=" + numSubscribers + ", isVaccinationRequired="
-				+ vaccinationRequired + "capacity=" + capacity + "]";
+				+ vaccinationRequired + "]";
 	}
 }
