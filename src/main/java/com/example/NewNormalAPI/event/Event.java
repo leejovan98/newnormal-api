@@ -88,7 +88,7 @@ public class Event {
 	@Size(min=1, max=1) // Y / N value only
 	private String vaccinationRequired;
 
-	private Timestamp insertTs;
+	private double capacity;
 
 	@Override
 	public String toString() {
@@ -96,6 +96,6 @@ public class Event {
 				+ ", title=" + title + ", description=" + description + ", visibility=" + visibility
 				+ ", maxSubscribers=" + maxSubscribers + ", startDatetime=" + startDatetime + ", stopDatetime=" + stopDatetime + ", inviteCode=" + inviteCode
 				+ ", location=" + location + ", numSubscribers=" + numSubscribers + ", isVaccinationRequired="
-				+ vaccinationRequired + "]";
+				+ vaccinationRequired + "capacity=" + capacity + "]";
 	}
 }
