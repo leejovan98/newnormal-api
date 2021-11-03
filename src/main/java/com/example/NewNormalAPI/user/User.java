@@ -2,6 +2,7 @@ package com.example.NewNormalAPI.user;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -13,14 +14,17 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.example.NewNormalAPI.event.Event;
 import com.example.NewNormalAPI.verification.Verification;
-import com.example.NewNormalAPI.adminconfig.AdminConfig;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -47,7 +51,7 @@ public class User implements UserDetails {
 	
 	private String email;
 	
-	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+//	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String authorities = "student"; // admin, faculty, student
 	
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -57,9 +61,6 @@ public class User implements UserDetails {
 	@JsonIgnore
 	private Verification verification;
 
-	@OneToOne(mappedBy = "admin", orphanRemoval = true, cascade = CascadeType.ALL)
-	@JsonIgnore
-	private AdminConfig adminConfig;
 
 	@OneToMany(mappedBy = "organizer", orphanRemoval = true, cascade = CascadeType.ALL)
 	@JsonIgnore
@@ -69,8 +70,15 @@ public class User implements UserDetails {
 	@JsonIgnore
 	private List<Event> subscriptions;
 
+	private String vaccinated = "N";
+	
+	@Temporal(TemporalType.DATE)
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Singapore")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date vaccinationDate = null;
+
+
 	@Override
-	@JsonIgnore
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return Arrays.asList(new SimpleGrantedAuthority(authorities));
 	}

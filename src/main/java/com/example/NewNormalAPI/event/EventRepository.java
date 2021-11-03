@@ -11,11 +11,11 @@ import org.springframework.stereotype.Repository;
 public interface EventRepository extends JpaRepository<Event, Long> {
 	// define a derived query to find event by username
 	// Optional<Event> findByOrganizerId(String username);
-	List<Event> findByLocationAndDatetime(String location, Date datetime);
+	List<Event> findByLocationAndStartDatetime(String location, Date startDatetime);
 
 	Optional<Event> findByInviteCode(String inviteCode);
 	
-	List<Event> findTop10ByVisibilityOrderByDatetimeAsc(String visibility);
+	List<Event> findTop10ByVisibilityOrderByStartDatetimeAsc(String visibility);
 
 	List<Event> findAll();
 }

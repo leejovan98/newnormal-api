@@ -4,7 +4,9 @@ CREATE TABLE IF NOT EXISTS NEW_NORMAL.USER(
     password varchar(200),
     email varchar(50),
     authorities varchar(50),
-    verified char(1)
+    verified char(1),
+    vaccinated char(1),
+    vaccination_date date
 );
 
 CREATE TABLE IF NOT EXISTS NEW_NORMAL.VERIFICATION(
@@ -19,7 +21,8 @@ CREATE TABLE IF NOT EXISTS NEW_NORMAL.EVENT(
 	title varchar(50),
 	description varchar(200),
 	visibility varchar(10),
-	datetime datetime,
+	start_datetime datetime,
+	stop_datetime datetime,
 	max_subscribers int,
 	num_subscribers int,
 	invite_code varchar(50),
@@ -44,3 +47,19 @@ CREATE TABLE IF NOT EXISTS NEW_NORMAL.ADMINCONFIG(
 	update_ts timestamp,
 	primary key (adminConfig_id)
 );
+
+CREATE TABLE IF NOT EXISTS NEW_NORMAL.VENUETYPEINFO(
+	venue_name varchar(50),
+	capacity int,
+	primary key (venue_name)
+);
+
+CREATE TABLE IF NOT EXISTS NEW_NORMAL.VENUE(
+	id int primary key auto_increment,
+	building varchar(50),
+	venue_type varchar(50),
+	venue_level int,
+	room_number int,
+	foreign key (venue_type) references venuetypeinfo(venue_name)
+);
+
