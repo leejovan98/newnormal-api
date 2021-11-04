@@ -1,5 +1,7 @@
 package com.example.NewNormalAPI.adminconfig;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +18,23 @@ public class AdminConfigService {
         return adminConfigRepo.save(adminConfig);
     }
 
-    public AdminConfig update(AdminConfig adminConfig) {
-        return adminConfigRepo.save(adminConfig);
+    public AdminConfig update(AdminConfig adminConfig) throws PropertyDoesNotExistException {
+        AdminConfig otherAdminConfig = adminConfigRepo.findByProperty(adminConfig.getProperty());
+        if (otherAdminConfig == null) {
+            throw new PropertyDoesNotExistException("This property does not exist");
+        } else {
+            return adminConfigRepo.save(adminConfig);
+        }
     }
+
+    public AdminConfig delete(AdminConfig adminConfig) {
+        AdminConfig deletedAdminConfiq = adminConfig;
+        adminConfigRepo.delete(adminConfig);
+        return deletedAdminConfiq;
+    }
+
+    public List<AdminConfig> getAllAdminConfig() {
+        return adminConfigRepo.findAll();
+    }
+
 }

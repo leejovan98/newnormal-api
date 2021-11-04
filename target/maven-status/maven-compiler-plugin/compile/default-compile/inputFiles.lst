@@ -1,14 +1,22 @@
 C:\Users\wesle\Desktop\NewNormal\NewNormalAPI\src\main\java\com\example\NewNormalAPI\verification\Verification.java
+C:\Users\wesle\Desktop\NewNormal\NewNormalAPI\src\main\java\com\example\NewNormalAPI\vaccinationVerification\VaccinationVerificationController.java
+C:\Users\wesle\Desktop\NewNormal\NewNormalAPI\src\main\java\com\example\NewNormalAPI\venue\VenueTypeInfoRepo.java
+C:\Users\wesle\Desktop\NewNormal\NewNormalAPI\src\main\java\com\example\NewNormalAPI\login\LoginDto.java
 C:\Users\wesle\Desktop\NewNormal\NewNormalAPI\src\main\java\com\example\NewNormalAPI\adminconfig\AdminConfigRepo.java
 C:\Users\wesle\Desktop\NewNormal\NewNormalAPI\src\main\java\com\example\NewNormalAPI\jwt\filter\JwtRequestFilter.java
 C:\Users\wesle\Desktop\NewNormal\NewNormalAPI\src\main\java\com\example\NewNormalAPI\mailer\Mail.java
 C:\Users\wesle\Desktop\NewNormal\NewNormalAPI\src\main\java\com\example\NewNormalAPI\event\Event.java
 C:\Users\wesle\Desktop\NewNormal\NewNormalAPI\src\main\java\com\example\NewNormalAPI\user\UserRepository.java
 C:\Users\wesle\Desktop\NewNormal\NewNormalAPI\src\main\java\com\example\NewNormalAPI\jwt\util\JwtUtil.java
+C:\Users\wesle\Desktop\NewNormal\NewNormalAPI\src\main\java\com\example\NewNormalAPI\venue\VenueService.java
+C:\Users\wesle\Desktop\NewNormal\NewNormalAPI\src\main\java\com\example\NewNormalAPI\venue\VenueTypeInfoService.java
 C:\Users\wesle\Desktop\NewNormal\NewNormalAPI\src\main\java\com\example\NewNormalAPI\event\UserNotAuthorisedException.java
 C:\Users\wesle\Desktop\NewNormal\NewNormalAPI\src\main\java\com\example\NewNormalAPI\user\UserAlreadyExistsException.java
+C:\Users\wesle\Desktop\NewNormal\NewNormalAPI\src\main\java\com\example\NewNormalAPI\vaccinationVerification\VaccinationCertificateProcessor.java
+C:\Users\wesle\Desktop\NewNormal\NewNormalAPI\src\main\java\com\example\NewNormalAPI\venue\VenueTypeInfo.java
 C:\Users\wesle\Desktop\NewNormal\NewNormalAPI\src\main\java\com\example\NewNormalAPI\event\EventsService.java
 C:\Users\wesle\Desktop\NewNormal\NewNormalAPI\src\main\java\com\example\NewNormalAPI\security\SecurityConfig.java
+C:\Users\wesle\Desktop\NewNormal\NewNormalAPI\src\main\java\com\example\NewNormalAPI\venue\Venue.java
 C:\Users\wesle\Desktop\NewNormal\NewNormalAPI\src\main\java\com\example\NewNormalAPI\event\LocationAlreadyInUseException.java
 C:\Users\wesle\Desktop\NewNormal\NewNormalAPI\src\main\java\com\example\NewNormalAPI\NewNormalApiApplication.java
 C:\Users\wesle\Desktop\NewNormal\NewNormalAPI\src\main\java\com\example\NewNormalAPI\user\UserDetailsServiceImpl.java
@@ -19,6 +27,7 @@ C:\Users\wesle\Desktop\NewNormal\NewNormalAPI\src\main\java\com\example\NewNorma
 C:\Users\wesle\Desktop\NewNormal\NewNormalAPI\src\main\java\com\example\NewNormalAPI\mailer\MailerSvc.java
 C:\Users\wesle\Desktop\NewNormal\NewNormalAPI\src\main\java\com\example\NewNormalAPI\user\User.java
 C:\Users\wesle\Desktop\NewNormal\NewNormalAPI\src\main\java\com\example\NewNormalAPI\verification\VerificationNotFoundException.java
+C:\Users\wesle\Desktop\NewNormal\NewNormalAPI\src\main\java\com\example\NewNormalAPI\adminconfig\PropertyDoesNotExistException.java
 C:\Users\wesle\Desktop\NewNormal\NewNormalAPI\src\main\java\com\example\NewNormalAPI\jwt\models\AuthenticationResponse.java
 C:\Users\wesle\Desktop\NewNormal\NewNormalAPI\src\main\java\com\example\NewNormalAPI\jwt\models\AuthenticationRequest.java
 C:\Users\wesle\Desktop\NewNormal\NewNormalAPI\src\main\java\com\example\NewNormalAPI\login\LoginController.java
@@ -29,5 +38,6 @@ C:\Users\wesle\Desktop\NewNormal\NewNormalAPI\src\main\java\com\example\NewNorma
 C:\Users\wesle\Desktop\NewNormal\NewNormalAPI\src\main\java\com\example\NewNormalAPI\mailer\MailerSvcImpl.java
 C:\Users\wesle\Desktop\NewNormal\NewNormalAPI\src\main\java\com\example\NewNormalAPI\adminconfig\AdminConfigController.java
 C:\Users\wesle\Desktop\NewNormal\NewNormalAPI\src\main\java\com\example\NewNormalAPI\user\UserNotVerifiedException.java
+C:\Users\wesle\Desktop\NewNormal\NewNormalAPI\src\main\java\com\example\NewNormalAPI\venue\VenueRepo.java
 C:\Users\wesle\Desktop\NewNormal\NewNormalAPI\src\main\java\com\example\NewNormalAPI\adminconfig\AdminConfig.java
 C:\Users\wesle\Desktop\NewNormal\NewNormalAPI\src\main\java\com\example\NewNormalAPI\exceptionHandler\GlobalControllerExceptionHandler.java

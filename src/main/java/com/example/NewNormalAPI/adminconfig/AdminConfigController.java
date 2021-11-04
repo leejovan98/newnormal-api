@@ -6,8 +6,12 @@ import com.example.NewNormalAPI.event.Event;
 import com.example.NewNormalAPI.event.EventsService;
 import com.example.NewNormalAPI.user.User;
 import com.example.NewNormalAPI.user.UserDetailsServiceImpl;
+import com.example.NewNormalAPI.venue.VenueRepo;
+import com.example.NewNormalAPI.venue.VenueService;
 
+import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties.Admin;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -32,7 +36,7 @@ public class AdminConfigController {
     }
 
     // Promote user from student to faculty
-    @PutMapping("/accounts/admin")
+    @PutMapping("/admin/configuration")
     @ResponseStatus(HttpStatus.OK)
     public void promoteStudent(User user) {
         user.setAuthorities("faculty");
@@ -40,16 +44,13 @@ public class AdminConfigController {
     }
 
     // Update capacity
-    @PostMapping("/accounts/admin")
+    @PostMapping("/admin/configuration")
     @ResponseStatus(HttpStatus.OK)
-    public void updateCapacity(int capacity) {
-        List<Event> allEvents = eventSvc.getAllEvents();
-        for (Event event : allEvents) {
-            event.setMaxSubscribers(capacity);
-            eventSvc.update(event);
+    public void updateAdminConfig(AdminConfig adminConfig) throws PropertyDoesNotExistException {
+        try {
+            adminConfigSvc.update(adminConfig);
+        } catch (PropertyDoesNotExistException e) {
+            System.out.println(e.getMessage());
         }
     }
-
-    // Allow adajacent bookings
-
 }
