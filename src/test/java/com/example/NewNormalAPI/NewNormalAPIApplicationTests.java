@@ -31,9 +31,9 @@ class NewNormalAPIApplicationTests {
 		adminConfigs.deleteAll();
 	}
 	
-	@Test
-	void contextLoads() {
-		assertEquals(123, 123);
-	}
+	// @Test
+	// void contextLoads() {
+	// 	assertEquals(123, 123);
+	// }
 
 }
