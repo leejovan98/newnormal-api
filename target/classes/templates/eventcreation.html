@@ -36,11 +36,11 @@
       <table>
       	<tr>
       		<td class="prop">Date</td>
-      		<td class="prop_val" th:text="${#dates.format(event.getDatetime(), 'dd MMM yyyy')}"></td>
+      		<td class="prop_val" th:text="${#dates.format(event.getStartDatetime(), 'dd MMM yyyy')}"></td>
       	</tr>
       	<tr>
       		<td class="prop">Time</td>
-      		<td class="prop_val" th:text="${#dates.format(event.getDatetime(), 'hh:mm aa')}"></td>
+      		<td class="prop_val" th:text="${#dates.format(event.getStartDatetime(), 'hh:mm aa')}"></td>
       	</tr>
       	<tr>
       		<td class="prop">Location</td>
