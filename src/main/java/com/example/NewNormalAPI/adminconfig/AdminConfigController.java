@@ -6,6 +6,8 @@ import com.example.NewNormalAPI.event.Event;
 import com.example.NewNormalAPI.event.EventsService;
 import com.example.NewNormalAPI.user.User;
 import com.example.NewNormalAPI.user.UserDetailsServiceImpl;
+import com.example.NewNormalAPI.venue.VenueRepo;
+import com.example.NewNormalAPI.venue.VenueService;
 
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +49,7 @@ public class AdminConfigController {
         int capacity = Integer.parseInt(adminConfig.getValue());
         List<Event> allEvents = eventSvc.getAllEvents();
         for (Event event : allEvents) {
-            event.setMaxSubscribers(capacity);
+            event.setMaxSubscribers(50 * capacity);
             eventSvc.update(event);
         }
     }
@@ -58,7 +60,7 @@ public class AdminConfigController {
         public void allowAdajacentBookings(AdminConfig adminConfig) {
             Boolean isAllow = Boolean.parseBoolean(adminConfig.getValue());
             if (!(isAllow)) {
-                List<String> allLocations = Event.getAllLocations();
+                List<String> allLocations = VenueService.getAllLocations();
                 for (String location : allLocations) {
                     if (location.getRoomNo() % 2 == 0) {
                         location.setAvailableForBooking() = false;
