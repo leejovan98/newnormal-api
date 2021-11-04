@@ -11,6 +11,7 @@ import com.example.NewNormalAPI.venue.VenueService;
 
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties.Admin;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -35,7 +36,7 @@ public class AdminConfigController {
     }
 
     // Promote user from student to faculty
-    @PutMapping("/accounts/admin")
+    @PutMapping("/admin/configuration")
     @ResponseStatus(HttpStatus.OK)
     public void promoteStudent(User user) {
         user.setAuthorities("faculty");
@@ -43,29 +44,13 @@ public class AdminConfigController {
     }
 
     // Update capacity
-    @PostMapping("/accounts/admin")
+    @PostMapping("/admin/configuration")
     @ResponseStatus(HttpStatus.OK)
-    public void updateCapacity(AdminConfig adminConfig) {
-        int capacity = Integer.parseInt(adminConfig.getValue());
-        List<Event> allEvents = eventSvc.getAllEvents();
-        for (Event event : allEvents) {
-            event.setMaxSubscribers(50 * capacity);
-            eventSvc.update(event);
+    public void updateAdminConfig(AdminConfig adminConfig) throws PropertyDoesNotExistException {
+        try {
+            adminConfigSvc.update(adminConfig);
+        } catch (PropertyDoesNotExistException e) {
+            System.out.println(e.getMessage());
         }
     }
-
-        // Allow adajacent bookings
-        @PutMapping("/accounts/admin")
-        @ResponseStatus(HttpStatus.OK)
-        public void allowAdajacentBookings(AdminConfig adminConfig) {
-            Boolean isAllow = Boolean.parseBoolean(adminConfig.getValue());
-            if (!(isAllow)) {
-                List<String> allLocations = VenueService.getAllLocations();
-                for (String location : allLocations) {
-                    if (location.getRoomNo() % 2 == 0) {
-                        location.setAvailableForBooking() = false;
-                    }
-                }
-            }
-        }
 }
