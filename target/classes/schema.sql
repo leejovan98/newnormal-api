@@ -40,13 +40,23 @@ CREATE TABLE IF NOT EXISTS NEW_NORMAL.SUBSCRIPTION(
 	foreign key (user_id) references user(id)
 );
 
-CREATE TABLE IF NOT EXISTS NEW_NORMAL.ADMINCONFIG(
-	adminConfig_id int,
+CREATE TABLE IF NOT EXISTS NEW_NORMAL.ADMIN_CONFIG(
+	id int auto_increment,
 	property varchar(50),
 	value varchar(50),
 	update_ts timestamp,
-	primary key (adminConfig_id)
+	primary key (id)
 );
+
+INSERT INTO  NEW_NORMAL.ADMIN_CONFIG (property, value)
+SELECT * FROM (SELECT 'allow adjacent booking', 'Y') AS temp
+WHERE NOT EXISTS (select property from NEW_NORMAL.ADMIN_CONFIG where property='allow adjacent booking')
+LIMIT 1;
+
+INSERT INTO  NEW_NORMAL.ADMIN_CONFIG (property, value)
+SELECT * FROM (SELECT 'max capacity', '1.0') AS temp
+WHERE NOT EXISTS (select property from NEW_NORMAL.ADMIN_CONFIG where property='max capacity')
+LIMIT 1;
 
 CREATE TABLE IF NOT EXISTS NEW_NORMAL.VENUETYPEINFO(
 	venue_name varchar(50),
