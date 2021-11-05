@@ -22,6 +22,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.example.NewNormalAPI.adminconfig.AdjacentBookingException;
+import com.example.NewNormalAPI.adminconfig.AdminConfig;
+import com.example.NewNormalAPI.adminconfig.AdminConfigService;
 import com.example.NewNormalAPI.jwt.util.JwtUtil;
 import com.example.NewNormalAPI.mailer.Mail;
 import com.example.NewNormalAPI.mailer.MailerSvc;
@@ -34,15 +37,17 @@ public class EventsController {
     private UserDetailsServiceImpl userDetailsSvc;
     private MailerSvc mailer;
     private JwtUtil jwtUtil;
+    private AdminConfigService adminConfigSvc;
 
     // Constructor
     @Autowired
     public EventsController(EventsService eventsSvc, MailerSvc mailer, UserDetailsServiceImpl userDetailsSvc,
-            JwtUtil jwtUtil) {
+            JwtUtil jwtUtil, AdminConfigService adminConfigSvc) {
         this.eventsSvc = eventsSvc;
         this.mailer = mailer;
         this.userDetailsSvc = userDetailsSvc;
         this.jwtUtil = jwtUtil;
+        this.adminConfigSvc = adminConfigSvc;
     }
 
     /**
@@ -57,12 +62,16 @@ public class EventsController {
     @PostMapping("/events")
     @ResponseStatus(HttpStatus.CREATED)
     // TODO: update cookie value when JWT portion is completed
-    public Event createEvent(HttpServletRequest rqst, @Valid @RequestBody Event event) 
-            throws UserNotAuthorisedException, LocationAlreadyInUseException, MessagingException {
-    
-    	String jwt = jwtUtil.extractJWTString(rqst);
-    	User user = userDetailsSvc.loadUserEntityByUsername(jwtUtil.extractUsername(jwt));         
-    	event.setOrganizer(user);
+    public Event createEvent(HttpServletRequest rqst, @Valid @RequestBody Event event)
+            throws UserNotAuthorisedException, LocationAlreadyInUseException, MessagingException,
+            AdjacentBookingException {
+        if (!(isAllowAdjacentBooking()) && event.getVenue().getRoomNumbers() % 2 == 0) {
+            throw new AdjacentBookingException("You are not allowed to book this room due to current restrictions");
+        }
+
+        String jwt = jwtUtil.extractJWTString(rqst);
+        User user = userDetailsSvc.loadUserEntityByUsername(jwtUtil.extractUsername(jwt));
+        event.setOrganizer(user);
         event = eventsSvc.save(event);
         String inviteCode = generateInvitationCode(event);
         event.setInviteCode(inviteCode);
@@ -73,10 +82,10 @@ public class EventsController {
         mail.setTo(user.getEmail());
         mail.setSubject("Event Creation");
         Map<String, Object> props = new HashMap<>();
-		props.put("event", event);
-		mail.setProperties(props);
-		mailer.sendEventCreation(mail);
-        
+        props.put("event", event);
+        mail.setProperties(props);
+        mailer.sendEventCreation(mail);
+
         return event;
     }
 
@@ -100,31 +109,30 @@ public class EventsController {
     @PostMapping("/events/{inviteCode}/subscribe")
     @ResponseStatus(HttpStatus.OK)
     public void subscribeEvent(HttpServletRequest rqst, @PathVariable String inviteCode) throws MessagingException {
+        String jwt = jwtUtil.extractJWTString(rqst);
+        User user = userDetailsSvc.loadUserEntityByUsername(jwtUtil.extractUsername(jwt));
+        Event event = eventsSvc.getEventByInviteCode(inviteCode);
+        if (event.getNumSubscribers() >= event.getMaxSubscribers()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Event has been fully subscribed");
+        }
 
-    	String jwt = jwtUtil.extractJWTString(rqst);
-    	User user = userDetailsSvc.loadUserEntityByUsername(jwtUtil.extractUsername(jwt)); 
-		Event event = eventsSvc.getEventByInviteCode(inviteCode);
-		if(event.getNumSubscribers() >= event.getMaxSubscribers()) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Event has been fully subscribed");
-		}
-		
-		if(event.getSubscribers().contains(user)) {
-			throw new ResponseStatusException(HttpStatus.CONFLICT, "Already subscribed");
-		}
+        if (event.getSubscribers().contains(user)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Already subscribed");
+        }
 
-		event.getSubscribers().add(user);
-		event.setNumSubscribers(event.getNumSubscribers() + 1); 
+        event.getSubscribers().add(user);
+        event.setNumSubscribers(event.getNumSubscribers() + 1);
 
-		user.getEvents().add(event);
-		userDetailsSvc.update(user);
-		Mail mail = new Mail();
-		mail.setTo(user.getEmail());
-		mail.setSubject("Subscription Confirmed");
-		Map<String, Object> props = new HashMap<>();
-		props.put("event", event);
-		mail.setProperties(props);
-		
-		mailer.sendSubscriptionConfirmation(mail);
+        user.getEvents().add(event);
+        userDetailsSvc.update(user);
+        Mail mail = new Mail();
+        mail.setTo(user.getEmail());
+        mail.setSubject("Subscription Confirmed");
+        Map<String, Object> props = new HashMap<>();
+        props.put("event", event);
+        mail.setProperties(props);
+
+        mailer.sendSubscriptionConfirmation(mail);
     }
 
     /**
@@ -148,5 +156,15 @@ public class EventsController {
     public List<Event> getFeatured() {
         List<Event> events = eventsSvc.getFeaturedPublicEvents();
         return events;
+    }
+
+    public boolean isAllowAdjacentBooking() {
+        List<AdminConfig> allAdminConfig = adminConfigSvc.getAllAdminConfig();
+        for (AdminConfig adminConfig : allAdminConfig) {
+            if (adminConfig.getProperty().equals("ALLOW_ADJACENT_BOOKINGS") && adminConfig.getValue().equals("N")) {
+                return false;
+            }
+        }
+        return true;
     }
 }

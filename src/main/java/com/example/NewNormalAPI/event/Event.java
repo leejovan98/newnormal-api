@@ -20,6 +20,7 @@ import javax.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.example.NewNormalAPI.user.User;
+import com.example.NewNormalAPI.venue.Venue;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +67,9 @@ public class Event {
 	@NotNull
 	@Size(min=1, max=50)
 	private String location;
+
+	@NotNull
+	private Venue venue;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Singapore")
