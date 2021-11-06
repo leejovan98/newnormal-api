@@ -27,7 +27,7 @@ public class VenueController {
 
         VenueCapacityDto dto = new VenueCapacityDto();
         dto.setVenues(venueSvc.getAllVenues());
-        dto.setInfo(infoSvc.getCurrentCapacity())
+        dto.setInfo(infoSvc.getCurrentCapacity());
         return dto;
     }
 }
