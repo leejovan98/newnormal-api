@@ -28,7 +28,7 @@ public class Venue {
     private String building;
 
     @OneToMany(mappedBy = "venue", orphanRemoval = true, cascade = CascadeType.ALL)
-	private List<Event> events;
+    private List<Event> events;
 
     @ManyToOne
     @JoinColumn(name = "venues", nullable = false)
@@ -37,4 +37,9 @@ public class Venue {
     private int level;
 
     private int roomNumbers;
+
+    @Override
+    public String toString() {
+        return "Venue: " + building + "-" + level + "-" + roomNumbers;
+    }
 }
