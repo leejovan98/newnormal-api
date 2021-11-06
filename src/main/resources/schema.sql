@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS NEW_NORMAL.ADMINCONFIG(
 	primary key (adminConfig_id)
 );
 
-CREATE TABLE IF NOT EXISTS NEW_NORMAL.VENUETYPEINFO(
+CREATE TABLE IF NOT EXISTS NEW_NORMAL.VENUE_TYPE_INFO(
 	venue_type varchar(50),
 	capacity int,
 	primary key (venue_type)
@@ -60,6 +60,6 @@ CREATE TABLE IF NOT EXISTS NEW_NORMAL.VENUE(
 	venue_type varchar(50),
 	venue_level int,
 	room_number int,
-	foreign key (venue_type) references venuetypeinfo(venue_type)
+	foreign key (venue_type) references venue_type_info(venue_type) on delete cascade
 );
 
