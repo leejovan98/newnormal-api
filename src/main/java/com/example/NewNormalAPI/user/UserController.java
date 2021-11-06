@@ -62,7 +62,7 @@ public class UserController {
         mail.setTo(newUser.getEmail());
         mail.setSubject("Account Verification");
         Map<String, Object> props = new HashMap<>();
-        props.put("verificationCode", v.getVerificationCode());
+        props.put("verificationCode", verification.getVerificationCode());
         mail.setProperties(props);
         
         mailer.sendVerificationCode(mail);
