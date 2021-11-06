@@ -18,15 +18,31 @@ public class VenueTypeInfoService {
         this.venueTypeInfoRepo = venueTypeInfoRepo;
     }
 
+    /**
+     * Saves information of venue type
+     * 
+     * @param venueTypeInfo
+     * @return saved venue type information
+     */
     public VenueTypeInfo save(VenueTypeInfo venueTypeInfo) {
         return venueTypeInfoRepo.save(venueTypeInfo);
     }
 
+    /**
+     * Updates information of venue type
+     * 
+     * @param venueTypeInfo
+     * @return updated venue type information
+     */
     public VenueTypeInfo update(VenueTypeInfo venueTypeInfo) {
         return venueTypeInfoRepo.save(venueTypeInfo);
     }
 
-    // sets the capacity of the room after the max capacity multiplier set by admin
+    /**
+     * Sets the capacity of the room after the max capacity multiplier set by admin
+
+     * @return list of current capacity for various venue types
+     */
     public List<VenueTypeInfo> getCurrentCapacity() {
         List<VenueTypeInfo> actualInfo = venueTypeInfoRepo.findAll();
         List<VenueTypeInfo> infoAfterRestriction = List.copyOf(actualInfo);
