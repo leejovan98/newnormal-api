@@ -32,22 +32,22 @@ public class AdminConfigController {
         this.userSvc = userSvc;
         this.eventSvc = eventSvc;
     }
-
-    // Promote user from student to faculty
-//    @PutMapping("/admin/configuration")
-//    @ResponseStatus(HttpStatus.OK)
-//    public void promoteStudent(User user) {
-//        user.setAuthorities("faculty");
-//        userSvc.update(user);
-//    }
     
+    /** Gets all configurations for admin
+     * 
+     * @return list of admin configurations
+     */
     @GetMapping("/admin/configuration")
     @ResponseStatus(HttpStatus.OK)
     public List<AdminConfig> getConfigs() {
     	return adminConfigSvc.getAllAdminConfig();
     }
 
-    // Update capacity
+    /**
+     * Update admin configuration
+     * 
+     * @param adminConfig
+     */
     @PostMapping("/admin/configuration")
     @ResponseStatus(HttpStatus.OK)
     public void updateAdminConfig(@RequestBody AdminConfig adminConfig) throws PropertyDoesNotExistException {
@@ -58,12 +58,22 @@ public class AdminConfigController {
         }
     }
     
+    /**
+     * Returns a list of all the users
+     * 
+     * @return list of all users
+     */
     @GetMapping("/admin/users")
     @ResponseStatus(HttpStatus.OK)
     public List<User> getAllUsers() {
     	return userSvc.loadAllUsers();
     }
     
+    /**
+     * Promotes user to faculty 
+     * 
+     * @param user
+     */
     @PostMapping("/admin/users")
     @ResponseStatus(HttpStatus.OK)
     public void promoteUser(@RequestBody User user) {

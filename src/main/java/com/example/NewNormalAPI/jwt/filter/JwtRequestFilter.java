@@ -27,6 +27,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Autowired
     private JwtUtil jwtUtil;
 
+    /**
+     * Check if user is authenticated
+     * 
+     * @param request
+     * @param response
+     * @param chain
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
@@ -46,9 +53,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 usernamePasswordAuthenticationToken
                         .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-            } // TODO: check validity
+            } 
             else {
-            	// TODO: exception to throw when invalid token received; throw 401 for now
         		throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token is invalid or has expired");
             }
         }
