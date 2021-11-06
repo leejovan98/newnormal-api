@@ -161,7 +161,7 @@ public class EventsController {
     public boolean isAllowAdjacentBooking() {
         List<AdminConfig> allAdminConfig = adminConfigSvc.getAllAdminConfig();
         for (AdminConfig adminConfig : allAdminConfig) {
-            if (adminConfig.getProperty().equals("ALLOW_ADJACENT_BOOKINGS") && adminConfig.getValue().equals("N")) {
+            if (adminConfig.getProperty().equalsIgnoreCase("ALLOW ADJACENT BOOKINGS") && adminConfig.getValue().equals("N")) {
                 return false;
             }
         }
