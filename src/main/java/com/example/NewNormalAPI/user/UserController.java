@@ -54,8 +54,8 @@ public class UserController {
 
         user.setPassword(encoder.encode(user.getPassword()));
         User newUser = userSvc.createUser(user);
-        Verification v = constructVerification(newUser);
-        verifSvc.save(v);
+        Verification verification = constructVerification(newUser);
+        verifSvc.save(verification);
         
         // prepare mail details
         Mail mail = new Mail();
