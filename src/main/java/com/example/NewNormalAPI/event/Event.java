@@ -68,7 +68,10 @@ public class Event {
 	@Size(min=1, max=50)
 	private String location;
 
+	
 	@NotNull
+	@ManyToOne
+	@JoinColumn(name = "venue", nullable = false)
 	private Venue venue;
 
 	@Temporal(TemporalType.TIMESTAMP)
