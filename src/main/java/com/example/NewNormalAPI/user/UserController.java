@@ -68,6 +68,11 @@ public class UserController {
         mailer.sendVerificationCode(mail);
     }
     
+    /**
+     * Verifies user account
+     * 
+     * @param code
+     */
 	@GetMapping("/accounts/verify/{code}")
 	@ResponseStatus(HttpStatus.OK)
 	public void verifyUser(@PathVariable String code) {
@@ -104,10 +109,10 @@ public class UserController {
      * @return v   (verification code)
      */
     public Verification constructVerification(User user) {
-        Verification v = new Verification();
-        v.setUser(user);
-        v.setVerificationCode(generateVerificationCode(user.getId()));
-        return v;
+        Verification verification = new Verification();
+        verification.setUser(user);
+        verification.setVerificationCode(generateVerificationCode(user.getId()));
+        return verification;
     }
 
 
