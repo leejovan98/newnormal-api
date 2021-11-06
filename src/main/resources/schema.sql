@@ -50,6 +50,7 @@ CREATE TABLE IF NOT EXISTS NEW_NORMAL.ADMINCONFIG(
 
 CREATE TABLE IF NOT EXISTS NEW_NORMAL.VENUE_TYPE_INFO(
 	venue_type varchar(50),
+	venues varchar(50),
 	capacity int,
 	primary key (venue_type)
 );
@@ -62,4 +63,3 @@ CREATE TABLE IF NOT EXISTS NEW_NORMAL.VENUE(
 	room_number int,
 	foreign key (venue_type) references venue_type_info(venue_type) on delete cascade
 );
-

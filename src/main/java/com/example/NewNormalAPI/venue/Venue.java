@@ -21,16 +21,9 @@ public class Venue {
 
     private String building;
 
-    // @ManyToOne
-    // @JoinColumn(name="venues")
-    // private VenueTypeInfo venueTypeInfo;
-
-    // @ManyToOne
-    // private VenueTypeInfo venueType;
-
     @ManyToOne
-    @JoinColumn(name = "venueType")
-    private VenueTypeInfo venueType;
+    @JoinColumn(name = "venues", nullable = true)
+    private VenueTypeInfo venueTypeInfo;
 
     private int level;
 
