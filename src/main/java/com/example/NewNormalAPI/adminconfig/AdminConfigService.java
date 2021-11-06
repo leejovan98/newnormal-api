@@ -14,10 +14,22 @@ public class AdminConfigService {
         this.adminConfigRepo = adminConfigRepo;
     }
 
+    /**
+     * Saves admin configurations
+     * 
+     * @param adminConfig
+     * @return saved admin configurations
+     */
     public AdminConfig save(AdminConfig adminConfig) {
         return adminConfigRepo.save(adminConfig);
     }
 
+    /**
+     * Updates admin configurations
+     * 
+     * @param adminConfig
+     * @throws PropertyDoesNotExistException
+     */
     public void update(AdminConfig adminConfig) throws PropertyDoesNotExistException {
         AdminConfig otherAdminConfig = adminConfigRepo.findByProperty(adminConfig.getProperty());
         if (otherAdminConfig == null) {
@@ -28,12 +40,23 @@ public class AdminConfigService {
         }
     }
 
+    /**
+     * Deletes admin configurations
+     * 
+     * @param adminConfig
+     * @return deleted admin configuration
+     */
     public AdminConfig delete(AdminConfig adminConfig) {
-        AdminConfig deletedAdminConfiq = adminConfig;
+        AdminConfig deletedAdminConfig = adminConfig;
         adminConfigRepo.delete(adminConfig);
-        return deletedAdminConfiq;
+        return deletedAdminConfig;
     }
 
+    /**
+     * Gets all configurations for admin
+     * 
+     * @return list of admin configurations
+     */
     public List<AdminConfig> getAllAdminConfig() {
         return adminConfigRepo.findAll();
     }
