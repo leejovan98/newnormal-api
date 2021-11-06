@@ -21,7 +21,7 @@ public class AdminConfigService {
     public AdminConfig update(AdminConfig adminConfig) throws PropertyDoesNotExistException {
         AdminConfig otherAdminConfig = adminConfigRepo.findByProperty(adminConfig.getProperty());
         if (otherAdminConfig == null) {
-            throw new PropertyDoesNotExistException("This property does not exist");
+            throw new PropertyDoesNotExistException();
         } else {
             return adminConfigRepo.save(adminConfig);
         }
