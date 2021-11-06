@@ -33,6 +33,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * Attach the user details and password encoder.
+     * 
+     * @param auth
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -46,6 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * Note: '*' matches zero or more characters, e.g., /books/* matches /books/20
      * '**' matches zero or more 'directories' in a path, e.g., /books/** matches
      * /books/1/reviews
+     * 
+     * @param configure
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -82,6 +86,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Interface for authentication
+     */
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
