@@ -15,6 +15,21 @@ CREATE TABLE IF NOT EXISTS NEW_NORMAL.VERIFICATION(
     foreign key (user_id) references user(id) on delete cascade
 );
 
+CREATE TABLE IF NOT EXISTS NEW_NORMAL.VENUE_TYPE_INFO(
+	venue_type varchar(50),
+	capacity int,
+	primary key (venue_type)
+);
+
+CREATE TABLE IF NOT EXISTS NEW_NORMAL.VENUE(
+	id int primary key auto_increment,
+	building varchar(50),
+	venue_type varchar(50),
+	venue_level int,
+	room_number int,
+	foreign key (venue_type) references venue_type_info(venue_type) on delete cascade
+);
+
 CREATE TABLE IF NOT EXISTS NEW_NORMAL.EVENT(
 	id int primary key auto_increment,
 	organizer_id int,
@@ -27,9 +42,11 @@ CREATE TABLE IF NOT EXISTS NEW_NORMAL.EVENT(
 	num_subscribers int,
 	invite_code varchar(50),
 	location varchar(50),
+	venue int,
 	vaccination_required char(1),
 	insert_ts timestamp,
-	foreign key (organizer_id) references user(id) on delete cascade
+	foreign key (organizer_id) references user(id) on delete cascade,
+	foreign key (venue) references venue(id) on delete cascade
 );
 
 CREATE TABLE IF NOT EXISTS NEW_NORMAL.SUBSCRIPTION(
@@ -58,25 +75,13 @@ SELECT * FROM (SELECT 'max capacity', '1.0') AS temp
 WHERE NOT EXISTS (select property from NEW_NORMAL.ADMIN_CONFIG where property='max capacity')
 LIMIT 1;
   
-CREATE TABLE IF NOT EXISTS NEW_NORMAL.VENUE_TYPE_INFO(
-	venue_type varchar(50),
-	venues varchar(50),
-	capacity int,
-	primary key (venue_type)
-);
 
-CREATE TABLE IF NOT EXISTS NEW_NORMAL.VENUE(
-	id int primary key auto_increment,
-	building varchar(50),
-	venue_type varchar(50),
-	venue_level int,
-	room_number int,
-	foreign key (venue_type) references venue_type_info(venue_type) on delete cascade
-);
+DELETE FROM NEW_NORMAL.VENUE_TYPE_INFO;
+DELETE FROM NEW_NORMAL.VENUE;
 
-INSERT INTO NEW_NORMAL.VENUE_TYPE_INFO(venue_type, venues, capacity) VALUES
-('SR',null,'50'),
-('GSR',null,'5');
+INSERT INTO NEW_NORMAL.VENUE_TYPE_INFO(venue_type, capacity) VALUES
+('SR','50'),
+('GSR','5');
 
 INSERT INTO NEW_NORMAL.VENUE(building, venue_type, venue_Level, room_number) VALUES
 ('SCIS','SR','1','1'),
