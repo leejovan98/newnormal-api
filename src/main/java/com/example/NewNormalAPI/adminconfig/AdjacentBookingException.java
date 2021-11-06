@@ -1,9 +1,9 @@
 package com.example.NewNormalAPI.adminconfig;
 
-public class PropertyDoesNotExistException extends Exception {
+public class AdjacentBookingException extends Exception {
     private static final long serialVersionUID = 1L;
 
-    public PropertyDoesNotExistException() {
+    public AdjacentBookingException() {
         super();
     }
 }

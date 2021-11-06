@@ -18,12 +18,13 @@ public class AdminConfigService {
         return adminConfigRepo.save(adminConfig);
     }
 
-    public AdminConfig update(AdminConfig adminConfig) throws PropertyDoesNotExistException {
+    public void update(AdminConfig adminConfig) throws PropertyDoesNotExistException {
         AdminConfig otherAdminConfig = adminConfigRepo.findByProperty(adminConfig.getProperty());
         if (otherAdminConfig == null) {
-            throw new PropertyDoesNotExistException("This property does not exist");
+            throw new PropertyDoesNotExistException();
         } else {
-            return adminConfigRepo.save(adminConfig);
+        	otherAdminConfig.setValue(adminConfig.getValue());
+        	adminConfigRepo.save(otherAdminConfig);
         }
     }
 

@@ -1,6 +1,7 @@
 package com.example.NewNormalAPI.user;
 
 import java.util.Date;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -91,6 +92,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     	user.setVaccinated("Y");
     	user.setVaccinationDate(date);
     	users.save(user);
+    }
+    
+    public List<User> loadAllUsers(){
+    	return users.findAll();
     }
 
 }

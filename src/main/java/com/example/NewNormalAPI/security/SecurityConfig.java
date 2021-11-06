@@ -59,6 +59,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST,"/accounts/admin").hasAuthority("admin") // Only allow admin to update capacity
                 .antMatchers(HttpMethod.GET,"/vaccination/**").permitAll()
                 .antMatchers(HttpMethod.POST,"/vaccination/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/admin/**").hasAuthority("admin")
+                .antMatchers(HttpMethod.POST,"/admin/**").hasAuthority("admin")
                 .anyRequest().authenticated() // any remaining requests will need authentication
                 .and().csrf().disable() // CSRF protection is needed only for browser based attacks
                 .formLogin().disable() // Disables default login page
