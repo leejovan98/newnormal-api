@@ -35,8 +35,8 @@ public class AdminConfigService {
         if (otherAdminConfig == null) {
             throw new PropertyDoesNotExistException();
         } else {
-        	otherAdminConfig.setValue(adminConfig.getValue());
-        	adminConfigRepo.save(otherAdminConfig);
+            otherAdminConfig.setValue(adminConfig.getValue());
+            adminConfigRepo.save(otherAdminConfig);
         }
     }
 
@@ -61,8 +61,8 @@ public class AdminConfigService {
         return adminConfigRepo.findAll();
     }
 
-    public String getMaxCapacity(){
-        return adminConfigRepo.findByProperty("max capacity").getProperty();
+    public String getMaxCapacity() {
+        return adminConfigRepo.findByProperty("max capacity").getValue();
     }
 
 }
