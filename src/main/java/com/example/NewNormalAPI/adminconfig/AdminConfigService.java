@@ -61,4 +61,8 @@ public class AdminConfigService {
         return adminConfigRepo.findAll();
     }
 
+    public String getMaxCapacity(){
+        return adminConfigRepo.findByProperty("max capacity").getProperty();
+    }
+
 }

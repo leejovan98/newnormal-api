@@ -12,16 +12,22 @@ import org.springframework.web.bind.annotation.RestController;
 public class VenueController {
 
     private VenueService venueSvc;
+    private VenueTypeInfoService infoSvc;
 
     @Autowired
-    public VenueController(VenueService venueSvc) {
+    public VenueController(VenueService venueSvc, VenueTypeInfoService infoSvc) {
         this.venueSvc = venueSvc;
+        this.infoSvc = infoSvc;
     }
 
     // Return all venues
-    @GetMapping("/venues")
+    @GetMapping("/events/venues")
     @ResponseStatus(HttpStatus.OK)
-    public List<Venue> getAllVenues() {
-        return venueSvc.getAllVenues();
+    public VenueCapacityDto getAllVenuesAndCapacity() {
+
+        VenueCapacityDto dto = new VenueCapacityDto();
+        dto.setVenues(venueSvc.getAllVenues());
+        dto.setInfo(infoSvc.getCurrentCapacity())
+        return dto;
     }
 }
