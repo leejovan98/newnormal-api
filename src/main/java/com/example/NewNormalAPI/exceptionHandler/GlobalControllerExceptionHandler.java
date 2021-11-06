@@ -47,7 +47,7 @@ public class GlobalControllerExceptionHandler {
 	public void handleUserNotAuthorisedException() {
 	}
 
-	@ResponseStatus(code = HttpStatus.FORBIDDEN, reason = "You are not allowed to create this event due to current booking restrictions")
+	@ResponseStatus(code = HttpStatus.BAD_REQUEST, reason = "You are not allowed to create this event due to current booking restrictions")
 	@ExceptionHandler(AdjacentBookingException.class)
 	public void handleAdjacentBookingException() {
 	}

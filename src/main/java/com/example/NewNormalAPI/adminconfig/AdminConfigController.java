@@ -5,9 +5,9 @@ import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -80,9 +80,11 @@ public class AdminConfigController {
     	User curUser = userSvc.loadUserEntityByUsername(user.getUsername());
     	if(Objects.isNull(curUser)) {
     		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No Such User");
+    	} else if(curUser.getAuthorities().contains(new SimpleGrantedAuthority("admin")) || 
+    			curUser.getAuthorities().contains(new SimpleGrantedAuthority("faculty"))) {
+    		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "unable to promote user to 'faculty'");
     	}
     	curUser.setAuthorities("faculty");
     	userSvc.update(curUser);
-    	
     }
 }
