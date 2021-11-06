@@ -7,6 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface VenueRepo extends JpaRepository<Venue, Long> {
-    // List<Venue> findByBuildingAndLevelAndRoomNumber(String building, int level, int roomNumbers)
     List<Venue> findAll();
 }

@@ -54,20 +54,25 @@ public class UserController {
 
         user.setPassword(encoder.encode(user.getPassword()));
         User newUser = userSvc.createUser(user);
-        Verification v = constructVerification(newUser);
-        verifSvc.save(v);
+        Verification verification = constructVerification(newUser);
+        verifSvc.save(verification);
         
         // prepare mail details
         Mail mail = new Mail();
         mail.setTo(newUser.getEmail());
         mail.setSubject("Account Verification");
         Map<String, Object> props = new HashMap<>();
-        props.put("verificationCode", v.getVerificationCode());
+        props.put("verificationCode", verification.getVerificationCode());
         mail.setProperties(props);
         
         mailer.sendVerificationCode(mail);
     }
     
+    /**
+     * Verifies user account
+     * 
+     * @param code
+     */
 	@GetMapping("/accounts/verify/{code}")
 	@ResponseStatus(HttpStatus.OK)
 	public void verifyUser(@PathVariable String code) {
@@ -104,10 +109,10 @@ public class UserController {
      * @return v   (verification code)
      */
     public Verification constructVerification(User user) {
-        Verification v = new Verification();
-        v.setUser(user);
-        v.setVerificationCode(generateVerificationCode(user.getId()));
-        return v;
+        Verification verification = new Verification();
+        verification.setUser(user);
+        verification.setVerificationCode(generateVerificationCode(user.getId()));
+        return verification;
     }
 
 

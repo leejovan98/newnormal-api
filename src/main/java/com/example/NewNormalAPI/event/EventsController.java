@@ -61,7 +61,6 @@ public class EventsController {
      */
     @PostMapping("/events")
     @ResponseStatus(HttpStatus.CREATED)
-    // TODO: update cookie value when JWT portion is completed
     public Event createEvent(HttpServletRequest rqst, @Valid @RequestBody Event event)
             throws UserNotAuthorisedException, LocationAlreadyInUseException, MessagingException,
             AdjacentBookingException {
@@ -90,7 +89,10 @@ public class EventsController {
     }
 
     /**
-     * returns event details based on the invite code passed
+     * Returns event details based on the invite code passed
+     * 
+     * @param inviteCode
+     * @return event object and its details
      */
     @GetMapping("/events/{inviteCode}")
     public Event getEventDetails(@PathVariable String inviteCode) {
@@ -98,10 +100,10 @@ public class EventsController {
     }
 
     /**
-     * Allows Student member to subscribe to event Sends a confirmation email if
-     * event successfully subscribed to
+     * Allows Student member to subscribe to event Sends a confirmation email if event successfully subscribed to
      * 
-     * @param user, event
+     * @param user
+     * @param event
      * @throws EventFullySubscribedException
      * @return event
      * @throws MessagingException
@@ -150,7 +152,9 @@ public class EventsController {
     }
 
     /**
-     * returns up to 10 upcoming public events
+     * Returns up to 10 upcoming public events
+     * 
+     * @return up to 10 upcoming public events
      */
     @GetMapping("/events/featured")
     public List<Event> getFeatured() {
@@ -158,10 +162,15 @@ public class EventsController {
         return events;
     }
 
+    /**
+     * Allows for whether users can book rooms that are next to each other or not
+     * 
+     * @return true or false depending on the admin configuration value
+     */
     public boolean isAllowAdjacentBooking() {
         List<AdminConfig> allAdminConfig = adminConfigSvc.getAllAdminConfig();
         for (AdminConfig adminConfig : allAdminConfig) {
-            if (adminConfig.getProperty().equals("ALLOW_ADJACENT_BOOKINGS") && adminConfig.getValue().equals("N")) {
+            if (adminConfig.getProperty().equalsIgnoreCase("ALLOW ADJACENT BOOKINGS") && adminConfig.getValue().equals("N")) {
                 return false;
             }
         }

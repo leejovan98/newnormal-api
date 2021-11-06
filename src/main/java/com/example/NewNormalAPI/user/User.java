@@ -39,7 +39,6 @@ public class User implements UserDetails {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	// TODO validation for username,password,email,authorities,verified
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -51,7 +50,6 @@ public class User implements UserDetails {
 	
 	private String email;
 	
-//	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String authorities = "student"; // admin, faculty, student
 	
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -86,21 +84,18 @@ public class User implements UserDetails {
 	@Override
 	@JsonIgnore
 	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	@JsonIgnore
 	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	@JsonIgnore
 	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

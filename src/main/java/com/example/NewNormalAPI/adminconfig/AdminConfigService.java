@@ -3,7 +3,9 @@ package com.example.NewNormalAPI.adminconfig;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class AdminConfigService {
@@ -34,11 +36,27 @@ public class AdminConfigService {
         AdminConfig otherAdminConfig = adminConfigRepo.findByProperty(adminConfig.getProperty());
         if (otherAdminConfig == null) {
             throw new PropertyDoesNotExistException();
+        } else if(isValid(adminConfig)) {
+        	otherAdminConfig.setValue(adminConfig.getValue());
+        	adminConfigRepo.save(otherAdminConfig);
         } else {
-            otherAdminConfig.setValue(adminConfig.getValue());
-            adminConfigRepo.save(otherAdminConfig);
+        	throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Value is unexpected / out of bounds");
         }
     }
+    
+    private boolean isValid(AdminConfig adminConfig) {
+    	String val = adminConfig.getValue();
+    	
+		switch(adminConfig.getProperty()) {
+			case "allow adjacent booking":
+				return(val.equalsIgnoreCase("Y") || val.equalsIgnoreCase("N"));
+			case "max capacity":
+				Double parsed = Double.parseDouble(val);
+				return (parsed > 0.0 && parsed <= 1.0);
+			default:
+				return false;
+		}
+	}
 
     /**
      * Deletes admin configurations
