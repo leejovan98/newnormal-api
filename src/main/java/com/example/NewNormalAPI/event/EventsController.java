@@ -66,7 +66,7 @@ public class EventsController {
             throws UserNotAuthorisedException, LocationAlreadyInUseException, MessagingException,
             AdjacentBookingException {
         if (!(isAllowAdjacentBooking()) && event.getVenue().getRoomNumbers() % 2 == 0) {
-            throw new AdjacentBookingException("You are not allowed to book this room due to current restrictions");
+            throw new AdjacentBookingException();
         }
 
         String jwt = jwtUtil.extractJWTString(rqst);
