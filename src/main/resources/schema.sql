@@ -57,11 +57,12 @@ INSERT INTO  NEW_NORMAL.ADMIN_CONFIG (property, value)
 SELECT * FROM (SELECT 'max capacity', '1.0') AS temp
 WHERE NOT EXISTS (select property from NEW_NORMAL.ADMIN_CONFIG where property='max capacity')
 LIMIT 1;
-
-CREATE TABLE IF NOT EXISTS NEW_NORMAL.VENUETYPEINFO(
-	venue_name varchar(50),
+  
+CREATE TABLE IF NOT EXISTS NEW_NORMAL.VENUE_TYPE_INFO(
+	venue_type varchar(50),
+	venues varchar(50),
 	capacity int,
-	primary key (venue_name)
+	primary key (venue_type)
 );
 
 CREATE TABLE IF NOT EXISTS NEW_NORMAL.VENUE(
@@ -70,6 +71,99 @@ CREATE TABLE IF NOT EXISTS NEW_NORMAL.VENUE(
 	venue_type varchar(50),
 	venue_level int,
 	room_number int,
-	foreign key (venue_type) references venuetypeinfo(venue_name)
+	foreign key (venue_type) references venue_type_info(venue_type) on delete cascade
 );
+
+INSERT INTO NEW_NORMAL.VENUE_TYPE_INFO(venue_type, venues, capacity) VALUES
+('SR',null,'50'),
+('GSR',null,'5');
+
+INSERT INTO NEW_NORMAL.VENUE(building, venue_type, venue_Level, room_number) VALUES
+('SCIS','SR','1','1'),
+('SCIS','SR','1','2'),
+('SCIS','SR','1','3'),
+('SCIS','SR','1','4'),
+('SCIS','SR','1','5'),
+('SCIS','GSR','1','6'),
+('SCIS','GSR','1','7'),
+('SCIS','GSR','1','8'),
+('SCIS','GSR','1','9'),
+('SCIS','GSR','1','10'),
+
+('SCIS','SR','2','1'),
+('SCIS','SR','2','2'),
+('SCIS','SR','2','3'),
+('SCIS','SR','2','4'),
+('SCIS','SR','2','5'),
+('SCIS','GSR','2','6'),
+('SCIS','GSR','2','7'),
+('SCIS','GSR','2','8'),
+('SCIS','GSR','2','9'),
+('SCIS','GSR','2','10'),
+
+('SCIS','SR','3','1'),
+('SCIS','SR','3','2'),
+('SCIS','SR','3','3'),
+('SCIS','SR','3','4'),
+('SCIS','SR','3','5'),
+('SCIS','GSR','3','6'),
+('SCIS','GSR','3','7'),
+('SCIS','GSR','3','8'),
+('SCIS','GSR','3','9'),
+('SCIS','GSR','3','10'),
+
+('SCIS','SR','4','1'),
+('SCIS','SR','4','2'),
+('SCIS','SR','4','3'),
+('SCIS','SR','4','4'),
+('SCIS','SR','4','5'),
+('SCIS','GSR','4','6'),
+('SCIS','GSR','4','7'),
+('SCIS','GSR','4','8'),
+('SCIS','GSR','4','9'),
+('SCIS','GSR','4','10'),
+
+('SOE','SR','1','1'),
+('SOE','SR','1','2'),
+('SOE','SR','1','3'),
+('SOE','SR','1','4'),
+('SOE','SR','1','5'),
+('SOE','GSR','1','6'),
+('SOE','GSR','1','7'),
+('SOE','GSR','1','8'),
+('SOE','GSR','1','9'),
+('SOE','GSR','1','10'),
+
+('SOE','SR','2','1'),
+('SOE','SR','2','2'),
+('SOE','SR','2','3'),
+('SOE','SR','2','4'),
+('SOE','SR','2','5'),
+('SOE','GSR','2','6'),
+('SOE','GSR','2','7'),
+('SOE','GSR','2','8'),
+('SOE','GSR','2','9'),
+('SOE','GSR','2','10'),
+
+('SOE','SR','3','1'),
+('SOE','SR','3','2'),
+('SOE','SR','3','3'),
+('SOE','SR','3','4'),
+('SOE','SR','3','5'),
+('SOE','GSR','3','6'),
+('SOE','GSR','3','7'),
+('SOE','GSR','3','8'),
+('SOE','GSR','3','9'),
+('SOE','GSR','3','10'),
+
+('SOE','SR','4','1'),
+('SOE','SR','4','2'),
+('SOE','SR','4','3'),
+('SOE','SR','4','4'),
+('SOE','SR','4','5'),
+('SOE','GSR','4','6'),
+('SOE','GSR','4','7'),
+('SOE','GSR','4','8'),
+('SOE','GSR','4','9'),
+('SOE','GSR','4','10');
 

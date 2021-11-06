@@ -1,8 +1,9 @@
 package com.example.NewNormalAPI.venue;
 
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
@@ -12,9 +13,10 @@ import lombok.Data;
 @Data
 public class VenueTypeInfo {
     @Id
-    @GeneratedValue
-    @OneToMany(mappedBy = "type", orphanRemoval = true, cascade = CascadeType.ALL)
-    private String venue_name;
-    
+    private String venueType;
+
+    @OneToMany(mappedBy = "venueTypeInfo", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<Venue> venues;
+
     private int capacity;
 }
