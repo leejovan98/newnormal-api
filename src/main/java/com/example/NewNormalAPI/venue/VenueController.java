@@ -20,7 +20,11 @@ public class VenueController {
         this.infoSvc = infoSvc;
     }
 
-    // Return all venues
+    /**
+     * Return all venues
+
+     * @return DTO containing venue type information and venue information
+     */
     @GetMapping("/events/venues")
     @ResponseStatus(HttpStatus.OK)
     public VenueCapacityDto getAllVenuesAndCapacity() {
