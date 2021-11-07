@@ -74,102 +74,109 @@ SELECT * FROM (SELECT 'max capacity', '1.0') AS temp
 WHERE NOT EXISTS (select property from NEW_NORMAL.ADMIN_CONFIG where property='max capacity')
 LIMIT 1;
   
+DROP PROCEDURE IF EXISTS NEW_NORMAL.insertVenueData;
+DROP PROCEDURE IF EXISTS NEW_NORMAL.insertVenueTypeInfoData;
 
-DELETE FROM NEW_NORMAL.VENUE_TYPE_INFO;
-DELETE FROM NEW_NORMAL.VENUE;
-ALTER TABLE NEW_NORMAL.VENUE_TYPE_INFO AUTO_INCREMENT = 1;
-ALTER TABLE NEW_NORMAL.VENUE AUTO_INCREMENT = 1;
+CREATE PROCEDURE insertVenueTypeInfoData (in inVenueType varchar(50), in inCapacity int)
+INSERT INTO NEW_NORMAL.VENUE_TYPE_INFO (venue_type, capacity)
+SELECT * FROM ( SELECT inVenueType , inCapacity) AS temp
+WHERE NOT EXISTS (SELECT * FROM NEW_NORMAL.VENUE_TYPE_INFO WHERE venue_type=inVenueType)
+LIMIT 1;
 
-INSERT INTO NEW_NORMAL.VENUE_TYPE_INFO(venue_type, capacity) VALUES
-('SR','50'),
-('GSR','5');
+CREATE PROCEDURE insertVenueData (in inBuilding varchar(50), in inVenueType varchar(50), in inVenueLevel int, in inRoomNumber int)
+	INSERT INTO NEW_NORMAL.VENUE (building, venue_type, level, room_number)
+	SELECT * FROM ( SELECT inBuilding, inVenueType , inVenueLevel, inRoomNumber) AS temp
+	WHERE NOT EXISTS (SELECT * FROM NEW_NORMAL.VENUE WHERE building=inBuilding AND venue_type=inVenueType AND level=inVenueLevel AND room_number=inRoomNumber)
+	LIMIT 1;
 
-INSERT INTO NEW_NORMAL.VENUE(building, venue_type, level, room_number) VALUES
-('SCIS','SR','1','1'),
-('SCIS','SR','1','2'),
-('SCIS','SR','1','3'),
-('SCIS','SR','1','4'),
-('SCIS','SR','1','5'),
-('SCIS','GSR','1','6'),
-('SCIS','GSR','1','7'),
-('SCIS','GSR','1','8'),
-('SCIS','GSR','1','9'),
-('SCIS','GSR','1','10'),
+CALL insertVenueTypeInfoData('SR','50');
+CALL insertVenueTypeInfoData('GSR','5');
 
-('SCIS','SR','2','1'),
-('SCIS','SR','2','2'),
-('SCIS','SR','2','3'),
-('SCIS','SR','2','4'),
-('SCIS','SR','2','5'),
-('SCIS','GSR','2','6'),
-('SCIS','GSR','2','7'),
-('SCIS','GSR','2','8'),
-('SCIS','GSR','2','9'),
-('SCIS','GSR','2','10'),
+CALL insertVenueData('SCIS','SR','1','1');
+CALL insertVenueData('SCIS','SR','1','2');
+CALL insertVenueData('SCIS','SR','1','3');
+CALL insertVenueData('SCIS','SR','1','4');
+CALL insertVenueData('SCIS','SR','1','5');
+CALL insertVenueData('SCIS','GSR','1','6');
+CALL insertVenueData('SCIS','GSR','1','7');
+CALL insertVenueData('SCIS','GSR','1','8');
+CALL insertVenueData('SCIS','GSR','1','9');
+CALL insertVenueData('SCIS','GSR','1','10');
 
-('SCIS','SR','3','1'),
-('SCIS','SR','3','2'),
-('SCIS','SR','3','3'),
-('SCIS','SR','3','4'),
-('SCIS','SR','3','5'),
-('SCIS','GSR','3','6'),
-('SCIS','GSR','3','7'),
-('SCIS','GSR','3','8'),
-('SCIS','GSR','3','9'),
-('SCIS','GSR','3','10'),
+CALL insertVenueData('SCIS','SR','2','1');
+CALL insertVenueData('SCIS','SR','2','2');
+CALL insertVenueData('SCIS','SR','2','3');
+CALL insertVenueData('SCIS','SR','2','4');
+CALL insertVenueData('SCIS','SR','2','5');
+CALL insertVenueData('SCIS','GSR','2','6');
+CALL insertVenueData('SCIS','GSR','2','7');
+CALL insertVenueData('SCIS','GSR','2','8');
+CALL insertVenueData('SCIS','GSR','2','9');
+CALL insertVenueData('SCIS','GSR','2','10');
 
-('SCIS','SR','4','1'),
-('SCIS','SR','4','2'),
-('SCIS','SR','4','3'),
-('SCIS','SR','4','4'),
-('SCIS','SR','4','5'),
-('SCIS','GSR','4','6'),
-('SCIS','GSR','4','7'),
-('SCIS','GSR','4','8'),
-('SCIS','GSR','4','9'),
-('SCIS','GSR','4','10'),
+CALL insertVenueData('SCIS','SR','3','1');
+CALL insertVenueData('SCIS','SR','3','2');
+CALL insertVenueData('SCIS','SR','3','3');
+CALL insertVenueData('SCIS','SR','3','4');
+CALL insertVenueData('SCIS','SR','3','5');
+CALL insertVenueData('SCIS','GSR','3','6');
+CALL insertVenueData('SCIS','GSR','3','7');
+CALL insertVenueData('SCIS','GSR','3','8');
+CALL insertVenueData('SCIS','GSR','3','9');
+CALL insertVenueData('SCIS','GSR','3','10');
 
-('SOE','SR','1','1'),
-('SOE','SR','1','2'),
-('SOE','SR','1','3'),
-('SOE','SR','1','4'),
-('SOE','SR','1','5'),
-('SOE','GSR','1','6'),
-('SOE','GSR','1','7'),
-('SOE','GSR','1','8'),
-('SOE','GSR','1','9'),
-('SOE','GSR','1','10'),
+CALL insertVenueData('SCIS','SR','4','1');
+CALL insertVenueData('SCIS','SR','4','2');
+CALL insertVenueData('SCIS','SR','4','3');
+CALL insertVenueData('SCIS','SR','4','4');
+CALL insertVenueData('SCIS','SR','4','5');
+CALL insertVenueData('SCIS','GSR','4','6');
+CALL insertVenueData('SCIS','GSR','4','7');
+CALL insertVenueData('SCIS','GSR','4','8');
+CALL insertVenueData('SCIS','GSR','4','9');
+CALL insertVenueData('SCIS','GSR','4','10');
 
-('SOE','SR','2','1'),
-('SOE','SR','2','2'),
-('SOE','SR','2','3'),
-('SOE','SR','2','4'),
-('SOE','SR','2','5'),
-('SOE','GSR','2','6'),
-('SOE','GSR','2','7'),
-('SOE','GSR','2','8'),
-('SOE','GSR','2','9'),
-('SOE','GSR','2','10'),
+CALL insertVenueData('SOE','SR','1','1');
+CALL insertVenueData('SOE','SR','1','2');
+CALL insertVenueData('SOE','SR','1','3');
+CALL insertVenueData('SOE','SR','1','4');
+CALL insertVenueData('SOE','SR','1','5');
+CALL insertVenueData('SOE','GSR','1','6');
+CALL insertVenueData('SOE','GSR','1','7');
+CALL insertVenueData('SOE','GSR','1','8');
+CALL insertVenueData('SOE','GSR','1','9');
+CALL insertVenueData('SOE','GSR','1','10');
 
-('SOE','SR','3','1'),
-('SOE','SR','3','2'),
-('SOE','SR','3','3'),
-('SOE','SR','3','4'),
-('SOE','SR','3','5'),
-('SOE','GSR','3','6'),
-('SOE','GSR','3','7'),
-('SOE','GSR','3','8'),
-('SOE','GSR','3','9'),
-('SOE','GSR','3','10'),
+CALL insertVenueData('SOE','SR','2','1');
+CALL insertVenueData('SOE','SR','2','2');
+CALL insertVenueData('SOE','SR','2','3');
+CALL insertVenueData('SOE','SR','2','4');
+CALL insertVenueData('SOE','SR','2','5');
+CALL insertVenueData('SOE','GSR','2','6');
+CALL insertVenueData('SOE','GSR','2','7');
+CALL insertVenueData('SOE','GSR','2','8');
+CALL insertVenueData('SOE','GSR','2','9');
+CALL insertVenueData('SOE','GSR','2','10');
 
-('SOE','SR','4','1'),
-('SOE','SR','4','2'),
-('SOE','SR','4','3'),
-('SOE','SR','4','4'),
-('SOE','SR','4','5'),
-('SOE','GSR','4','6'),
-('SOE','GSR','4','7'),
-('SOE','GSR','4','8'),
-('SOE','GSR','4','9'),
-('SOE','GSR','4','10');
+CALL insertVenueData('SOE','SR','3','1');
+CALL insertVenueData('SOE','SR','3','2');
+CALL insertVenueData('SOE','SR','3','3');
+CALL insertVenueData('SOE','SR','3','4');
+CALL insertVenueData('SOE','SR','3','5');
+CALL insertVenueData('SOE','GSR','3','6');
+CALL insertVenueData('SOE','GSR','3','7');
+CALL insertVenueData('SOE','GSR','3','8');
+CALL insertVenueData('SOE','GSR','3','9');
+CALL insertVenueData('SOE','GSR','3','10');
+
+CALL insertVenueData('SOE','SR','4','1');
+CALL insertVenueData('SOE','SR','4','2');
+CALL insertVenueData('SOE','SR','4','3');
+CALL insertVenueData('SOE','SR','4','4');
+CALL insertVenueData('SOE','SR','4','5');
+CALL insertVenueData('SOE','GSR','4','6');
+CALL insertVenueData('SOE','GSR','4','7');
+CALL insertVenueData('SOE','GSR','4','8');
+CALL insertVenueData('SOE','GSR','4','9');
+CALL insertVenueData('SOE','GSR','4','10');
 
