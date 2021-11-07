@@ -31,15 +31,18 @@ public class Venue {
     private List<Event> events;
 
     @ManyToOne
-    @JoinColumn(name = "venueType", nullable = false)
+    @JoinColumn(name = "venue_type", nullable = false)
     private VenueTypeInfo venueTypeInfo;
 
     private int level;
 
     private int roomNumber;
 
-    @Override
-    public String toString() {
-        return "Venue: " + building + "-" + level + "-" + roomNumber;
-    }
+	@Override
+	public String toString() {
+		return "Venue [id=" + id + ", building=" + building + ", venueTypeInfo=" + venueTypeInfo + ", level=" + level
+				+ ", roomNumber=" + roomNumber + "]";
+	}
+
+    
 }

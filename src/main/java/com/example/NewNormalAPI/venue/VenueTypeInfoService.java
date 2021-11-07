@@ -49,9 +49,10 @@ public class VenueTypeInfoService {
         List<VenueTypeInfo> infoAfterRestriction = List.copyOf(actualInfo);
         double maxCapacity = Double.parseDouble(adminConfigSvc.getMaxCapacity());
 
+        
         infoAfterRestriction.forEach(info ->{
-            info.setCapacity((int)((double)info.getCapacity() * maxCapacity));
-        }); 
+        	info.setCapacity((int)(info.getCapacity() * maxCapacity));
+        });
 
         return infoAfterRestriction;
     }

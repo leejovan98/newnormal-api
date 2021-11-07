@@ -41,12 +41,11 @@ CREATE TABLE IF NOT EXISTS NEW_NORMAL.EVENT(
 	max_subscribers int,
 	num_subscribers int,
 	invite_code varchar(50),
-	location varchar(50),
-	venue int,
+	venue_id int,
 	vaccination_required char(1),
 	insert_ts timestamp,
 	foreign key (organizer_id) references user(id) on delete cascade,
-	foreign key (venue) references venue(id) on delete cascade
+	foreign key (venue_id) references venue(id) on delete cascade
 );
 
 CREATE TABLE IF NOT EXISTS NEW_NORMAL.SUBSCRIPTION(

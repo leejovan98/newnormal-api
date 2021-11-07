@@ -65,6 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST,"/vaccination/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/admin/**").hasAuthority("admin")
                 .antMatchers(HttpMethod.POST,"/admin/**").hasAuthority("admin")
+                .antMatchers(HttpMethod.GET,"/events/venues").hasAuthority("faculty")
                 .anyRequest().authenticated() // any remaining requests will need authentication
                 .and().csrf().disable() // CSRF protection is needed only for browser based attacks
                 .formLogin().disable() // Disables default login page
