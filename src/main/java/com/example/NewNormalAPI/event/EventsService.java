@@ -25,7 +25,7 @@ public class EventsService {
      * @return true if 
      */
     public boolean locationAlreadyInUse(Event event) {
-        List<Event> myList = eRepo.findByLocationAndStartDatetime(event.getLocation(), event.getStartDatetime());
+        List<Event> myList = eRepo.findByVenueIdAndStartDatetime(event.getVenue().getId(), event.getStartDatetime());
         return !myList.isEmpty();
     }
 

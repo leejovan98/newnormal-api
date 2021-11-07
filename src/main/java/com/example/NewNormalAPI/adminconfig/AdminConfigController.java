@@ -16,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.example.NewNormalAPI.event.EventsService;
 import com.example.NewNormalAPI.user.User;
 import com.example.NewNormalAPI.user.UserDetailsServiceImpl;
+import com.example.NewNormalAPI.user.UserNotVerifiedException;
 
 @RestController
 public class AdminConfigController {
@@ -77,7 +78,13 @@ public class AdminConfigController {
     @PostMapping("/admin/users")
     @ResponseStatus(HttpStatus.OK)
     public void promoteUser(@RequestBody User user) {
-    	User curUser = userSvc.loadUserEntityByUsername(user.getUsername());
+    	User curUser;
+    	try {
+    		curUser = userSvc.loadUserEntityByUsername(user.getUsername());
+    	} catch (UserNotVerifiedException e) {
+    		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User has not been verified");
+    	}
+    	
     	if(Objects.isNull(curUser)) {
     		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No Such User");
     	} else if(curUser.getAuthorities().contains(new SimpleGrantedAuthority("admin")) || 

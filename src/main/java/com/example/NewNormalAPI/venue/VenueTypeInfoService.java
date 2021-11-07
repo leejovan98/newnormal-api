@@ -14,8 +14,9 @@ public class VenueTypeInfoService {
     private AdminConfigService adminConfigSvc;
 
     @Autowired
-    public VenueTypeInfoService(VenueTypeInfoRepo venueTypeInfoRepo) {
+    public VenueTypeInfoService(VenueTypeInfoRepo venueTypeInfoRepo, AdminConfigService adminConfigSvc) {
         this.venueTypeInfoRepo = venueTypeInfoRepo;
+        this.adminConfigSvc = adminConfigSvc;
     }
 
     /**
@@ -49,12 +50,10 @@ public class VenueTypeInfoService {
 
         double maxCapacity = Double.parseDouble(adminConfigSvc.getMaxCapacity());
 
-        int counter = 0;
-        for (VenueTypeInfo venueTypeInfo : infoAfterRestriction) {
-            int newCapacity = (int) (venueTypeInfo.getCapacity() * maxCapacity);
-            venueTypeInfo.setCapacity(newCapacity);
-            infoAfterRestriction.set(counter++, venueTypeInfo);
-        }
+        
+        infoAfterRestriction.forEach(info ->{
+        	info.setCapacity((int)(info.getCapacity() * maxCapacity));
+        });
 
         return infoAfterRestriction;
     }

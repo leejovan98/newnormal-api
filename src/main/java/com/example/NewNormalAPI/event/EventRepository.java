@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface EventRepository extends JpaRepository<Event, Long> {
 	// define a derived query to find event by username
 	// Optional<Event> findByOrganizerId(String username);
-	List<Event> findByLocationAndStartDatetime(String location, Date startDatetime);
+	List<Event> findByVenueIdAndStartDatetime(Long venueId, Date startDatetime);
 
 	Optional<Event> findByInviteCode(String inviteCode);
 	

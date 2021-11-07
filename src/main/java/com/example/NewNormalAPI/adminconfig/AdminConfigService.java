@@ -44,6 +44,12 @@ public class AdminConfigService {
         }
     }
     
+    /**
+     * validates incoming configurations before being persisted
+     * 
+     * @param adminConfig
+     * @return boolean of if the configuration is a valid value
+     */
     private boolean isValid(AdminConfig adminConfig) {
     	String val = adminConfig.getValue();
     	
@@ -51,8 +57,12 @@ public class AdminConfigService {
 			case "allow adjacent booking":
 				return(val.equalsIgnoreCase("Y") || val.equalsIgnoreCase("N"));
 			case "max capacity":
-				Double parsed = Double.parseDouble(val);
-				return (parsed > 0.0 && parsed <= 1.0);
+				try {
+					Double parsed = Double.parseDouble(val);
+					return (parsed > 0.0 && parsed <= 1.0);
+				} catch(NumberFormatException e) {
+					return false;
+				}
 			default:
 				return false;
 		}
@@ -80,7 +90,7 @@ public class AdminConfigService {
     }
 
     public String getMaxCapacity(){
-        return adminConfigRepo.findByProperty("max capacity").getProperty();
+        return adminConfigRepo.findByProperty("max capacity").getValue();
     }
 
 }

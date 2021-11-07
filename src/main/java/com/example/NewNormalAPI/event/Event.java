@@ -1,6 +1,5 @@
 package com.example.NewNormalAPI.event;
 
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -64,14 +63,14 @@ public class Event {
 	@NotNull
 	private Integer maxSubscribers;
 
-	@NotNull
-	@Size(min=1, max=50)
-	private String location;
+//	@NotNull
+//	@Size(min=1, max=50)
+//	private String location;
 
 	
 	@NotNull
 	@ManyToOne
-	@JoinColumn(name = "venue", nullable = false)
+	@JoinColumn(name = "venue_id", nullable = false)
 	private Venue venue;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -100,7 +99,7 @@ public class Event {
 		return "Event [id=" + id + ", organizer=" + "[" + organizer.getEmail() + "," + organizer.getUsername() + "]"
 				+ ", title=" + title + ", description=" + description + ", visibility=" + visibility
 				+ ", maxSubscribers=" + maxSubscribers + ", startDatetime=" + startDatetime + ", stopDatetime=" + stopDatetime + ", inviteCode=" + inviteCode
-				+ ", location=" + location + ", numSubscribers=" + numSubscribers + ", isVaccinationRequired="
+				+ ", venue=" + venue.toString() + ", numSubscribers=" + numSubscribers + ", isVaccinationRequired="
 				+ vaccinationRequired + "]";
 	}
 }

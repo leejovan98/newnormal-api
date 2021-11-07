@@ -64,7 +64,7 @@ public class EventsController {
     public Event createEvent(HttpServletRequest rqst, @Valid @RequestBody Event event)
             throws UserNotAuthorisedException, LocationAlreadyInUseException, MessagingException,
             AdjacentBookingException {
-        if (!(isAllowAdjacentBooking()) && event.getVenue().getRoomNumbers() % 2 == 0) {
+        if (!(isAllowAdjacentBooking()) && event.getVenue().getRoomNumber() % 2 == 0) {
             throw new AdjacentBookingException();
         }
 
