@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS NEW_NORMAL.VENUE(
 	id int primary key auto_increment,
 	building varchar(50),
 	venue_type varchar(50),
-	venue_level int,
+	level int,
 	room_number int,
 	foreign key (venue_type) references venue_type_info(venue_type) on delete cascade
 );
@@ -78,12 +78,14 @@ LIMIT 1;
 
 DELETE FROM NEW_NORMAL.VENUE_TYPE_INFO;
 DELETE FROM NEW_NORMAL.VENUE;
+ALTER TABLE NEW_NORMAL.VENUE_TYPE_INFO AUTO_INCREMENT = 1;
+ALTER TABLE NEW_NORMAL.VENUE AUTO_INCREMENT = 1;
 
 INSERT INTO NEW_NORMAL.VENUE_TYPE_INFO(venue_type, capacity) VALUES
 ('SR','50'),
 ('GSR','5');
 
-INSERT INTO NEW_NORMAL.VENUE(building, venue_type, venue_Level, room_number) VALUES
+INSERT INTO NEW_NORMAL.VENUE(building, venue_type, level, room_number) VALUES
 ('SCIS','SR','1','1'),
 ('SCIS','SR','1','2'),
 ('SCIS','SR','1','3'),

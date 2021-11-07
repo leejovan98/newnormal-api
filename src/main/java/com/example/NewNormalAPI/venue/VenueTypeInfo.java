@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 
 @Entity
@@ -16,7 +18,13 @@ public class VenueTypeInfo {
     private String venueType;
 
     @OneToMany(mappedBy = "venueTypeInfo", orphanRemoval = true, cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Venue> venues;
 
     private int capacity;
+    
+    @Override
+    public String toString() {
+        return "Venue Types: " + venueType + " - " + capacity;
+    }
 }

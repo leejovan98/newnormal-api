@@ -31,15 +31,15 @@ public class Venue {
     private List<Event> events;
 
     @ManyToOne
-    @JoinColumn(name = "venues", nullable = false)
+    @JoinColumn(name = "venueType", nullable = false)
     private VenueTypeInfo venueTypeInfo;
 
     private int level;
 
-    private int roomNumbers;
+    private int roomNumber;
 
     @Override
     public String toString() {
-        return "Venue: " + building + "-" + level + "-" + roomNumbers;
+        return "Venue: " + building + "-" + level + "-" + roomNumber;
     }
 }
