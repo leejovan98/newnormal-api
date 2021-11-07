@@ -44,7 +44,7 @@
       	</tr>
       	<tr>
       		<td class="prop">Location</td>
-      		<td class="prop_val" th:text="${event.getLocation()}"></td>
+      		<td class="prop_val" th:text="${event.venue.building} + ' Level ' + ${event.venue.level} + ' ' + ${event.venue.venueTypeInfo.venueType} + '-' + ${event.venue.roomNumber}"></td>
       	</tr>
       	<tr>
       		<td class="prop">Event Visbility</td>

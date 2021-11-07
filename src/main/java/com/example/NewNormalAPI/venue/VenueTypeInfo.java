@@ -22,4 +22,9 @@ public class VenueTypeInfo {
     private List<Venue> venues;
 
     private int capacity;
+
+	@Override
+	public String toString() {
+		return "VenueTypeInfo [venueType=" + venueType + ", capacity=" + capacity + "]";
+	}
 }

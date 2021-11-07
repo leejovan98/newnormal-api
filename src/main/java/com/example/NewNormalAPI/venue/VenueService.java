@@ -42,4 +42,8 @@ public class VenueService {
     public List<Venue> getAllVenues() {
         return venueRepo.findAll();
     }
+    
+    public Venue findByBuildingAndLevelAndRoomNumber(String building, int level, int roomNumber) {
+    	return venueRepo.findByBuildingAndLevelAndRoomNumber(building, level, roomNumber);
+    }
 }

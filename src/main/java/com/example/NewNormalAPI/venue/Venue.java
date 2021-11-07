@@ -38,8 +38,11 @@ public class Venue {
 
     private int roomNumber;
 
-    @Override
-    public String toString() {
-        return "Venue: " + building + "-" + level + "-" + roomNumber;
-    }
+	@Override
+	public String toString() {
+		return "Venue [id=" + id + ", building=" + building + ", venueTypeInfo=" + venueTypeInfo + ", level=" + level
+				+ ", roomNumber=" + roomNumber + "]";
+	}
+
+    
 }

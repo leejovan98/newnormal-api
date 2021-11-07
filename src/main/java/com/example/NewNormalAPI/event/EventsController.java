@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
@@ -30,10 +31,13 @@ import com.example.NewNormalAPI.mailer.Mail;
 import com.example.NewNormalAPI.mailer.MailerSvc;
 import com.example.NewNormalAPI.user.User;
 import com.example.NewNormalAPI.user.UserDetailsServiceImpl;
+import com.example.NewNormalAPI.venue.Venue;
+import com.example.NewNormalAPI.venue.VenueService;
 
 @RestController
 public class EventsController {
     private EventsService eventsSvc;
+    private VenueService venueSvc;
     private UserDetailsServiceImpl userDetailsSvc;
     private MailerSvc mailer;
     private JwtUtil jwtUtil;
@@ -42,12 +46,13 @@ public class EventsController {
     // Constructor
     @Autowired
     public EventsController(EventsService eventsSvc, MailerSvc mailer, UserDetailsServiceImpl userDetailsSvc,
-            JwtUtil jwtUtil, AdminConfigService adminConfigSvc) {
+            JwtUtil jwtUtil, AdminConfigService adminConfigSvc, VenueService venueSvc) {
         this.eventsSvc = eventsSvc;
         this.mailer = mailer;
         this.userDetailsSvc = userDetailsSvc;
         this.jwtUtil = jwtUtil;
         this.adminConfigSvc = adminConfigSvc;
+        this.venueSvc = venueSvc;
     }
 
     /**
@@ -64,6 +69,11 @@ public class EventsController {
     public Event createEvent(HttpServletRequest rqst, @Valid @RequestBody Event event)
             throws UserNotAuthorisedException, LocationAlreadyInUseException, MessagingException,
             AdjacentBookingException {
+
+    	Venue v = venueSvc.findByBuildingAndLevelAndRoomNumber(event.getVenue().getBuilding(), 
+    			event.getVenue().getLevel(), event.getVenue().getRoomNumber());
+    	event.setVenue(v);
+    	
         if (!(isAllowAdjacentBooking()) && event.getVenue().getRoomNumber() % 2 == 0) {
             throw new AdjacentBookingException();
         }
