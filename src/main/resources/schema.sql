@@ -77,108 +77,106 @@ LIMIT 1;
 DROP PROCEDURE IF EXISTS NEW_NORMAL.insertVenueData;
 DROP PROCEDURE IF EXISTS NEW_NORMAL.insertVenueTypeInfoData;
 
-CREATE PROCEDURE insertVenueTypeInfoData(in inVenueType varchar(50), in inCapacity int)
-	INSERT INTO NEW_NORMAL.VENUE_TYPE_INFO(venue_type, capacity)
-	SELECT inVenueType, inCapacity 
-	FROM NEW_NORMAL.VENUE_TYPE_INFO
-	WHERE NOT EXISTS (SELECT * FROM NEW_NORMAL.VENUE_TYPE_INFO WHERE venue_type=inVenueType)
-    LIMIT 1;
+CREATE PROCEDURE insertVenueTypeInfoData (in inVenueType varchar(50), in inCapacity int)
+INSERT INTO NEW_NORMAL.VENUE_TYPE_INFO (venue_type, capacity)
+SELECT * FROM ( SELECT inVenueType , inCapacity) AS temp
+WHERE NOT EXISTS (SELECT * FROM NEW_NORMAL.VENUE_TYPE_INFO WHERE venue_type=inVenueType)
+LIMIT 1;
 
-CREATE PROCEDURE insertVenueData(in inBuilding varchar(50), in inVenueType varchar(50), in inVenueLevel int, in inRoomNumber int)
-	INSERT INTO NEW_NORMAL.VENUE(building, venue_type, level, room_number)
-	SELECT inBuilding, inVenueType, inVenueLevel, inRoomNumber
-	FROM NEW_NORMAL.VENUE
-	WHERE NOT EXISTS (SELECT 1 FROM NEW_NORMAL.VENUE WHERE building=inBuilding AND venue_type=inVenueType AND level=inVenueLevel AND room_number=inRoomNumber)
-    LIMIT 1;
+CREATE PROCEDURE insertVenueData (in inBuilding varchar(50), in inVenueType varchar(50), in inVenueLevel int, in inRoomNumber int)
+	INSERT INTO NEW_NORMAL.VENUE (building, venue_type, level, room_number)
+	SELECT * FROM ( SELECT inBuilding, inVenueType , inVenueLevel, inRoomNumber) AS temp
+	WHERE NOT EXISTS (SELECT * FROM NEW_NORMAL.VENUE WHERE building=inBuilding AND venue_type=inVenueType AND level=inVenueLevel AND room_number=inRoomNumber)
+	LIMIT 1;
 
 CALL insertVenueTypeInfoData('SR','50');
 CALL insertVenueTypeInfoData('GSR','5');
 
-call insertVenueData('SCIS','SR','1','1');
-call insertVenueData('SCIS','SR','1','2');
-call insertVenueData('SCIS','SR','1','3');
-call insertVenueData('SCIS','SR','1','4');
-call insertVenueData('SCIS','SR','1','5');
-call insertVenueData('SCIS','GSR','1','6');
-call insertVenueData('SCIS','GSR','1','7');
-call insertVenueData('SCIS','GSR','1','8');
-call insertVenueData('SCIS','GSR','1','9');
-call insertVenueData('SCIS','GSR','1','10');
+CALL insertVenueData('SCIS','SR','1','1');
+CALL insertVenueData('SCIS','SR','1','2');
+CALL insertVenueData('SCIS','SR','1','3');
+CALL insertVenueData('SCIS','SR','1','4');
+CALL insertVenueData('SCIS','SR','1','5');
+CALL insertVenueData('SCIS','GSR','1','6');
+CALL insertVenueData('SCIS','GSR','1','7');
+CALL insertVenueData('SCIS','GSR','1','8');
+CALL insertVenueData('SCIS','GSR','1','9');
+CALL insertVenueData('SCIS','GSR','1','10');
 
-call insertVenueData('SCIS','SR','2','1');
-call insertVenueData('SCIS','SR','2','2');
-call insertVenueData('SCIS','SR','2','3');
-call insertVenueData('SCIS','SR','2','4');
-call insertVenueData('SCIS','SR','2','5');
-call insertVenueData('SCIS','GSR','2','6');
-call insertVenueData('SCIS','GSR','2','7');
-call insertVenueData('SCIS','GSR','2','8');
-call insertVenueData('SCIS','GSR','2','9');
-call insertVenueData('SCIS','GSR','2','10');
+CALL insertVenueData('SCIS','SR','2','1');
+CALL insertVenueData('SCIS','SR','2','2');
+CALL insertVenueData('SCIS','SR','2','3');
+CALL insertVenueData('SCIS','SR','2','4');
+CALL insertVenueData('SCIS','SR','2','5');
+CALL insertVenueData('SCIS','GSR','2','6');
+CALL insertVenueData('SCIS','GSR','2','7');
+CALL insertVenueData('SCIS','GSR','2','8');
+CALL insertVenueData('SCIS','GSR','2','9');
+CALL insertVenueData('SCIS','GSR','2','10');
 
-call insertVenueData('SCIS','SR','3','1');
-call insertVenueData('SCIS','SR','3','2');
-call insertVenueData('SCIS','SR','3','3');
-call insertVenueData('SCIS','SR','3','4');
-call insertVenueData('SCIS','SR','3','5');
-call insertVenueData('SCIS','GSR','3','6');
-call insertVenueData('SCIS','GSR','3','7');
-call insertVenueData('SCIS','GSR','3','8');
-call insertVenueData('SCIS','GSR','3','9');
-call insertVenueData('SCIS','GSR','3','10');
+CALL insertVenueData('SCIS','SR','3','1');
+CALL insertVenueData('SCIS','SR','3','2');
+CALL insertVenueData('SCIS','SR','3','3');
+CALL insertVenueData('SCIS','SR','3','4');
+CALL insertVenueData('SCIS','SR','3','5');
+CALL insertVenueData('SCIS','GSR','3','6');
+CALL insertVenueData('SCIS','GSR','3','7');
+CALL insertVenueData('SCIS','GSR','3','8');
+CALL insertVenueData('SCIS','GSR','3','9');
+CALL insertVenueData('SCIS','GSR','3','10');
 
-call insertVenueData('SCIS','SR','4','1');
-call insertVenueData('SCIS','SR','4','2');
-call insertVenueData('SCIS','SR','4','3');
-call insertVenueData('SCIS','SR','4','4');
-call insertVenueData('SCIS','SR','4','5');
-call insertVenueData('SCIS','GSR','4','6');
-call insertVenueData('SCIS','GSR','4','7');
-call insertVenueData('SCIS','GSR','4','8');
-call insertVenueData('SCIS','GSR','4','9');
-call insertVenueData('SCIS','GSR','4','10');
+CALL insertVenueData('SCIS','SR','4','1');
+CALL insertVenueData('SCIS','SR','4','2');
+CALL insertVenueData('SCIS','SR','4','3');
+CALL insertVenueData('SCIS','SR','4','4');
+CALL insertVenueData('SCIS','SR','4','5');
+CALL insertVenueData('SCIS','GSR','4','6');
+CALL insertVenueData('SCIS','GSR','4','7');
+CALL insertVenueData('SCIS','GSR','4','8');
+CALL insertVenueData('SCIS','GSR','4','9');
+CALL insertVenueData('SCIS','GSR','4','10');
 
-call insertVenueData('SOE','SR','1','1');
-call insertVenueData('SOE','SR','1','2');
-call insertVenueData('SOE','SR','1','3');
-call insertVenueData('SOE','SR','1','4');
-call insertVenueData('SOE','SR','1','5');
-call insertVenueData('SOE','GSR','1','6');
-call insertVenueData('SOE','GSR','1','7');
-call insertVenueData('SOE','GSR','1','8');
-call insertVenueData('SOE','GSR','1','9');
-call insertVenueData('SOE','GSR','1','10');
+CALL insertVenueData('SOE','SR','1','1');
+CALL insertVenueData('SOE','SR','1','2');
+CALL insertVenueData('SOE','SR','1','3');
+CALL insertVenueData('SOE','SR','1','4');
+CALL insertVenueData('SOE','SR','1','5');
+CALL insertVenueData('SOE','GSR','1','6');
+CALL insertVenueData('SOE','GSR','1','7');
+CALL insertVenueData('SOE','GSR','1','8');
+CALL insertVenueData('SOE','GSR','1','9');
+CALL insertVenueData('SOE','GSR','1','10');
 
-call insertVenueData('SOE','SR','2','1');
-call insertVenueData('SOE','SR','2','2');
-call insertVenueData('SOE','SR','2','3');
-call insertVenueData('SOE','SR','2','4');
-call insertVenueData('SOE','SR','2','5');
-call insertVenueData('SOE','GSR','2','6');
-call insertVenueData('SOE','GSR','2','7');
-call insertVenueData('SOE','GSR','2','8');
-call insertVenueData('SOE','GSR','2','9');
-call insertVenueData('SOE','GSR','2','10');
+CALL insertVenueData('SOE','SR','2','1');
+CALL insertVenueData('SOE','SR','2','2');
+CALL insertVenueData('SOE','SR','2','3');
+CALL insertVenueData('SOE','SR','2','4');
+CALL insertVenueData('SOE','SR','2','5');
+CALL insertVenueData('SOE','GSR','2','6');
+CALL insertVenueData('SOE','GSR','2','7');
+CALL insertVenueData('SOE','GSR','2','8');
+CALL insertVenueData('SOE','GSR','2','9');
+CALL insertVenueData('SOE','GSR','2','10');
 
-call insertVenueData('SOE','SR','3','1');
-call insertVenueData('SOE','SR','3','2');
-call insertVenueData('SOE','SR','3','3');
-call insertVenueData('SOE','SR','3','4');
-call insertVenueData('SOE','SR','3','5');
-call insertVenueData('SOE','GSR','3','6');
-call insertVenueData('SOE','GSR','3','7');
-call insertVenueData('SOE','GSR','3','8');
-call insertVenueData('SOE','GSR','3','9');
-call insertVenueData('SOE','GSR','3','10');
+CALL insertVenueData('SOE','SR','3','1');
+CALL insertVenueData('SOE','SR','3','2');
+CALL insertVenueData('SOE','SR','3','3');
+CALL insertVenueData('SOE','SR','3','4');
+CALL insertVenueData('SOE','SR','3','5');
+CALL insertVenueData('SOE','GSR','3','6');
+CALL insertVenueData('SOE','GSR','3','7');
+CALL insertVenueData('SOE','GSR','3','8');
+CALL insertVenueData('SOE','GSR','3','9');
+CALL insertVenueData('SOE','GSR','3','10');
 
-call insertVenueData('SOE','SR','4','1');
-call insertVenueData('SOE','SR','4','2');
-call insertVenueData('SOE','SR','4','3');
-call insertVenueData('SOE','SR','4','4');
-call insertVenueData('SOE','SR','4','5');
-call insertVenueData('SOE','GSR','4','6');
-call insertVenueData('SOE','GSR','4','7');
-call insertVenueData('SOE','GSR','4','8');
-call insertVenueData('SOE','GSR','4','9');
-call insertVenueData('SOE','GSR','4','10');
+CALL insertVenueData('SOE','SR','4','1');
+CALL insertVenueData('SOE','SR','4','2');
+CALL insertVenueData('SOE','SR','4','3');
+CALL insertVenueData('SOE','SR','4','4');
+CALL insertVenueData('SOE','SR','4','5');
+CALL insertVenueData('SOE','GSR','4','6');
+CALL insertVenueData('SOE','GSR','4','7');
+CALL insertVenueData('SOE','GSR','4','8');
+CALL insertVenueData('SOE','GSR','4','9');
+CALL insertVenueData('SOE','GSR','4','10');
 
