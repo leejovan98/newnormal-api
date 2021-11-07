@@ -47,7 +47,6 @@ public class VenueTypeInfoService {
     public List<VenueTypeInfo> getCurrentCapacity() {
         List<VenueTypeInfo> actualInfo = venueTypeInfoRepo.findAll();
         List<VenueTypeInfo> infoAfterRestriction = List.copyOf(actualInfo);
-
         double maxCapacity = Double.parseDouble(adminConfigSvc.getMaxCapacity());
 
         
