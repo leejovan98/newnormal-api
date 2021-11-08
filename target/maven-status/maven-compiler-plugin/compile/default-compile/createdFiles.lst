@@ -3,6 +3,7 @@ com\example\NewNormalAPI\jwt\filter\JwtRequestFilter.class
 com\example\NewNormalAPI\event\UserNotAuthorisedException.class
 com\example\NewNormalAPI\user\UserRepository.class
 com\example\NewNormalAPI\venue\VenueService.class
+com\example\NewNormalAPI\venue\VenueController.class
 com\example\NewNormalAPI\user\UserAlreadyExistsException.class
 com\example\NewNormalAPI\vaccinationVerification\VaccinationVerificationController.class
 com\example\NewNormalAPI\adminconfig\AdminConfigRepo.class
@@ -11,6 +12,7 @@ com\example\NewNormalAPI\user\UserNotVerifiedException.class
 com\example\NewNormalAPI\verification\VerificationNotFoundException.class
 com\example\NewNormalAPI\adminconfig\PropertyDoesNotExistException.class
 com\example\NewNormalAPI\jwt\util\JwtUtil.class
+com\example\NewNormalAPI\venue\VenueCapacityDto.class
 com\example\NewNormalAPI\mailer\MailerSvcImpl.class
 com\example\NewNormalAPI\venue\VenueRepo.class
 com\example\NewNormalAPI\mailer\Mail.class
@@ -31,9 +33,11 @@ com\example\NewNormalAPI\event\EventRepository.class
 com\example\NewNormalAPI\security\SecurityConfig.class
 com\example\NewNormalAPI\exceptionHandler\GlobalControllerExceptionHandler.class
 com\example\NewNormalAPI\venue\VenueTypeInfoService.class
+com\example\NewNormalAPI\startup\CommandLineAppStartupRunner.class
 com\example\NewNormalAPI\venue\Venue.class
 com\example\NewNormalAPI\user\User.class
 com\example\NewNormalAPI\login\LoginFailedException.class
+com\example\NewNormalAPI\adminconfig\AdjacentBookingException.class
 com\example\NewNormalAPI\event\EventsService.class
 com\example\NewNormalAPI\user\UserController.class
 com\example\NewNormalAPI\event\EventsController.class
