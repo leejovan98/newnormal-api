@@ -74,6 +74,10 @@ public class EventsController {
     			event.getVenue().getLevel(), event.getVenue().getRoomNumber());
     	event.setVenue(v);
     	
+    	if(Objects.isNull(v)) {
+    		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid venue");
+    	}
+    	
         if (!(isAllowAdjacentBooking()) && event.getVenue().getRoomNumber() % 2 == 0) {
             throw new AdjacentBookingException();
         }

@@ -71,6 +71,7 @@ public class Event {
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "venue_id", nullable = false)
+	@NotNull
 	private Venue venue;
 
 	@Temporal(TemporalType.TIMESTAMP)

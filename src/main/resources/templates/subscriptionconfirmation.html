@@ -19,7 +19,7 @@
           <td style="border: 1px solid #000000; padding: 0 2% 0 2%" th:text="${event.getTitle()}"></td>
           <td style="border: 1px solid #000000; padding: 0 2% 0 2%" th:text="${#dates.format(event.getStartDatetime(), 'dd MMM yyyy')}"></td>
           <td style="border: 1px solid #000000; padding: 0 2% 0 2%" th:text="${#dates.format(event.getStartDatetime(), 'hh:mm aa')}"></td>
-          <td style="border: 1px solid #000000; padding: 0 2% 0 2%" th:text="${event.venue.building} + ' Level ' + ${event.venue.level} + ' ' + ${event.venue.venueTypeInfo.venueType} + '-' + ${event.venue.roomNumber}"></td>
+          <td style="border: 1px solid #000000; padding: 0 2% 0 2%" th:text="${event.venue.building} + ' ' + ${event.venue.venueTypeInfo.venueType} + ' ' + ${event.venue.level} + '-' + ${event.venue.roomNumber}"></td>
           <td style="border: 1px solid #000000; padding: 0 2% 0 2%" th:text="${event.getOrganizer().getUsername()}"></td>
           <td style="border: 1px solid #000000; padding: 0 2% 0 2%" th:text=${event.getOrganizer().getEmail()}></td>
         </tr>
