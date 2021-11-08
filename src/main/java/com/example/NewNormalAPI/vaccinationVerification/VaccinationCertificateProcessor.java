@@ -30,6 +30,13 @@ public class VaccinationCertificateProcessor {
 	private static final String TMP_SUBFOLDER = "tmp";
 	private static final String ERR_SUBFOLDER = "err";
 	
+	/**
+	 * Processes image of user's vaccination certificate
+	 * 
+	 * @param img
+	 * @param username
+	 * @return date of vaccination effectiveness date
+	 */
 	public Date process(MultipartFile img, String username) {
 		
 		File tmpDir = new File(root + "/" + TMP_SUBFOLDER);

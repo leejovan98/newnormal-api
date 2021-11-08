@@ -1,23 +1,22 @@
 package com.example.NewNormalAPI.adminconfig;
 
 import java.util.List;
+import java.util.Objects;
 
-import com.example.NewNormalAPI.event.Event;
-import com.example.NewNormalAPI.event.EventsService;
-import com.example.NewNormalAPI.user.User;
-import com.example.NewNormalAPI.user.UserDetailsServiceImpl;
-import com.example.NewNormalAPI.venue.VenueRepo;
-import com.example.NewNormalAPI.venue.VenueService;
-
-import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties.Admin;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+
+import com.example.NewNormalAPI.event.EventsService;
+import com.example.NewNormalAPI.user.User;
+import com.example.NewNormalAPI.user.UserDetailsServiceImpl;
+import com.example.NewNormalAPI.user.UserNotVerifiedException;
 
 @RestController
 public class AdminConfigController {
@@ -34,23 +33,65 @@ public class AdminConfigController {
         this.userSvc = userSvc;
         this.eventSvc = eventSvc;
     }
-
-    // Promote user from student to faculty
-    @PutMapping("/admin/configuration")
+    
+    /** Gets all configurations for admin
+     * 
+     * @return list of admin configurations
+     */
+    @GetMapping("/admin/configuration")
     @ResponseStatus(HttpStatus.OK)
-    public void promoteStudent(User user) {
-        user.setAuthorities("faculty");
-        userSvc.update(user);
+    public List<AdminConfig> getConfigs() {
+    	return adminConfigSvc.getAllAdminConfig();
     }
 
-    // Update capacity
+    /**
+     * Update admin configuration
+     * 
+     * @param adminConfig
+     */
     @PostMapping("/admin/configuration")
     @ResponseStatus(HttpStatus.OK)
-    public void updateAdminConfig(AdminConfig adminConfig) throws PropertyDoesNotExistException {
+    public void updateAdminConfig(@RequestBody AdminConfig adminConfig) throws PropertyDoesNotExistException {
         try {
             adminConfigSvc.update(adminConfig);
         } catch (PropertyDoesNotExistException e) {
-            System.out.println(e.getMessage());
+        	throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Property Value Received");
         }
+    }
+    
+    /**
+     * Returns a list of all the users
+     * 
+     * @return list of all users
+     */
+    @GetMapping("/admin/users")
+    @ResponseStatus(HttpStatus.OK)
+    public List<User> getAllUsers() {
+    	return userSvc.loadAllUsers();
+    }
+    
+    /**
+     * Promotes user to faculty 
+     * 
+     * @param user
+     */
+    @PostMapping("/admin/users")
+    @ResponseStatus(HttpStatus.OK)
+    public void promoteUser(@RequestBody User user) {
+    	User curUser;
+    	try {
+    		curUser = userSvc.loadUserEntityByUsername(user.getUsername());
+    	} catch (UserNotVerifiedException e) {
+    		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User has not been verified");
+    	}
+    	
+    	if(Objects.isNull(curUser)) {
+    		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No Such User");
+    	} else if(curUser.getAuthorities().contains(new SimpleGrantedAuthority("admin")) || 
+    			curUser.getAuthorities().contains(new SimpleGrantedAuthority("faculty"))) {
+    		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "unable to promote user to 'faculty'");
+    	}
+    	curUser.setAuthorities("faculty");
+    	userSvc.update(curUser);
     }
 }

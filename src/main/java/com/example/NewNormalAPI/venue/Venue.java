@@ -1,30 +1,18 @@
 package com.example.NewNormalAPI.venue;
 
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.persistence.OneToMany;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
-import com.example.NewNormalAPI.user.User;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.example.NewNormalAPI.event.Event;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -33,16 +21,32 @@ import lombok.EqualsAndHashCode;
 @Data
 public class Venue {
     @Id
-    @GeneratedValue
+    @EqualsAndHashCode.Include
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // used to prevent infinite references from occurring with
+                                                        // lombok
     private Long id;
 
-	private String building;
+    private String building;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "venue_name")
-    private String type;
+    @JsonIgnore
+    @OneToMany(mappedBy = "venue", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<Event> events;
+
+    @ManyToOne
+    @JoinColumn(name = "venue_type", nullable = false)
+    private VenueTypeInfo venueTypeInfo;
 
     private int level;
 
     private int roomNumber;
+
+
+	@Override
+	public String toString() {
+		return "Venue [id=" + id + ", building=" + building + ", venueTypeInfo=" + venueTypeInfo + ", level=" + level
+				+ ", roomNumber=" + roomNumber + "]";
+	}
+
+    
+
 }

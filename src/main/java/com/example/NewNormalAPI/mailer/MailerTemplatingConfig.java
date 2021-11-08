@@ -11,6 +11,11 @@ import org.thymeleaf.templatemode.TemplateMode;
 @Configuration
 public class MailerTemplatingConfig {
 
+    /**
+     * Configuration for templating engine
+     * 
+     * @return SpringTemplateEngine object
+     */
 	@Bean
 	public SpringTemplateEngine springTemplateEngine() {
 		SpringTemplateEngine templateEngine = new SpringTemplateEngine();
@@ -18,6 +23,12 @@ public class MailerTemplatingConfig {
         return templateEngine;
 	}
 	
+    /**
+     * Allows use of HTML pages for email
+     * 
+     * @return SpringResourceTemplateResolver object
+     *  
+     */
 	@Bean
     public SpringResourceTemplateResolver htmlTemplateResolver(){
         SpringResourceTemplateResolver emailTemplateResolver = new SpringResourceTemplateResolver();

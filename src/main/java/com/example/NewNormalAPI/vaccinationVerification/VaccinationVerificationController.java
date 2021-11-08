@@ -34,6 +34,12 @@ public class VaccinationVerificationController {
 	@Autowired
 	private UserDetailsServiceImpl userSvc;
 	
+	/**
+	 * Gets page for uploading of vaccination status
+	 * 
+	 * @param jwt
+	 * @return "vaxupload.html"
+	 */
 	@GetMapping("/vaccination/verify")
 	public String getPage(@CookieValue(value="jwt", required=false) String jwt) {
 		if(Objects.isNull(jwt)) return "unauth";
@@ -45,7 +51,18 @@ public class VaccinationVerificationController {
 		return "vaxupload";
 	}
 	
-	
+	/**
+	 * Allows user to upload vaccination status 
+	 * 
+	 * @param model
+	 * @param jwt
+	 * @param img
+	 * @param response
+	 * @return "error.html" if there is no image
+	 * @return "unauth.html" if user unauthenticated
+	 * @return "manualverification" if user updates vaccination status
+	 * @return "complete" if vaccination status upload is successful
+	 */
 	@PostMapping("/vaccination/verify")
 	public String uploadVaccination(Model model, @CookieValue("jwt") String jwt, @RequestParam MultipartFile img, 
 			HttpServletResponse response) {

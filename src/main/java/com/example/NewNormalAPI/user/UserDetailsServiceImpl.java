@@ -1,6 +1,7 @@
 package com.example.NewNormalAPI.user;
 
 import java.util.Date;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -21,32 +22,22 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         this.users = users;
     }
 
-//    // TODO: finalise the return type JWT?
-//    public User authenticate(User user) {
-//        Optional<User> search = users.findByEmail(user.getEmail());
-//        if (search.isEmpty())
-//            throw new LoginFailedException(user.getEmail());
-//
-//        User actualUser = search.get();
-//        if (!actualUser.isEnabled()) {
-//            throw new UserNotVerifiedException(user.getEmail());
-//        }
-//
-//        if (!(BCrypt.checkpw(user.getPassword(), actualUser.getPassword()))) {
-//            throw new LoginFailedException(user.getEmail());
-//        }
-//
-//        return actualUser;
-//        // at this point user is authenticated
-//        // what to return?
-//        // might just remove this entire method
-//    }
-//
+    /**
+     * Updates user
+     * 
+     * @param user
+     * @return
+     */
     public User update(User user) {
         return users.save(user);
     }
 
-    // TODO: should throw exception?
+    /**
+     * Creates a new user
+     * 
+     * @param user
+     * @return newly created user
+     */
     public User createUser(User user) {
         Optional<User> search = users.findByUsername(user.getUsername());
         Optional<User> search2 = users.findByEmail(user.getEmail());
@@ -58,6 +49,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return users.save(user);
     }
     
+    /**
+     * Loads user entity by username
+     * 
+     * @param username
+     * @return loaded user
+     * @throws UsernameNotFoundException
+     * @throws UserNotVerifiedException
+     */
     public User loadUserEntityByUsername(String username) throws UsernameNotFoundException, UserNotVerifiedException{
     	Optional<User> search = users.findByUsername(username);
         User user;
@@ -72,7 +71,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
     
 
-    // TODO -- FIX ERROR MESSAGE
+    /**
+     * Loads users by their username
+     * 
+     * @param username
+     * @return loaded user
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> search = users.findByUsername(username);
@@ -86,11 +90,26 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.getAuthorities());
     }
     
+    /**
+     * Updates user's vaccination status
+     * 
+     * @param username of user
+     * @param date of effectiveness of vaccination
+     */
     public void updateVaccinationStatus(String username, Date date) {
     	User user = loadUserEntityByUsername(username);
     	user.setVaccinated("Y");
     	user.setVaccinationDate(date);
     	users.save(user);
+    }
+    
+    /**
+     * Loads all users in the system
+     * 
+     * @return list of all users loaded
+     */
+    public List<User> loadAllUsers(){
+    	return users.findAll();
     }
 
 }
