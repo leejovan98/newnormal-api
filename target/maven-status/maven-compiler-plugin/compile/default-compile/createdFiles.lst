@@ -34,6 +34,7 @@ com\example\NewNormalAPI\venue\VenueTypeInfoService.class
 com\example\NewNormalAPI\venue\Venue.class
 com\example\NewNormalAPI\user\User.class
 com\example\NewNormalAPI\login\LoginFailedException.class
+com\example\NewNormalAPI\adminconfig\AdjacentBookingException.class
 com\example\NewNormalAPI\event\EventsService.class
 com\example\NewNormalAPI\user\UserController.class
 com\example\NewNormalAPI\event\EventsController.class

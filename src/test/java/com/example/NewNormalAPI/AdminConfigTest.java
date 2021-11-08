@@ -65,8 +65,11 @@ public class AdminConfigTest {
         adminConfig.setValue("N");
 
         Venue newVenue = new Venue();
-        newVenue.setRoomNumbers(2);
-        
+        newVenue.setBuilding("SCIS");
+        newVenue.setType("SR");
+        newVenue.setLevel(2);
+        newVenue.setRoomNumber(2);
+
         Event newEvent = new Event();
         newEvent.setVenue(newVenue);
 

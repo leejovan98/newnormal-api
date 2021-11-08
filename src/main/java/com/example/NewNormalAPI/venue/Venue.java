@@ -44,5 +44,5 @@ public class Venue {
 
     private int level;
 
-    private int roomNumbers;
+    private int roomNumber;
 }
