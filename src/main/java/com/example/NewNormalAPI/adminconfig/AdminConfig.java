@@ -4,7 +4,10 @@ import java.sql.Timestamp;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 
@@ -12,12 +15,14 @@ import lombok.Data;
 @Data
 public class AdminConfig {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
 
     private String property;
 
     private String value;
 
-    private Timestamp insertTs;
+    @JsonIgnore
+    private Timestamp updateTs;
 }

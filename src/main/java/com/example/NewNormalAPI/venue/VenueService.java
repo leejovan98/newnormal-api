@@ -1,5 +1,7 @@
 package com.example.NewNormalAPI.venue;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +14,36 @@ public class VenueService {
         this.venueRepo = venueRepo;
     }
 
+    /**
+     * Saves venue
+     * 
+     * @param venue
+     * @return saved venue
+     */
     public Venue save(Venue venue) {
         return venueRepo.save(venue);
     }
 
+    /**
+     * Updates venue 
+     * 
+     * @param venue
+     * @return updated venue
+     */
     public Venue update(Venue venue) {
         return venueRepo.save(venue);
+    }
+
+    /**
+     * Gets all venues
+     * 
+     * @return list of all the venues
+     */
+    public List<Venue> getAllVenues() {
+        return venueRepo.findAll();
+    }
+    
+    public Venue findByBuildingAndLevelAndRoomNumber(String building, int level, int roomNumber) {
+    	return venueRepo.findByBuildingAndLevelAndRoomNumber(building, level, roomNumber);
     }
 }

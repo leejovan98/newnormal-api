@@ -33,6 +33,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * Attach the user details and password encoder.
+     * 
+     * @param auth
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -46,6 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * Note: '*' matches zero or more characters, e.g., /books/* matches /books/20
      * '**' matches zero or more 'directories' in a path, e.g., /books/** matches
      * /books/1/reviews
+     * 
+     * @param configure
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -59,6 +63,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST,"/accounts/admin").hasAuthority("admin") // Only allow admin to update capacity
                 .antMatchers(HttpMethod.GET,"/vaccination/**").permitAll()
                 .antMatchers(HttpMethod.POST,"/vaccination/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/admin/**").hasAuthority("admin")
+                .antMatchers(HttpMethod.POST,"/admin/**").hasAuthority("admin")
+                .antMatchers(HttpMethod.GET,"/events/venues").hasAuthority("faculty")
                 .anyRequest().authenticated() // any remaining requests will need authentication
                 .and().csrf().disable() // CSRF protection is needed only for browser based attacks
                 .formLogin().disable() // Disables default login page
@@ -80,6 +87,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Interface for authentication
+     */
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {

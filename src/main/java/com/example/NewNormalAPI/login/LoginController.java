@@ -36,40 +36,12 @@ public class LoginController {
     }
 
     /**
-     * User login authentication
+     * Creates authentication token
      * 
-     * @return true if user logs in successfully
+     * @param authenticationRequest
+     * @param response
+     * @return login DTO
      */
-    
-    // TODO Might need to remove user authenticate method from
-    // UserDetailsServiceImpl
-    // @GetMapping("/login")
-    // public User userLogin(@RequestBody User user) {
-    // return userService.authenticate(user);
-    // }
-
-    // TODO POTENTIAL ISSUE: Unverified people can log in
-//    @RequestMapping(value = "/accounts/login", method = RequestMethod.POST)
-//    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest){
-//    	try {
-//            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-//                    authenticationRequest.getUsername(), authenticationRequest.getPassword());
-//            authenticationManager.authenticate(authenticationToken);
-//        } catch (BadCredentialsException e) {
-////            throw new Exception("Incorrect username or password", e);
-//        	throw new LoginFailedException();
-//        }
-//
-//        final UserDetails userDetails = userService.loadUserByUsername(authenticationRequest.getUsername());
-//        if(!userDetails.isEnabled()) {
-//        	throw new UserNotVerifiedException();
-//        }
-//        final String jwt = jwtTokenUtil.generateToken(userDetails);
-//        return ResponseEntity.ok(new AuthenticationResponse(jwt));
-//    }
-    
-    
-    // TODO: remove lated -- for cookie testing only
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = "/accounts/login", method = RequestMethod.POST)
     public LoginDto createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest,  HttpServletResponse response){

@@ -38,6 +38,11 @@ public class MailerSvcImpl implements MailerSvc {
 	private String verificationPath;
 	private String eventInvitationPath;
 	
+        /**
+         * Sends verification code to user's email for users to verify their accounts
+         * 
+         * @param mail which is user's email address
+         */
 	@Async
 	public void sendVerificationCode(Mail mail) {
 		SimpleMailMessage message = new SimpleMailMessage();
@@ -49,6 +54,12 @@ public class MailerSvcImpl implements MailerSvc {
 		sender.send(message);
 	}
 
+        /**
+         * Sends created event to user's email
+         * 
+         * @param mail which is user's email address
+         * @throws MessagingException
+         */
 	@Async
 	public void sendEventCreation(Mail mail) throws MessagingException {
 		MimeMessage message = sender.createMimeMessage();
@@ -57,11 +68,11 @@ public class MailerSvcImpl implements MailerSvc {
                 StandardCharsets.UTF_8.name());
         Context context = new Context();
         
-        Event e = (Event) mail.getProperties().get("event");
+        Event event = (Event) mail.getProperties().get("event");
         
         Map<String, Object> vars = new HashMap<>();
-        vars.put("event", e);
-        vars.put("inviteLink", baseUri + eventInvitationPath + e.getInviteCode());
+        vars.put("event", event);
+        vars.put("inviteLink", baseUri + eventInvitationPath + event.getInviteCode());
         context.setVariables(vars);
     
         String html = templateEngine.process("eventcreation", context);
@@ -71,7 +82,12 @@ public class MailerSvcImpl implements MailerSvc {
         sender.send(message);
 	}
 	
-	
+	/**
+         * Sends subscription confirmation to user's email address
+         * 
+         * @param mail which is user's email address
+         * @throws MessagingException
+         */
 	@Async
 	public void sendSubscriptionConfirmation(Mail mail) throws MessagingException {
 		MimeMessage message = sender.createMimeMessage();
@@ -80,10 +96,10 @@ public class MailerSvcImpl implements MailerSvc {
                 StandardCharsets.UTF_8.name());
         Context context = new Context();
         
-        Event e = (Event) mail.getProperties().get("event");
+        Event event = (Event) mail.getProperties().get("event");
         
         Map<String, Object> vars = new HashMap<>();
-        vars.put("event", e);
+        vars.put("event", event);
         context.setVariables(vars);
     
         String html = templateEngine.process("subscriptionconfirmation", context);
