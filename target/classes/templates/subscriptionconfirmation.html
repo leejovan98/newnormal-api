@@ -10,14 +10,16 @@
           <th style="width:30%; min-width:200px; border: 1px solid #000000">Title</th>
           <th style="width:10%; min-width:100px; border: 1px solid #000000">Date</th>
           <th style="width:10%; min-width:100px; border: 1px solid #000000">Time</th>
+          <th style="width:10%; min-width:100px; border: 1px solid #000000">Location</th>
           <th style="width:25%; min-width:125px; border: 1px solid #000000">Organizer</th>
           <th style="width:25%; min-width:125px; border: 1px solid #000000">Organizer Email</th>
 
         </tr>
         <tr style="text-align: center">
           <td style="border: 1px solid #000000; padding: 0 2% 0 2%" th:text="${event.getTitle()}"></td>
-          <td style="border: 1px solid #000000; padding: 0 2% 0 2%" th:text="${#dates.format(event.getDatetime(), 'dd MMM yyyy')}"></td>
-          <td style="border: 1px solid #000000; padding: 0 2% 0 2%" th:text="${#dates.format(event.getDatetime(), 'hh:mm aa')}">CCC</td>
+          <td style="border: 1px solid #000000; padding: 0 2% 0 2%" th:text="${#dates.format(event.getStartDatetime(), 'dd MMM yyyy')}"></td>
+          <td style="border: 1px solid #000000; padding: 0 2% 0 2%" th:text="${#dates.format(event.getStartDatetime(), 'hh:mm aa')}"></td>
+          <td style="border: 1px solid #000000; padding: 0 2% 0 2%" th:text="${event.venue.building} + ' Level ' + ${event.venue.level} + ' ' + ${event.venue.venueTypeInfo.venueType} + '-' + ${event.venue.roomNumber}"></td>
           <td style="border: 1px solid #000000; padding: 0 2% 0 2%" th:text="${event.getOrganizer().getUsername()}"></td>
           <td style="border: 1px solid #000000; padding: 0 2% 0 2%" th:text=${event.getOrganizer().getEmail()}></td>
         </tr>

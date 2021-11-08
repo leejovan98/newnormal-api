@@ -1,5 +1,7 @@
 package com.example.NewNormalAPI.event;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +27,9 @@ public class EventsService {
      * @return true if 
      */
     public boolean locationAlreadyInUse(Event event) {
-        List<Event> myList = eRepo.findByVenueIdAndStartDatetime(event.getVenue().getId(), event.getStartDatetime());
+        List<Event> myList = eRepo.findByVenueIdAndStartDatetimeLessThanAndStartDatetimeGreaterThan(event.getVenue().getId(), event.getStopDatetime(), event.getStartDatetime());
+        myList.addAll(eRepo.findByVenueIdAndStopDatetimeGreaterThanAndStopDatetimeLessThan(event.getVenue().getId(), event.getStartDatetime(), event.getStopDatetime()));
+        System.out.println(myList);
         return !myList.isEmpty();
     }
 
@@ -37,9 +41,14 @@ public class EventsService {
      * @throws LocationAlreadyInUseException
      */
     public Event save(Event event) throws LocationAlreadyInUseException {
+    	
+    	if(event.getStartDatetime().before(new Date()) || event.getStopDatetime().before(event.getStartDatetime())) 
+    		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Start/End Times");
+    	
     	if(locationAlreadyInUse(event)) {
     		throw new LocationAlreadyInUseException("Location has already been booked for this timeslot.");
     	}
+    	
         return eRepo.save(event);
     }
     
@@ -71,7 +80,9 @@ public class EventsService {
      * @return list of featured public events
      */
     public List<Event> getFeaturedPublicEvents(){
-    	return eRepo.findTop10ByVisibilityOrderByStartDatetimeAsc("public");
+    	Date currentDate = new Date();
+    	Timestamp currentTs = new Timestamp(currentDate.getTime());
+    	return eRepo.findTop10ByVisibilityAndStartDatetimeGreaterThanOrderByStartDatetimeAsc("public", currentTs);
     }
 
     /**
