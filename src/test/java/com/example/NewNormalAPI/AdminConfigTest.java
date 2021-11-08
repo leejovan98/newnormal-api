@@ -13,6 +13,7 @@ import com.example.NewNormalAPI.event.Event;
 import com.example.NewNormalAPI.event.EventRepository;
 import com.example.NewNormalAPI.event.EventsService;
 import com.example.NewNormalAPI.venue.Venue;
+import com.example.NewNormalAPI.venue.VenueTypeInfo;
 
 import org.junit.Test;
 import org.junit.jupiter.api.AfterEach;
@@ -69,9 +70,12 @@ public class AdminConfigTest {
         adminConfig.setProperty("ALLOW_ADJACENT_BOOKINGS");
         adminConfig.setValue("N");
 
+        VenueTypeInfo newVenueTypeInfo = new VenueTypeInfo();
+        newVenueTypeInfo.setVenueType("SR");
+
         Venue newVenue = new Venue();
         newVenue.setBuilding("SCIS");
-        newVenue.setType("SR");
+        newVenue.setVenueTypeInfo(newVenueTypeInfo);
         newVenue.setLevel(2);
         newVenue.setRoomNumber(2);
 
