@@ -8,11 +8,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.example.NewNormalAPI.adminconfig.AdjacentBookingException;
 import com.example.NewNormalAPI.adminconfig.PropertyDoesNotExistException;
+import com.example.NewNormalAPI.event.LocationAlreadyInUseException;
 import com.example.NewNormalAPI.event.UserNotAuthorisedException;
 import com.example.NewNormalAPI.login.LoginFailedException;
 import com.example.NewNormalAPI.user.UserAlreadyExistsException;
 import com.example.NewNormalAPI.user.UserNotVerifiedException;
 import com.example.NewNormalAPI.verification.VerificationNotFoundException;
+
+import io.jsonwebtoken.ExpiredJwtException;
 
 @ControllerAdvice
 public class GlobalControllerExceptionHandler {
@@ -20,6 +23,11 @@ public class GlobalControllerExceptionHandler {
 	@ResponseStatus(code = HttpStatus.UNAUTHORIZED, reason = "No token passed")
 	@ExceptionHandler(MissingRequestCookieException.class)
 	public void handleMissingRequestCookieException() {
+	}
+	
+	@ResponseStatus(code = HttpStatus.UNAUTHORIZED, reason = "Authentication token has expired")
+	@ExceptionHandler(ExpiredJwtException.class)
+	public void handleExpiredJwtException() {
 	}
 
 	@ResponseStatus(code = HttpStatus.UNAUTHORIZED, reason = "login failed")
@@ -36,6 +44,11 @@ public class GlobalControllerExceptionHandler {
 	@ExceptionHandler(UserAlreadyExistsException.class)
 	public void handleUserAlreadyExistsException() {
 	}
+	
+	@ResponseStatus(code = HttpStatus.BAD_REQUEST, reason = "location already in use for the specified timeslot")
+	@ExceptionHandler(LocationAlreadyInUseException.class)
+	public void handleLocationAlreadyInUseException() {
+	}
 
 	@ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "verification code is invalid or has already been activated")
 	@ExceptionHandler(VerificationNotFoundException.class)
@@ -47,7 +60,7 @@ public class GlobalControllerExceptionHandler {
 	public void handleUserNotAuthorisedException() {
 	}
 
-	@ResponseStatus(code = HttpStatus.BAD_REQUEST, reason = "You are not allowed to create this event due to current booking restrictions")
+	@ResponseStatus(code = HttpStatus.BAD_REQUEST, reason = "Location has been blocked due to current booking restrictions")
 	@ExceptionHandler(AdjacentBookingException.class)
 	public void handleAdjacentBookingException() {
 	}

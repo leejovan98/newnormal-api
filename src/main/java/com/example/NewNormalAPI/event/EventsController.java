@@ -74,6 +74,10 @@ public class EventsController {
     			event.getVenue().getLevel(), event.getVenue().getRoomNumber());
     	event.setVenue(v);
     	
+    	if(Objects.isNull(v)) {
+    		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid venue");
+    	}
+    	
         if (!(isAllowAdjacentBooking()) && event.getVenue().getRoomNumber() % 2 == 0) {
             throw new AdjacentBookingException();
         }
@@ -180,7 +184,7 @@ public class EventsController {
     public boolean isAllowAdjacentBooking() {
         List<AdminConfig> allAdminConfig = adminConfigSvc.getAllAdminConfig();
         for (AdminConfig adminConfig : allAdminConfig) {
-            if (adminConfig.getProperty().equalsIgnoreCase("ALLOW ADJACENT BOOKINGS") && adminConfig.getValue().equals("N")) {
+            if (adminConfig.getProperty().equalsIgnoreCase("allow adjacent booking") && adminConfig.getValue().equals("N")) {
                 return false;
             }
         }

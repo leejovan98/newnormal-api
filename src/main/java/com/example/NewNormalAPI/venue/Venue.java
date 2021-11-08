@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.example.NewNormalAPI.event.Event;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -27,6 +28,7 @@ public class Venue {
 
     private String building;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "venue", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Event> events;
 
