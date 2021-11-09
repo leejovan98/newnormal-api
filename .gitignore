@@ -1,8 +1,8 @@
 
 *.class
+target/classes/META-INF/maven/com.example/NewNormalAPI/pom.properties
 .classpath
 *.MF
 *.class
 
 
-src/main/resources/application.properties
