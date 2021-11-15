@@ -21,7 +21,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
-// import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.example.NewNormalAPI.event.Event;
@@ -42,54 +41,6 @@ public class EventsServiceTest {
         // clear the database after each test
         events.deleteAll();
     }
-
-//    @Test
-//    void locationAlreadyInUse_NotInUse_ReturnFalse() {
-//        // arrange ***
-//        Event e = new Event();
-//        Date date = new Date();
-//        String location = "SCIS B1-1";
-//        e.setStartDatetime(date);
-//        e.setLocation(location);
-//
-//        List<Event> emptyList = new ArrayList<>();
-//        // Stubbing
-//        when(events.findByLocationAndStartDatetime(any(String.class), any(Date.class))).thenReturn(emptyList);
-//
-//        // act ***
-//        Boolean testResult = eventsService.locationAlreadyInUse(e);
-//
-//        // assert ***
-//        verify(events).findByLocationAndStartDatetime(location, date);
-//        assertFalse(testResult);
-//    }
-//
-//    @Test
-//    void locationAlreadyInUse_InUse_ReturnTrue() {
-//        // arrange ***
-//        Date date = new Date();
-//        String location = "SCIS B1-1";
-//
-//        Event e1 = new Event();
-//        e1.setStartDatetime(date);
-//        e1.setLocation(location);
-//
-//        Event e2 = new Event();
-//        e2.setStartDatetime(date);
-//        e2.setLocation(location);
-//
-//        List<Event> myList = new ArrayList<>();
-//        myList.add(e1);
-//        // Stubbing
-//        when(events.findByLocationAndStartDatetime(any(String.class), any(Date.class))).thenReturn(myList);
-//
-//        // act ***
-//        Boolean testResult = eventsService.locationAlreadyInUse(e2);
-//
-//        // assert ***
-//        verify(events).findByLocationAndStartDatetime(location, date);
-//        assertTrue(testResult);
-//    }
 
     @Test
     void getEventByInviteCode_NotFound_ThrowHTTP404() {
