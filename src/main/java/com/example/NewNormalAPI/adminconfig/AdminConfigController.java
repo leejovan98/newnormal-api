@@ -78,20 +78,20 @@ public class AdminConfigController {
     @PostMapping("/admin/users")
     @ResponseStatus(HttpStatus.OK)
     public void promoteUser(@RequestBody User user) {
-    	User curUser;
+    	User currentUser;
     	try {
-    		curUser = userSvc.loadUserEntityByUsername(user.getUsername());
+    		currentUser = userSvc.loadUserEntityByUsername(user.getUsername());
     	} catch (UserNotVerifiedException e) {
     		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User has not been verified");
     	}
     	
-    	if(Objects.isNull(curUser)) {
+    	if(Objects.isNull(currentUser)) {
     		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No Such User");
-    	} else if(curUser.getAuthorities().contains(new SimpleGrantedAuthority("admin")) || 
-    			curUser.getAuthorities().contains(new SimpleGrantedAuthority("faculty"))) {
+    	} else if(currentUser.getAuthorities().contains(new SimpleGrantedAuthority("admin")) || 
+    			currentUser.getAuthorities().contains(new SimpleGrantedAuthority("faculty"))) {
     		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "unable to promote user to 'faculty'");
     	}
-    	curUser.setAuthorities("faculty");
-    	userSvc.update(curUser);
+    	currentUser.setAuthorities("faculty");
+    	userSvc.update(currentUser);
     }
 }
