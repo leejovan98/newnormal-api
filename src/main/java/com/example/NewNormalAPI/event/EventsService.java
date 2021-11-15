@@ -13,11 +13,11 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class EventsService {
 
-    private EventRepository eRepo;
+    private EventRepository eventRepo;
     
     @Autowired
-    public EventsService(EventRepository eRepo) {
-        this.eRepo = eRepo;
+    public EventsService(EventRepository eventRepo) {
+        this.eventRepo = eventRepo;
     }
 
     /**
@@ -27,8 +27,8 @@ public class EventsService {
      * @return true if 
      */
     public boolean locationAlreadyInUse(Event event) {
-        List<Event> myList = eRepo.findByVenueIdAndStartDatetimeLessThanAndStartDatetimeGreaterThan(event.getVenue().getId(), event.getStopDatetime(), event.getStartDatetime());
-        myList.addAll(eRepo.findByVenueIdAndStopDatetimeGreaterThanAndStopDatetimeLessThan(event.getVenue().getId(), event.getStartDatetime(), event.getStopDatetime()));
+        List<Event> myList = eventRepo.findByVenueIdAndStartDatetimeLessThanAndStartDatetimeGreaterThan(event.getVenue().getId(), event.getStopDatetime(), event.getStartDatetime());
+        myList.addAll(eventRepo.findByVenueIdAndStopDatetimeGreaterThanAndStopDatetimeLessThan(event.getVenue().getId(), event.getStartDatetime(), event.getStopDatetime()));
         System.out.println(myList);
         return !myList.isEmpty();
     }
@@ -49,7 +49,7 @@ public class EventsService {
     		throw new LocationAlreadyInUseException("Location has already been booked for this timeslot.");
     	}
     	
-        return eRepo.save(event);
+        return eventRepo.save(event);
     }
     
     /**
@@ -59,7 +59,7 @@ public class EventsService {
      * @return the updated event
      */
     public Event update(Event event) {
-        return eRepo.save(event);
+        return eventRepo.save(event);
     }
     
     /**
@@ -69,7 +69,7 @@ public class EventsService {
      * @return event under respective invite code
      */
     public Event getEventByInviteCode(String inviteCode) {
-    	Optional<Event> opt = eRepo.findByInviteCode(inviteCode);
+    	Optional<Event> opt = eventRepo.findByInviteCode(inviteCode);
     	if(opt.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid invitation code");
     	return opt.get();
     }
@@ -82,7 +82,7 @@ public class EventsService {
     public List<Event> getFeaturedPublicEvents(){
     	Date currentDate = new Date();
     	Timestamp currentTs = new Timestamp(currentDate.getTime());
-    	return eRepo.findTop10ByVisibilityAndStartDatetimeGreaterThanOrderByStartDatetimeAsc("public", currentTs);
+    	return eventRepo.findTop10ByVisibilityAndStartDatetimeGreaterThanOrderByStartDatetimeAsc("public", currentTs);
     }
 
     /**
@@ -91,6 +91,6 @@ public class EventsService {
      * @return list of all events
      */
     public List<Event> getAllEvents() {
-        return eRepo.findAll();
+        return eventRepo.findAll();
     }
 }
