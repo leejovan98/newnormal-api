@@ -70,11 +70,11 @@ public class EventsController {
             throws UserNotAuthorisedException, LocationAlreadyInUseException, MessagingException,
             AdjacentBookingException {
 
-    	Venue v = venueSvc.findByBuildingAndLevelAndRoomNumber(event.getVenue().getBuilding(), 
+    	Venue venue = venueSvc.findByBuildingAndLevelAndRoomNumber(event.getVenue().getBuilding(), 
     			event.getVenue().getLevel(), event.getVenue().getRoomNumber());
-    	event.setVenue(v);
+    	event.setVenue(venue);
     	
-    	if(Objects.isNull(v)) {
+    	if(Objects.isNull(venue)) {
     		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid venue");
     	}
     	
@@ -114,18 +114,17 @@ public class EventsController {
     }
 
     /**
-     * Allows Student member to subscribe to event Sends a confirmation email if event successfully subscribed to
+     * Allows Student member to subscribe to event. Sends a confirmation email if event successfully subscribed to
      * 
-     * @param user
-     * @param event
+     * @param request
+     * @param inviteCode
      * @throws EventFullySubscribedException
-     * @return event
      * @throws MessagingException
      */
     @PostMapping("/events/{inviteCode}/subscribe")
     @ResponseStatus(HttpStatus.OK)
-    public void subscribeEvent(HttpServletRequest rqst, @PathVariable String inviteCode) throws MessagingException {
-        String jwt = jwtUtil.extractJWTString(rqst);
+    public void subscribeEvent(HttpServletRequest request, @PathVariable String inviteCode) throws MessagingException {
+        String jwt = jwtUtil.extractJWTString(request);
         User user = userDetailsSvc.loadUserEntityByUsername(jwtUtil.extractUsername(jwt));
         Event event = eventsSvc.getEventByInviteCode(inviteCode);
         if (event.getNumSubscribers() >= event.getMaxSubscribers()) {
@@ -159,8 +158,8 @@ public class EventsController {
      */
     public String generateInvitationCode(Event event) {
         SimpleDateFormat format = new SimpleDateFormat("ddMMyyHHmmss");
-        Date currDt = new Date();
-        String code = event.getId() + format.format(currDt);
+        Date currentDate = new Date();
+        String code = event.getId() + format.format(currentDate);
         return Base64.getUrlEncoder().withoutPadding().encodeToString(code.getBytes(StandardCharsets.UTF_8));
 
     }
