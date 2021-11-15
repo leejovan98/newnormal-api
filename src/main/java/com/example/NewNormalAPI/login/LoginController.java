@@ -50,7 +50,6 @@ public class LoginController {
                     authenticationRequest.getUsername(), authenticationRequest.getPassword());
             authenticationManager.authenticate(authenticationToken);
         } catch (BadCredentialsException e) {
-//            throw new Exception("Incorrect username or password", e);
         	throw new LoginFailedException();
         }
 
@@ -58,7 +57,6 @@ public class LoginController {
         if(!userDetails.isEnabled()) {
         	throw new UserNotVerifiedException();
         }
-//        return jwtTokenUtil.generateToken(userDetails);
         String jwt = jwtTokenUtil.generateToken(userDetails);
         User user = userService.loadUserEntityByUsername(authenticationRequest.getUsername());
         
