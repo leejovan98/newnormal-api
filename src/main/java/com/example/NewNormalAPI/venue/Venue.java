@@ -22,8 +22,7 @@ import lombok.EqualsAndHashCode;
 public class Venue {
     @Id
     @EqualsAndHashCode.Include
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // used to prevent infinite references from occurring with
-                                                        // lombok
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // used to prevent infinite references from occurring with lombok
     private Long id;
 
     private String building;
@@ -39,7 +38,6 @@ public class Venue {
     private int level;
 
     private int roomNumber;
-
 
 	@Override
 	public String toString() {
