@@ -36,8 +36,8 @@ public class Event {
 
 	@Id
 	@EqualsAndHashCode.Include
-	@GeneratedValue(strategy = GenerationType.IDENTITY) // used to prevent infinite references from occurring with
-														// lombok
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // used to prevent infinite references from occurring with lombok
+														
 	private Long id;
 
 	@ManyToOne
@@ -62,11 +62,6 @@ public class Event {
 
 	@NotNull
 	private Integer maxSubscribers;
-
-//	@NotNull
-//	@Size(min=1, max=50)
-//	private String location;
-
 	
 	@NotNull
 	@ManyToOne
