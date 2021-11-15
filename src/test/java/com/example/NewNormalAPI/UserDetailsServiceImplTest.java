@@ -44,22 +44,22 @@ public class UserDetailsServiceImplTest {
         String username = "dummyUser";
         String email = "dummyEmail@gmail.com";
 
-        User u1 = new User();
-        u1.setUsername(username);
-        u1.setEmail(email);
+        User user1 = new User();
+        user1.setUsername(username);
+        user1.setEmail(email);
 
-        User u2 = new User();
-        u2.setUsername(username);
-        u2.setEmail(email);
+        User user2 = new User();
+        user2.setUsername(username);
+        user2.setEmail(email);
 
-        Optional<User> duplicateUser1 = Optional.of(u1);
+        Optional<User> duplicateUser1 = Optional.of(user1);
 
         // stubbing
         when(users.findByUsername(any(String.class))).thenReturn(duplicateUser1);
         when(users.findByEmail(any(String.class))).thenReturn(duplicateUser1);
 
         // act + assert
-        assertThrows(UserAlreadyExistsException.class, () -> userSvc.createUser(u2));
+        assertThrows(UserAlreadyExistsException.class, () -> userSvc.createUser(user2));
 
         // assert
         verify(users).findByUsername(username);
