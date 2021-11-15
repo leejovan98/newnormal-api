@@ -58,7 +58,7 @@ public class Event {
 	private String description;
 
 	@NotNull
-	private String visibility; // public, private
+	private String visibility; // public or private
 
 	@NotNull
 	private Integer maxSubscribers;
@@ -87,7 +87,7 @@ public class Event {
 	private int numSubscribers;
 
 	@NotNull
-	@Size(min=1, max=1) // Y / N value only
+	@Size(min=1, max=1) // Y or N value only
 	private String vaccinationRequired;
 
 	@Override
