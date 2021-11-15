@@ -33,17 +33,17 @@ public class VaccinationCertificateProcessor {
 	/**
 	 * Processes image of user's vaccination certificate
 	 * 
-	 * @param img
+	 * @param image
 	 * @param username
 	 * @return date of vaccination effectiveness date
 	 */
-	public Date process(MultipartFile img, String username) {
+	public Date process(MultipartFile image, String username) {
 		
-		File tmpDir = new File(root + "/" + TMP_SUBFOLDER);
-		if(!tmpDir.exists()) tmpDir.mkdir();
+		File tempDirectory = new File(root + "/" + TMP_SUBFOLDER);
+		if(!tempDirectory.exists()) tempDirectory.mkdir();
 		
-		String imageFileName = img.getOriginalFilename();
-		File file = new File(tmpDir, imageFileName);
+		String imageFileName = image.getOriginalFilename();
+		File file = new File(tempDirectory, imageFileName);
 		String[] toks = imageFileName.split("\\.");
 		if(toks.length < 2) throw new IllegalArgumentException();
 		String fileExt = toks[toks.length - 1];
@@ -55,7 +55,7 @@ public class VaccinationCertificateProcessor {
 		proc:{
 			
 			try (OutputStream os = new FileOutputStream(file)) {
-			    os.write(img.getBytes());  
+			    os.write(image.getBytes());  
 			    
 			    Tesseract t = new Tesseract();
 				File tessDataFolder = LoadLibs.extractTessResources("tessdata");
@@ -71,21 +71,21 @@ public class VaccinationCertificateProcessor {
 			Pattern linePattern = Pattern.compile("EFFECTIVE FROM",Pattern.CASE_INSENSITIVE);
 			Pattern datePattern = Pattern.compile("\\d\\d\\s\\S\\S\\S\\s\\d\\d\\d\\d");
 			
-			String strDate = null;
+			String startDate = null;
 			for(String token: tokens) {
 				Matcher matcher = linePattern.matcher(token);
 				if(matcher.find()) {
 					Matcher dateMatcher = datePattern.matcher(token);
 					if(dateMatcher.find()) {
-						strDate = dateMatcher.group();
+						startDate = dateMatcher.group();
 					}
 				}
 			}
 			
 			DateFormat format = new SimpleDateFormat("dd MMM yy");
-			if(strDate != null) {
+			if(startDate != null) {
 				try {
-					Date date = format.parse(strDate);
+					Date date = format.parse(startDate);
 					file.delete();
 					return date;
 				} catch (ParseException e) {
