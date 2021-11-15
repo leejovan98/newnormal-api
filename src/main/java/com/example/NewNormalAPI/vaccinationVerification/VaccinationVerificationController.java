@@ -56,7 +56,7 @@ public class VaccinationVerificationController {
 	 * 
 	 * @param model
 	 * @param jwt
-	 * @param img
+	 * @param image
 	 * @param response
 	 * @return "error.html" if there is no image
 	 * @return "unauth.html" if user unauthenticated
@@ -64,9 +64,9 @@ public class VaccinationVerificationController {
 	 * @return "complete" if vaccination status upload is successful
 	 */
 	@PostMapping("/vaccination/verify")
-	public String uploadVaccination(Model model, @CookieValue("jwt") String jwt, @RequestParam MultipartFile img, 
+	public String uploadVaccination(Model model, @CookieValue("jwt") String jwt, @RequestParam MultipartFile image, 
 			HttpServletResponse response) {
-		if(Objects.isNull(img) || img.isEmpty()) return "error";
+		if(Objects.isNull(image) || image.isEmpty()) return "error";
 		if(Objects.isNull(jwt)) return "unauth";
 		String username = jwtUtil.extractUsername(jwt);
 		User user = userDetailsSvc.loadUserEntityByUsername(username); 
@@ -74,7 +74,7 @@ public class VaccinationVerificationController {
 		if(Objects.isNull(user) || !jwtUtil.validateToken(jwt, user)) return "unauth";
 		
 		try {
-			Date date = processor.process(img, username);
+			Date date = processor.process(image, username);
 			if(Objects.nonNull(date)) userSvc.updateVaccinationStatus(username, date);
 			else return "manualverification";
 		} catch(IllegalArgumentException e) {
