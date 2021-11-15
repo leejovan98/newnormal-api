@@ -49,7 +49,6 @@ public class MailerSvcImpl implements MailerSvc {
 		message.setTo(mail.getTo());
 		message.setSubject(mail.getSubject());
 		String verificationCode = (String) mail.getProperties().get("verificationCode");
-//		message.setSubject("Account Verification");
 		message.setText("Please click the following link to verify your account: " + baseUri + verificationPath + verificationCode);
 		sender.send(message);
 	}
@@ -62,24 +61,24 @@ public class MailerSvcImpl implements MailerSvc {
          */
 	@Async
 	public void sendEventCreation(Mail mail) throws MessagingException {
-		MimeMessage message = sender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message,
+	        MimeMessage message = sender.createMimeMessage();
+                MimeMessageHelper helper = new MimeMessageHelper(message,
                 MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
                 StandardCharsets.UTF_8.name());
-        Context context = new Context();
+                Context context = new Context();
         
-        Event event = (Event) mail.getProperties().get("event");
+                Event event = (Event) mail.getProperties().get("event");
+                
+                Map<String, Object> vars = new HashMap<>();
+                vars.put("event", event);
+                vars.put("inviteLink", baseUri + eventInvitationPath + event.getInviteCode());
+                context.setVariables(vars);
         
-        Map<String, Object> vars = new HashMap<>();
-        vars.put("event", event);
-        vars.put("inviteLink", baseUri + eventInvitationPath + event.getInviteCode());
-        context.setVariables(vars);
-    
-        String html = templateEngine.process("eventcreation", context);
-        helper.setTo(mail.getTo());
-        helper.setText(html, true);
-        helper.setSubject(mail.getSubject());
-        sender.send(message);
+                String html = templateEngine.process("eventcreation", context);
+                helper.setTo(mail.getTo());
+                helper.setText(html, true);
+                helper.setSubject(mail.getSubject());
+                sender.send(message);
 	}
 	
 	/**
@@ -91,22 +90,22 @@ public class MailerSvcImpl implements MailerSvc {
 	@Async
 	public void sendSubscriptionConfirmation(Mail mail) throws MessagingException {
 		MimeMessage message = sender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message,
+                MimeMessageHelper helper = new MimeMessageHelper(message,
                 MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
                 StandardCharsets.UTF_8.name());
-        Context context = new Context();
+                Context context = new Context();
         
-        Event event = (Event) mail.getProperties().get("event");
+                Event event = (Event) mail.getProperties().get("event");
+                
+                Map<String, Object> vars = new HashMap<>();
+                vars.put("event", event);
+                context.setVariables(vars);
         
-        Map<String, Object> vars = new HashMap<>();
-        vars.put("event", event);
-        context.setVariables(vars);
-    
-        String html = templateEngine.process("subscriptionconfirmation", context);
-        helper.setTo(mail.getTo());
-        helper.setText(html, true);
-        helper.setSubject(mail.getSubject());
-        sender.send(message);
+                String html = templateEngine.process("subscriptionconfirmation", context);
+                helper.setTo(mail.getTo());
+                helper.setText(html, true);
+                helper.setSubject(mail.getSubject());
+                sender.send(message);
 	}
 
 	
