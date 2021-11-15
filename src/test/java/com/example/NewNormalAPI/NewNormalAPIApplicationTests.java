@@ -30,10 +30,4 @@ class NewNormalAPIApplicationTests {
 		users.deleteAll();
 		adminConfigs.deleteAll();
 	}
-	
-	// @Test
-	// void contextLoads() {
-	// 	assertEquals(123, 123);
-	// }
-
 }
