@@ -21,7 +21,8 @@ The following details will need to be edited in the application.properties file:
     * MySQL password: The password used to log into MySQL Server. 
 
 The following Schema needs to be created using MySQL Workbench:
-    * Create a new query and run `create schema new_normal;` 
+
+1. Create a new query and run `create schema new_normal;` 
 
 ## Running the API
 
