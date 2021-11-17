@@ -19,7 +19,8 @@ The following details will need to be edited in the application.properties file:
     * MySQL URL(Change Port Number): The port that MySQL Server uses. Typically 8889 for MAC and 3306 for Windows 
     * MySQL username: The username used to log into MySQL Server. Typical username used is root.
     * MySQL password: The password used to log into MySQL Server. 
-3. Create a Schema using MySQL Workbench
+
+The following Schema needs to be created using MySQL Workbench:
     * Create a new query and run `create schema new_normal;` 
 
 ## Running the API
