@@ -7,7 +7,8 @@ NewNormal API is an Events Booking System where users can create their own accou
 ## Pre Requisites:
 
 The NewNormal API is based on Java and the client system is required to have JVM installed before the tool can run on the system. Additionally, the following application is required to be installed:
-* MySQL Workbench
+* MySQL Workbench 
+* MySQL Server
 
 ## Configuration
 
@@ -15,9 +16,9 @@ The following details will need to be edited in the application.properties file:
 
 1. The file can be found at newnormal-api/src/main/resources/application.properties
 2. Under JDBC DataSource configuration, please change the following:
-    * MySQL URL(Change Port Number): The port that MySQL workbench uses. Typically 8889 for MAC and 3306 for Windows 
-    * MySQL username: The username used to log into MySQL WorkBench. Typical username used is root.
-    * MySQL password: The password used to log into MySQL WorkBench. 
+    * MySQL URL(Change Port Number): The port that MySQL Server uses. Typically 8889 for MAC and 3306 for Windows 
+    * MySQL username: The username used to log into MySQL Server. Typical username used is root.
+    * MySQL password: The password used to log into MySQL Server. 
 
 ## Running the API
 
